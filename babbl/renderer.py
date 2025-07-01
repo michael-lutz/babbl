@@ -168,7 +168,7 @@ class MarkdownRenderer:
             "code_block": re.compile(r"```(\w+)?\n(.*?)```", re.DOTALL),
             "inline_code": re.compile(r"`([^`]+)`"),
             "link": re.compile(r"\[([^\]]+)\]\(([^)]+)\)"),
-            "image": re.compile(r'!\[([^\]]*)\]\(([^)]+)(?:\s+"([^"]+)")?\)'),
+            "image": re.compile(r"!\[([^\]]*)\]\(([^)]+)\)"),
             "list_item": re.compile(r"^(\s*)([\-\*\+]|\d+\.)\s+(.+)$", re.MULTILINE),
             "blockquote": re.compile(r"^>\s+(.+)$", re.MULTILINE),
             "emphasis": re.compile(r"(\*\*([^*]+)\*\*)|(\*([^*]+)\*)"),
@@ -245,8 +245,8 @@ class MarkdownRenderer:
         # Step 2: Process other markdown elements
         content = self._process_headings(content)
         content = self._process_emphasis(content)
-        content = self._process_links(content)
         content = self._process_images(content)
+        content = self._process_links(content)
         content = self._process_lists(content)
         content = self._process_blockquotes(content)
         content = self._process_inline_code(content)
@@ -285,6 +285,16 @@ class MarkdownRenderer:
 
         return self.patterns["emphasis"].sub(replace_emphasis, content)
 
+    def _process_images(self, content: str) -> str:
+        """Process images."""
+
+        def replace_image(match):
+            alt = match.group(1)
+            src = match.group(2)
+            return self.formatter.format_image(alt, src)
+
+        return self.patterns["image"].sub(replace_image, content)
+
     def _process_links(self, content: str) -> str:
         """Process links."""
 
@@ -294,17 +304,6 @@ class MarkdownRenderer:
             return self.formatter.format_link(text, url)
 
         return self.patterns["link"].sub(replace_link, content)
-
-    def _process_images(self, content: str) -> str:
-        """Process images."""
-
-        def replace_image(match):
-            alt = match.group(1)
-            src = match.group(2)
-            title = match.group(3)
-            return self.formatter.format_image(alt, src, title)
-
-        return self.patterns["image"].sub(replace_image, content)
 
     def _process_lists(self, content: str) -> str:
         """Process lists."""
@@ -390,6 +389,10 @@ class MarkdownRenderer:
         content = "\n".join(result)
         content = re.sub(r'<p class="paragraph"><pre', "<pre", content)
         content = re.sub(r"</pre></p>", "</pre>", content)
+
+        # Clean up: remove any paragraph tags that wrap images
+        content = re.sub(r'<p class="paragraph"><img', "<img", content)
+        content = re.sub(r"</img></p>", "</img>", content)
 
         return content
 
