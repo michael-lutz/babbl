@@ -2,6 +2,8 @@
 
 Turn markdown into beautiful research blog posts.
 
+![Babbl](assets/babel_img.jpg)
+
 ## Features
 
 - **Custom Markdown Renderer**: Built from scratch with extensible HTML formatting
