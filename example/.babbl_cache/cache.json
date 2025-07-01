@@ -1,0 +1,36 @@
+{
+  "/Users/michaellutz/Documents/development/babbl/example.md": {
+    "hash": "a74e1a07913dc3d08a66ff7543df0821",
+    "output_path": "example.html",
+    "last_processed": "2025-07-01T14:00:56.030917",
+    "content_hash": "d7361fd741ba5b5fffc64db30034726a",
+    "metadata": {
+      "title": "My Research Paper",
+      "author": "Dr. Jane Smith",
+      "date": "2024-01-15",
+      "description": "A groundbreaking study on machine learning applications.",
+      "tags": [
+        "machine learning",
+        "research",
+        "AI"
+      ]
+    }
+  },
+  "/Users/michaellutz/Documents/development/babbl/example/example.md": {
+    "hash": "a74e1a07913dc3d08a66ff7543df0821",
+    "output_path": "example.html",
+    "last_processed": "2025-07-01T14:03:00.092359",
+    "content_hash": "d7361fd741ba5b5fffc64db30034726a",
+    "metadata": {
+      "title": "My Research Paper",
+      "author": "Dr. Jane Smith",
+      "date": "2024-01-15",
+      "description": "A groundbreaking study on machine learning applications.",
+      "tags": [
+        "machine learning",
+        "research",
+        "AI"
+      ]
+    }
+  }
+}
