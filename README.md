@@ -6,12 +6,13 @@ Turn markdown into beautiful research blog posts.
 
 ## Features
 
-- **Custom Markdown Renderer**: Built from scratch with extensible HTML formatting
-- **Frontmatter Support**: YAML frontmatter in markdown files or sidecar YAML files
+- **Custom Markdown Renderer**: Built with Marko for extensible HTML formatting
+- **Frontmatter Support**: YAML frontmatter in markdown files
+- **Table Support**: Full markdown table rendering with custom styling
 - **Beautiful Templates**: Clean, responsive HTML output with modern styling
 - **Fully Customizable CSS**: Complete control over styling through CSS files
 - **CLI Interface**: Easy-to-use command-line tools
-- **Extensible**: Custom formatters for different styling needs
+- **Syntax Highlighting**: Code blocks with Pygments integration
 
 ## Installation
 
@@ -33,12 +34,6 @@ babbl render example.md
 babbl build ./docs --output-dir ./public
 ```
 
-### Generate a default CSS file:
-
-```bash
-babbl init-css
-```
-
 ### Render with custom CSS file:
 
 ```bash
@@ -50,25 +45,25 @@ babbl render example.md --css my-styles.css
 ### Python API
 
 ```python
-from babbl import HTMLRenderer
+from babbl import HTMLRenderer, BabblParser
 from pathlib import Path
-from marko import Markdown
 
-# Initialize renderer
-markdown = Markdown(renderer=HTMLRenderer)
+# Initialize parser and renderer
+parser = BabblParser()
+renderer = HTMLRenderer()
 
 # Render a markdown file
 with open("example.md", "r") as f:
     content = f.read()
-html = markdown(content)
+document = parser.parse(content)
+html = renderer.html(document, metadata={})
 print(f"Generated HTML: {html}")
 ```
 
 ### Frontmatter Support
 
-Babbl supports YAML frontmatter both inline and in sidecar files:
+Babbl supports YAML frontmatter in markdown files:
 
-**Inline frontmatter:**
 ```markdown
 ---
 title: "My Research Paper"
@@ -80,39 +75,23 @@ description: "A groundbreaking study"
 # Content here...
 ```
 
-**Sidecar YAML file (`example.yaml`):**
-```yaml
-title: "My Research Paper"
-author: "Dr. Jane Smith"
-date: "2024-01-15"
-description: "A groundbreaking study"
+### Table Support
+
+Babbl includes full support for markdown tables:
+
+```markdown
+| Component | Memory (MB) | Percentage |
+|-----------|-------------|------------|
+| Renderer Core | 2.1 | 50% |
+| Frontmatter Processor | 0.9 | 22% |
+| HTML Formatter | 1.2 | 28% |
 ```
 
-### Custom Formatting
-
-Create custom HTML formatters by extending the `HTMLFormatter` class:
-
-```python
-from babbl import HTMLFormatter, HTMLRenderer
-
-class CustomFormatter(HTMLFormatter):
-    def format_heading(self, level: int, content: str, **kwargs) -> str:
-        return f'<h{level} class="my-custom-heading">{content}</h{level}>'
-    
-    # Implement other methods...
-
-# Use custom formatter
-renderer = HTMLRenderer(formatter=CustomFormatter())
-```
+Tables are automatically styled with clean, responsive CSS and support proper header formatting.
 
 ### CSS Customization
 
 Babbl provides complete control over styling through CSS files:
-
-**Generate a default CSS file:**
-```bash
-babbl init-css my-styles.css
-```
 
 **Customize your styles:**
 ```css
@@ -170,11 +149,7 @@ Options:
 - `--recursive, -r`: Process subdirectories
 - `--css`: Path to CSS file
 
-### `babbl init-css [file]`
-Generate a default CSS file.
 
-Options:
-- `--force, -f`: Overwrite existing file
 
 ## Supported Markdown Features
 
@@ -186,6 +161,7 @@ Options:
 - **Lists**: Ordered and unordered
 - **Blockquotes**: `> quote`
 - **Emphasis**: **bold** and *italic*
+- **Tables**: Full markdown table support
 - **Paragraphs**: Automatic wrapping
 
 ## License

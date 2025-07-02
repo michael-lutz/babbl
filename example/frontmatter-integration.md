@@ -1,3 +1,9 @@
+---
+title: "Frontmatter Parsing"
+author: "Michael Lutz"
+date: "2025-07-02"
+---
+
 # Frontmatter Integration with Marko Parser
 
 This document explains how to add YAML frontmatter support to the Marko parser system.

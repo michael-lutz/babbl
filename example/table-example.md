@@ -1,3 +1,9 @@
+---
+title: "Table Examples"
+author: "Michael Lutz"
+date: "2025-07-02"
+---
+
 # Table Examples
 
 ## Basic Table

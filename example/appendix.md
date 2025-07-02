@@ -1,15 +1,21 @@
+---
+title: "Appendix: Advanced Babbl Features"
+author: "Michael Lutz"
+date: "2025-07-02"
+---
+
 # Appendix: Advanced Babbl Features
 
-This appendix demonstrates advanced features of the Babbl renderer, including sidecar YAML files, complex code examples, and detailed technical specifications.
+This appendix demonstrates advanced features of the Babbl renderer, including frontmatter processing, complex code examples, and detailed technical specifications.
 
-## Sidecar YAML Configuration
+## Frontmatter Configuration
 
-This document uses a sidecar YAML file (`appendix.yaml`) for its frontmatter instead of inline YAML. This approach is useful for:
+This document uses YAML frontmatter for metadata. This approach is useful for:
 
-- Complex metadata that would clutter the markdown
-- Reusable configuration across multiple files
-- Automated metadata generation
-- Integration with external systems
+- Document metadata and SEO information
+- Author and publication details
+- Tags and categories
+- Custom metadata for integration with external systems
 
 ## Code Architecture Deep Dive
 
@@ -44,29 +50,58 @@ class MarkdownRenderer:
 
 ### Frontmatter Processing
 
-The frontmatter processor handles both inline and sidecar YAML:
+The frontmatter processor handles YAML frontmatter in markdown files:
 
 ```python
-# From babbl/frontmatter.py - lines 85-106
-def process_file(self, md_path: Path) -> Tuple[Dict[str, Any], str]:
-    """
-    Process a markdown file and extract all frontmatter.
-    
+# From babbl/load.py - lines 25-69
+def load_metadata(contents: str) -> tuple[dict[str, str], str]:
+    """Parse the frontmatter of a markdown file.
+
+    This function robustly detects and parses YAML frontmatter that is delimited
+    by `---` at the beginning and end of the document.
+
     Args:
-        md_path: Path to the markdown file
-        
+        contents: The raw markdown content
+
     Returns:
-        Tuple of (merged_frontmatter, content_without_frontmatter)
+        A tuple of (metadata_dict, content_without_frontmatter)
     """
-    with open(md_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    inline_frontmatter, content_without_frontmatter = self.extract_frontmatter(content)
-    sidecar_frontmatter = self.load_sidecar_yaml(md_path)
-    
-    merged_frontmatter = self.merge_frontmatter(inline_frontmatter, sidecar_frontmatter)
-    
-    return merged_frontmatter, content_without_frontmatter
+    lines = contents.split("\n")
+
+    # check if the file starts with frontmatter delimiter
+    if not lines or not lines[0].strip() == "---":
+        return {}, contents
+
+    # find the closing ---
+    frontmatter_lines = []
+    content_lines = []
+    in_frontmatter = True
+
+    for i, line in enumerate(lines[1:], 1):  # start from second line
+        if in_frontmatter:
+            if line.strip() == "---":
+                # found closing delimiter
+                in_frontmatter = False
+                content_lines = lines[i + 1 :]  # Everything after the closing ---
+                break
+            else:
+                frontmatter_lines.append(line)
+        else:
+            content_lines.append(line)
+
+    # if we didn't find a closing ---, there's no valid frontmatter
+    if in_frontmatter:
+        return {}, contents
+
+    # parse the frontmatter
+    try:
+        frontmatter_text = "\n".join(frontmatter_lines)
+        metadata = yaml.safe_load(frontmatter_text) or {}
+        content = "\n".join(content_lines)
+        return metadata, content
+    except yaml.YAMLError:
+        # if YAML parsing fails, treat as regular content
+        return {}, contents
 ```
 
 
@@ -110,38 +145,29 @@ benchmark_results = {
 
 ## Advanced Usage Patterns
 
-### Custom Formatter Example
+### Table Support Example
 
-Here's a complete example of a custom formatter:
+Babbl includes full support for markdown tables with custom styling:
 
-```python
-from babbl import HTMLFormatter, MarkdownRenderer
-from typing import Optional
-
-class AcademicFormatter(HTMLFormatter):
-    """Custom formatter for academic papers."""
-    
-    def format_heading(self, level: int, content: str, **kwargs) -> str:
-        """Format headings with academic styling."""
-        if level == 1:
-            return f'<h1 class="paper-title">{content}</h1>'
-        elif level == 2:
-            return f'<h2 class="section-title">{content}</h2>'
-        else:
-            return f'<h{level} class="subsection-title">{content}</h{level}>'
-    
-    def format_code_block(self, code: str, language: Optional[str] = None, **kwargs) -> str:
-        """Format code blocks with academic styling."""
-        language_class = f' language-{language}' if language else ''
-        return f'<pre class="academic-code{language_class}"><code>{code}</code></pre>'
-    
-    def format_blockquote(self, content: str, **kwargs) -> str:
-        """Format blockquotes as citations."""
-        return f'<blockquote class="citation">{content}</blockquote>'
-
-# Usage
-renderer = MarkdownRenderer(formatter=AcademicFormatter())
+```markdown
+| Feature | Status | Priority | Notes |
+|---------|------|--------|-------|
+| Tables | ✅ | High | Now supported |
+| Syntax Highlighting | ✅ | High | Pygments integration |
+| Frontmatter | ✅ | Medium | YAML parsing |
+| Custom CSS | ✅ | Medium | File-based styling |
 ```
+
+Gets rendered as:
+
+| Feature | Status | Priority | Notes |
+|---------|------|--------|-------|
+| Tables | ✅ | High | Now supported |
+| Syntax Highlighting | ✅ | High | Pygments integration |
+| Frontmatter | ✅ | Medium | YAML parsing |
+| Custom CSS | ✅ | Medium | File-based styling |
+
+Tables are automatically styled with clean, responsive CSS and support proper header formatting.
 
 ### CLI Integration
 
@@ -173,7 +199,7 @@ babbl build ./docs
 
 - **Input**: Markdown (.md) files
 - **Output**: HTML (.html) files
-- **Configuration**: YAML (.yaml, .yml) sidecar files
+- **Configuration**: YAML frontmatter in markdown files
 
 
 ### Dependencies
@@ -190,13 +216,12 @@ The core dependencies are minimal and well-maintained:
 
 ### Planned Features
 
-1. **Table Support**: Markdown table rendering
-2. **Math Equations**: LaTeX math support
-3. **Footnotes**: Academic footnote system
-4. **Bibliography**: Citation management
-5. **Multi-format Output**: PDF and LaTeX generation
-6. **Plugin System**: Extensible architecture
-7. **Live Preview**: Development server with hot reload
+1. **Math Equations**: LaTeX math support
+2. **Footnotes**: Academic footnote system
+3. **Bibliography**: Citation management
+4. **Multi-format Output**: PDF and LaTeX generation
+5. **Plugin System**: Extensible architecture
+6. **Live Preview**: Development server with hot reload
 
 ### API Extensions
 

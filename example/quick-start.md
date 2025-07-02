@@ -1,8 +1,7 @@
 ---
 title: "Quick Start Guide"
-author: "Babbl Team"
-date: "2024-01-15"
-description: "Get started with Babbl in 5 minutes"
+author: "Michael Lutz"
+date: "2025-07-02"
 ---
 
 # Quick Start Guide

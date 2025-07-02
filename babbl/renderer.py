@@ -242,24 +242,7 @@ class HTMLRenderer(BaseRenderer):
         # add Pygments CSS if available
         if self.highlight_syntax and self.pygments_formatter:
             pygments_css = self.pygments_formatter.get_style_defs(".highlight")
-            css += (
-                "\n"
-                + pygments_css
-                + """
-.highlight {
-    background: #f5f5f5;
-    border: none;
-    margin: 1rem 0;
-}
-.highlight pre {
-    margin: 0;
-    padding: 1rem;
-    overflow-x: auto;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.4;
-}"""
-            )
+            css += "\n" + pygments_css
 
         return css
 
@@ -473,73 +456,3 @@ class HTMLRenderer(BaseRenderer):
     def render_table_head_cell(self, element: Any) -> str:
         """Render a table header cell element."""
         return f"<th>{self.render_children(element)}</th>\n"
-
-    # def render_frontmatter(self, element: Frontmatter) -> str:
-    #     """Render frontmatter metadata as HTML."""
-    #     if not hasattr(element, "metadata") or not element.metadata:
-    #         return ""
-
-    #     metadata = element.metadata
-    #     metadata_html = []
-
-    #     if "title" in metadata:
-    #         metadata_html.append(f'<meta name="title" content="{self.escape_html(str(metadata["title"]))}">')
-
-    #     if "author" in metadata:
-    #         metadata_html.append(f'<meta name="author" content="{self.escape_html(str(metadata["author"]))}">')
-
-    #     if "date" in metadata:
-    #         metadata_html.append(f'<meta name="date" content="{self.escape_html(str(metadata["date"]))}">')
-
-    #     if "summary" in metadata:
-    #         metadata_html.append(f'<meta name="description" content="{self.escape_html(str(metadata["summary"]))}">')
-    #     elif "description" in metadata:
-    #         metadata_html.append(
-    #             f'<meta name="description" content="{self.escape_html(str(metadata["description"]))}">'
-    #         )
-
-    #     if "tags" in metadata and metadata["tags"]:
-    #         if isinstance(metadata["tags"], list):
-    #             tags_str = ", ".join(str(tag) for tag in metadata["tags"])
-    #         else:
-    #             tags_str = str(metadata["tags"])
-    #         metadata_html.append(f'<meta name="keywords" content="{self.escape_html(tags_str)}">')
-
-    #     if "categories" in metadata and metadata["categories"]:
-    #         if isinstance(metadata["categories"], list):
-    #             categories_str = ", ".join(str(cat) for cat in metadata["categories"])
-    #         else:
-    #             categories_str = str(metadata["categories"])
-    #         metadata_html.append(f'<meta name="categories" content="{self.escape_html(categories_str)}">')
-
-    #     if "slug" in metadata:
-    #         metadata_html.append(f'<meta name="slug" content="{self.escape_html(str(metadata["slug"]))}">')
-
-    #     if "layout" in metadata:
-    #         metadata_html.append(f'<meta name="layout" content="{self.escape_html(str(metadata["layout"]))}">')
-
-    #     if "draft" in metadata:
-    #         draft_status = "true" if metadata["draft"] else "false"
-    #         metadata_html.append(f'<meta name="draft" content="{draft_status}">')
-
-    #     for key, value in metadata.items():
-    #         if key not in [
-    #             "title",
-    #             "author",
-    #             "date",
-    #             "summary",
-    #             "description",
-    #             "tags",
-    #             "categories",
-    #             "slug",
-    #             "layout",
-    #             "draft",
-    #         ]:
-    #             metadata_html.append(
-    #                 f'<meta name="{self.escape_html(str(key))}" content="{self.escape_html(str(value))}">'
-    #             )
-
-    #     if metadata_html:
-    #         return "\n".join(metadata_html) + "\n"
-
-    #     return ""

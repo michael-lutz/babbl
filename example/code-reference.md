@@ -1,3 +1,9 @@
+---
+title: "Babbl Code Reference"
+author: "Michael Lutz"
+date: "2025-07-02"
+---
+
 # Babbl Code Reference
 
 This document provides a comprehensive reference for the Babbl library's code structure, classes, and methods. It serves as a technical guide for developers who want to understand or extend the library.

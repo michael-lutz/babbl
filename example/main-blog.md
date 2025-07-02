@@ -1,9 +1,7 @@
 ---
 title: "Building Beautiful Research Blogs with Babbl"
-author: "Dr. Michael Lutz"
-date: "2024-01-15"
-description: "A comprehensive guide to creating beautiful research blogs using the Babbl markdown renderer"
-tags: ["research", "markdown", "blogging", "python"]
+author: "Michael Lutz"
+date: "2025-07-02"
 ---
 
 # Introduction

@@ -189,7 +189,5 @@ hr {
 .table-container {
     overflow-x: auto;
     margin: 1rem 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
 """

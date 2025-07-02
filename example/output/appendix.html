@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
+<meta name=title content=Appendix: Advanced Babbl Features>
+<meta name=author content=Michael Lutz>
+<meta name=date content=2025-07-02>
+<title>Appendix: Advanced Babbl Features</title>
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
@@ -195,8 +197,6 @@ hr {
 .table-container {
     overflow-x: auto;
     margin: 1rem 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
 
 pre { line-height: 125%; }
@@ -274,33 +274,28 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .vi { color: #BB60D5 } /* Name.Variable.Instance */
 .highlight .vm { color: #BB60D5 } /* Name.Variable.Magic */
 .highlight .il { color: #40A070 } /* Literal.Number.Integer.Long */
-.highlight {
-    background: #f5f5f5;
-    border: none;
-    margin: 1rem 0;
-}
-.highlight pre {
-    margin: 0;
-    padding: 1rem;
-    overflow-x: auto;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.4;
-}
 </style>
 </head>
 <body>
 <section>
+<header>
+<h1 class="title">Appendix: Advanced Babbl Features</h1>
+<div class='metadata'>
+<div class="meta-field">Author: Michael Lutz</div>
+<div class="meta-field">Date: 2025-07-02</div>
+</div>
+<hr />
+</header>
 
 <h1 class="heading-1">Appendix: Advanced Babbl Features</h1>
-<p class="paragraph">This appendix demonstrates advanced features of the Babbl renderer, including sidecar YAML files, complex code examples, and detailed technical specifications.</p>
-<h2 class="heading-2">Sidecar YAML Configuration</h2>
-<p class="paragraph">This document uses a sidecar YAML file (<code class="inline-code">appendix.yaml</code>) for its frontmatter instead of inline YAML. This approach is useful for:</p>
+<p class="paragraph">This appendix demonstrates advanced features of the Babbl renderer, including frontmatter processing, complex code examples, and detailed technical specifications.</p>
+<h2 class="heading-2">Frontmatter Configuration</h2>
+<p class="paragraph">This document uses YAML frontmatter for metadata. This approach is useful for:</p>
 <ul class="unordered-list">
-<li class="list-item">Complex metadata that would clutter the markdown</li>
-<li class="list-item">Reusable configuration across multiple files</li>
-<li class="list-item">Automated metadata generation</li>
-<li class="list-item">Integration with external systems</li>
+<li class="list-item">Document metadata and SEO information</li>
+<li class="list-item">Author and publication details</li>
+<li class="list-item">Tags and categories</li>
+<li class="list-item">Custom metadata for integration with external systems</li>
 </ul>
 <h2 class="heading-2">Code Architecture Deep Dive</h2>
 <h3 class="heading-3">Renderer Initialization</h3>
@@ -330,27 +325,56 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </pre></div>
 
 <h3 class="heading-3">Frontmatter Processing</h3>
-<p class="paragraph">The frontmatter processor handles both inline and sidecar YAML:</p>
-<div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/frontmatter.py - lines 85-106</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">process_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Process a markdown file and extract all frontmatter.</span>
-<span class="sd">    </span>
+<p class="paragraph">The frontmatter processor handles YAML frontmatter in markdown files:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/load.py - lines 25-69</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_metadata</span><span class="p">(</span><span class="n">contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the frontmatter of a markdown file.</span>
+
+<span class="sd">    This function robustly detects and parses YAML frontmatter that is delimited</span>
+<span class="sd">    by `---` at the beginning and end of the document.</span>
+
 <span class="sd">    Args:</span>
-<span class="sd">        md_path: Path to the markdown file</span>
-<span class="sd">        </span>
+<span class="sd">        contents: The raw markdown content</span>
+
 <span class="sd">    Returns:</span>
-<span class="sd">        Tuple of (merged_frontmatter, content_without_frontmatter)</span>
+<span class="sd">        A tuple of (metadata_dict, content_without_frontmatter)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">md_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    
-    <span class="n">inline_frontmatter</span><span class="p">,</span> <span class="n">content_without_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_frontmatter</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-    <span class="n">sidecar_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_sidecar_yaml</span><span class="p">(</span><span class="n">md_path</span><span class="p">)</span>
-    
-    <span class="n">merged_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_frontmatter</span><span class="p">(</span><span class="n">inline_frontmatter</span><span class="p">,</span> <span class="n">sidecar_frontmatter</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">merged_frontmatter</span><span class="p">,</span> <span class="n">content_without_frontmatter</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># check if the file starts with frontmatter delimiter</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;---&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="n">contents</span>
+
+    <span class="c1"># find the closing ---</span>
+    <span class="n">frontmatter_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">content_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">in_frontmatter</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># start from second line</span>
+        <span class="k">if</span> <span class="n">in_frontmatter</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;---&quot;</span><span class="p">:</span>
+                <span class="c1"># found closing delimiter</span>
+                <span class="n">in_frontmatter</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">content_lines</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>  <span class="c1"># Everything after the closing ---</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">frontmatter_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># if we didn&#39;t find a closing ---, there&#39;s no valid frontmatter</span>
+    <span class="k">if</span> <span class="n">in_frontmatter</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="n">contents</span>
+
+    <span class="c1"># parse the frontmatter</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">frontmatter_text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">frontmatter_lines</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">frontmatter_text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">content_lines</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content</span>
+    <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">:</span>
+        <span class="c1"># if YAML parsing fails, treat as regular content</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="n">contents</span>
 </pre></div>
 
 <h2 class="heading-2">Performance Benchmarks</h2>
@@ -407,36 +431,56 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </pre></div>
 
 <h2 class="heading-2">Advanced Usage Patterns</h2>
-<h3 class="heading-3">Custom Formatter Example</h3>
-<p class="paragraph">Here's a complete example of a custom formatter:</p>
-<div class="highlight"><pre class="code-block"><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">babbl</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLFormatter</span><span class="p">,</span> <span class="n">MarkdownRenderer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AcademicFormatter</span><span class="p">(</span><span class="n">HTMLFormatter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom formatter for academic papers.&quot;&quot;&quot;</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">format_heading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format headings with academic styling.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h1 class=&quot;paper-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h1&gt;&#39;</span>
-        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h2 class=&quot;section-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h2&gt;&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1"> class=&quot;subsection-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">format_code_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format code blocks with academic styling.&quot;&quot;&quot;</span>
-        <span class="n">language_class</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; language-</span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">language</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;pre class=&quot;academic-code</span><span class="si">{</span><span class="n">language_class</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;code&gt;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1">&lt;/code&gt;&lt;/pre&gt;&#39;</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">format_blockquote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format blockquotes as citations.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;blockquote class=&quot;citation&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/blockquote&gt;&#39;</span>
-
-<span class="c1"># Usage</span>
-<span class="n">renderer</span> <span class="o">=</span> <span class="n">MarkdownRenderer</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="n">AcademicFormatter</span><span class="p">())</span>
+<h3 class="heading-3">Table Support Example</h3>
+<p class="paragraph">Babbl includes full support for markdown tables with custom styling:</p>
+<div class="highlight"><pre class="code-block"><span></span>| Feature | Status | Priority | Notes |
+|---------|------|--------|-------|
+| Tables | ✅ | High | Now supported |
+| Syntax Highlighting | ✅ | High | Pygments integration |
+| Frontmatter | ✅ | Medium | YAML parsing |
+| Custom CSS | ✅ | Medium | File-based styling |
 </pre></div>
 
+<p class="paragraph">Gets rendered as:</p>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tables</td>
+<td>✅</td>
+<td>High</td>
+<td>Now supported</td>
+</tr>
+<tr>
+<td>Syntax Highlighting</td>
+<td>✅</td>
+<td>High</td>
+<td>Pygments integration</td>
+</tr>
+<tr>
+<td>Frontmatter</td>
+<td>✅</td>
+<td>Medium</td>
+<td>YAML parsing</td>
+</tr>
+<tr>
+<td>Custom CSS</td>
+<td>✅</td>
+<td>Medium</td>
+<td>File-based styling</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="paragraph">Tables are automatically styled with clean, responsive CSS and support proper header formatting.</p>
 <h3 class="heading-3">CLI Integration</h3>
 <p class="paragraph">The command-line interface supports various workflows:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># Batch processing with custom output</span>
@@ -463,7 +507,7 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <ul class="unordered-list">
 <li class="list-item"><strong class="strong">Input</strong>: Markdown (.md) files</li>
 <li class="list-item"><strong class="strong">Output</strong>: HTML (.html) files</li>
-<li class="list-item"><strong class="strong">Configuration</strong>: YAML (.yaml, .yml) sidecar files</li>
+<li class="list-item"><strong class="strong">Configuration</strong>: YAML frontmatter in markdown files</li>
 </ul>
 <h3 class="heading-3">Dependencies</h3>
 <p class="paragraph">The core dependencies are minimal and well-maintained:</p>
@@ -477,7 +521,6 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <h2 class="heading-2">Future Enhancements</h2>
 <h3 class="heading-3">Planned Features</h3>
 <ol class="ordered-list">
-<li class="list-item"><strong class="strong">Table Support</strong>: Markdown table rendering</li>
 <li class="list-item"><strong class="strong">Math Equations</strong>: LaTeX math support</li>
 <li class="list-item"><strong class="strong">Footnotes</strong>: Academic footnote system</li>
 <li class="list-item"><strong class="strong">Bibliography</strong>: Citation management</li>
