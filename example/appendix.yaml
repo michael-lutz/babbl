@@ -1,0 +1,14 @@
+title: "Appendix: Advanced Babbl Features"
+author: "Dr. Michael Lutz"
+date: "2024-01-15"
+description: "Technical appendix demonstrating advanced Babbl features including sidecar YAML, performance benchmarks, and custom formatters"
+type: "appendix"
+section: "technical-documentation"
+tags: ["appendix", "technical", "advanced", "yaml"]
+related_posts: ["main-blog.md", "code-reference.md"]
+version: "1.0"
+last_updated: "2024-01-15"
+review_status: "draft"
+word_count: 2500
+reading_time: "12 minutes"
+difficulty: "advanced" 

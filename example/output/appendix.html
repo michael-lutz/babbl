@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    color: #333;
+    background-color: #fff;
+}
+
+section {
+    padding: 0;
+}
+
+.title {
+    font-size: 2.0rem;
+    margin-top: 1.0rem;
+    margin-bottom: 0.0rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-1 { 
+    font-size: 1.6rem; 
+    margin-top: 1.0rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-2 { 
+    font-size: 1.4rem; 
+    margin-top: 1rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-3 { 
+    font-size: 1.2rem; 
+    margin-top: 1.0rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-4, .heading-5, .heading-6 { 
+    font-size: 1rem; 
+    margin-top: 1rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.paragraph { 
+    margin-bottom: 1rem; 
+    text-align: left;
+    font-size: .9rem;
+}
+
+.code-block { 
+    background: #f5f5f5; 
+    padding: 1rem; 
+    border: none;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.inline-code { 
+    background: #f5f5f5; 
+    padding: 0.15rem 0.3rem; 
+    border: none;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    color: #333;
+}
+
+.link { 
+    color: #0066cc; 
+    text-decoration: none; 
+}
+
+.link:hover { 
+    text-decoration: underline;
+}
+
+.image { 
+    max-width: 100%; 
+    height: auto; 
+    margin: 1rem 0; 
+    border: none;
+}
+
+.unordered-list, .ordered-list { 
+    margin: 1rem 0; 
+    padding-left: 2rem; 
+}
+
+.list-item { 
+    margin-bottom: 0.5rem; 
+    line-height: 1.6;
+    font-size: .9rem;
+}
+
+.blockquote { 
+    border-left: 3px solid #ddd; 
+    padding-left: 1rem; 
+    margin: 0.5rem 0; 
+    font-style: italic;
+    color: #666;
+    background: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
+.strong { 
+    font-weight: 600; 
+    color: #333;
+}
+
+.emphasis { 
+    font-style: italic; 
+    color: #333;
+}
+
+.metadata {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.meta-field {
+    margin-bottom: 0.25rem;
+    line-height: 1.2rem;
+}
+
+.meta-field:last-child {
+    margin-bottom: 0;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: #ddd;
+    margin: 1.5rem 0;
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.table tr:hover {
+    background: #f1f3f4;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f0f0f0; }
+.highlight .c { color: #60A0B0; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #F00 } /* Error */
+.highlight .k { color: #007020; font-weight: bold } /* Keyword */
+.highlight .o { color: #666 } /* Operator */
+.highlight .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #007020 } /* Comment.Preproc */
+.highlight .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #F00 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888 } /* Generic.Output */
+.highlight .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #04D } /* Generic.Traceback */
+.highlight .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #007020 } /* Keyword.Pseudo */
+.highlight .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #902000 } /* Keyword.Type */
+.highlight .m { color: #40A070 } /* Literal.Number */
+.highlight .s { color: #4070A0 } /* Literal.String */
+.highlight .na { color: #4070A0 } /* Name.Attribute */
+.highlight .nb { color: #007020 } /* Name.Builtin */
+.highlight .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.highlight .no { color: #60ADD5 } /* Name.Constant */
+.highlight .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.highlight .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #007020 } /* Name.Exception */
+.highlight .nf { color: #06287E } /* Name.Function */
+.highlight .nl { color: #002070; font-weight: bold } /* Name.Label */
+.highlight .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #BB60D5 } /* Name.Variable */
+.highlight .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #BBB } /* Text.Whitespace */
+.highlight .mb { color: #40A070 } /* Literal.Number.Bin */
+.highlight .mf { color: #40A070 } /* Literal.Number.Float */
+.highlight .mh { color: #40A070 } /* Literal.Number.Hex */
+.highlight .mi { color: #40A070 } /* Literal.Number.Integer */
+.highlight .mo { color: #40A070 } /* Literal.Number.Oct */
+.highlight .sa { color: #4070A0 } /* Literal.String.Affix */
+.highlight .sb { color: #4070A0 } /* Literal.String.Backtick */
+.highlight .sc { color: #4070A0 } /* Literal.String.Char */
+.highlight .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.highlight .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #4070A0 } /* Literal.String.Double */
+.highlight .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.highlight .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.highlight .sx { color: #C65D09 } /* Literal.String.Other */
+.highlight .sr { color: #235388 } /* Literal.String.Regex */
+.highlight .s1 { color: #4070A0 } /* Literal.String.Single */
+.highlight .ss { color: #517918 } /* Literal.String.Symbol */
+.highlight .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #06287E } /* Name.Function.Magic */
+.highlight .vc { color: #BB60D5 } /* Name.Variable.Class */
+.highlight .vg { color: #BB60D5 } /* Name.Variable.Global */
+.highlight .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.highlight .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.highlight .il { color: #40A070 } /* Literal.Number.Integer.Long */
+.highlight {
+    background: #f5f5f5;
+    border: none;
+    margin: 1rem 0;
+}
+.highlight pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+</style>
+</head>
+<body>
+<section>
+
+<h1 class="heading-1">Appendix: Advanced Babbl Features</h1>
+<p class="paragraph">This appendix demonstrates advanced features of the Babbl renderer, including sidecar YAML files, complex code examples, and detailed technical specifications.</p>
+<h2 class="heading-2">Sidecar YAML Configuration</h2>
+<p class="paragraph">This document uses a sidecar YAML file (<code class="inline-code">appendix.yaml</code>) for its frontmatter instead of inline YAML. This approach is useful for:</p>
+<ul class="unordered-list">
+<li class="list-item">Complex metadata that would clutter the markdown</li>
+<li class="list-item">Reusable configuration across multiple files</li>
+<li class="list-item">Automated metadata generation</li>
+<li class="list-item">Integration with external systems</li>
+</ul>
+<h2 class="heading-2">Code Architecture Deep Dive</h2>
+<h3 class="heading-3">Renderer Initialization</h3>
+<p class="paragraph">The core renderer initialization process involves several components:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/renderer.py - lines 154-176</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MarkdownRenderer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">HTMLFormatter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the markdown renderer.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            formatter: HTML formatter to use (defaults to DefaultHTMLFormatter)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span> <span class="ow">or</span> <span class="n">DefaultHTMLFormatter</span><span class="p">()</span>
+        
+        <span class="c1"># Compile regex patterns for markdown parsing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;heading&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(#{1,6})\s+(.+)$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">),</span>
+            <span class="s2">&quot;code_block&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;```(\w+)?\n(.*?)```&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">),</span>
+            <span class="s2">&quot;inline_code&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;`([^`]+)`&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\[([^\]]+)\]\(([^)]+)\)&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;!\[([^\]]*)\]\(([^)]+)\)&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;list_item&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(\s*)([\-\*\+]|\d+\.)\s+(.+)$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">),</span>
+            <span class="s2">&quot;blockquote&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^&gt;\s+(.+)$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">),</span>
+            <span class="s2">&quot;emphasis&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\*\*([^*]+)\*\*)|(\*([^*]+)\*)&quot;</span><span class="p">),</span>
+        <span class="p">}</span>
+</pre></div>
+
+<h3 class="heading-3">Frontmatter Processing</h3>
+<p class="paragraph">The frontmatter processor handles both inline and sidecar YAML:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/frontmatter.py - lines 85-106</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process a markdown file and extract all frontmatter.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        md_path: Path to the markdown file</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (merged_frontmatter, content_without_frontmatter)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">md_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    
+    <span class="n">inline_frontmatter</span><span class="p">,</span> <span class="n">content_without_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_frontmatter</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">sidecar_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_sidecar_yaml</span><span class="p">(</span><span class="n">md_path</span><span class="p">)</span>
+    
+    <span class="n">merged_frontmatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_frontmatter</span><span class="p">(</span><span class="n">inline_frontmatter</span><span class="p">,</span> <span class="n">sidecar_frontmatter</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">merged_frontmatter</span><span class="p">,</span> <span class="n">content_without_frontmatter</span>
+</pre></div>
+
+<h2 class="heading-2">Performance Benchmarks</h2>
+<h3 class="heading-3">Memory Usage Analysis</h3>
+<p class="paragraph">Detailed memory profiling shows efficient resource usage:</p>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Component</th>
+<th>Memory (MB)</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Renderer Core</td>
+<td>2.1</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>Frontmatter Processor</td>
+<td>0.9</td>
+<td>22%</td>
+</tr>
+<tr>
+<td>HTML Formatter</td>
+<td>1.2</td>
+<td>28%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 class="heading-3">Processing Speed</h3>
+<p class="paragraph">Performance metrics across different file sizes:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># Benchmark results from testing</span>
+<span class="n">benchmark_results</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;small_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;1KB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;processing_time&quot;</span><span class="p">:</span> <span class="s2">&quot;15ms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;memory_peak&quot;</span><span class="p">:</span> <span class="s2">&quot;2.1MB&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;medium_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;10KB&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;processing_time&quot;</span><span class="p">:</span> <span class="s2">&quot;45ms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;memory_peak&quot;</span><span class="p">:</span> <span class="s2">&quot;3.2MB&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;large_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;100KB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;processing_time&quot;</span><span class="p">:</span> <span class="s2">&quot;180ms&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;memory_peak&quot;</span><span class="p">:</span> <span class="s2">&quot;5.8MB&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 class="heading-2">Advanced Usage Patterns</h2>
+<h3 class="heading-3">Custom Formatter Example</h3>
+<p class="paragraph">Here's a complete example of a custom formatter:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">babbl</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLFormatter</span><span class="p">,</span> <span class="n">MarkdownRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AcademicFormatter</span><span class="p">(</span><span class="n">HTMLFormatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom formatter for academic papers.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_heading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format headings with academic styling.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h1 class=&quot;paper-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h1&gt;&#39;</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h2 class=&quot;section-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h2&gt;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;h</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1"> class=&quot;subsection-title&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/h</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_code_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format code blocks with academic styling.&quot;&quot;&quot;</span>
+        <span class="n">language_class</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; language-</span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">language</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;pre class=&quot;academic-code</span><span class="si">{</span><span class="n">language_class</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;code&gt;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1">&lt;/code&gt;&lt;/pre&gt;&#39;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_blockquote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format blockquotes as citations.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;blockquote class=&quot;citation&quot;&gt;</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s1">&lt;/blockquote&gt;&#39;</span>
+
+<span class="c1"># Usage</span>
+<span class="n">renderer</span> <span class="o">=</span> <span class="n">MarkdownRenderer</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="n">AcademicFormatter</span><span class="p">())</span>
+</pre></div>
+
+<h3 class="heading-3">CLI Integration</h3>
+<p class="paragraph">The command-line interface supports various workflows:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># Batch processing with custom output</span>
+babbl<span class="w"> </span>build<span class="w"> </span>./research-papers<span class="w"> </span>--output-dir<span class="w"> </span>./public<span class="w"> </span>--pattern<span class="w"> </span><span class="s2">&quot;*.md&quot;</span>
+
+<span class="c1"># Process all markdown files</span>
+babbl<span class="w"> </span>build<span class="w"> </span>./docs
+</pre></div>
+
+<h2 class="heading-2">Technical Specifications</h2>
+<h3 class="heading-3">Supported Markdown Features</h3>
+<ol class="ordered-list">
+<li class="list-item"><strong class="strong">Headings</strong>: All levels (H1-H6) with custom styling</li>
+<li class="list-item"><strong class="strong">Code Blocks</strong>: Syntax highlighting with Pygments</li>
+<li class="list-item"><strong class="strong">Inline Code</strong>: Monospace formatting</li>
+<li class="list-item"><strong class="strong">Links</strong>: Standard markdown link syntax</li>
+<li class="list-item"><strong class="strong">Images</strong>: Responsive image handling</li>
+<li class="list-item"><strong class="strong">Lists</strong>: Ordered and unordered lists</li>
+<li class="list-item"><strong class="strong">Blockquotes</strong>: Citation-style formatting</li>
+<li class="list-item"><strong class="strong">Emphasis</strong>: Bold and italic text</li>
+<li class="list-item"><strong class="strong">Paragraphs</strong>: Automatic text wrapping</li>
+</ol>
+<h3 class="heading-3">File Format Support</h3>
+<ul class="unordered-list">
+<li class="list-item"><strong class="strong">Input</strong>: Markdown (.md) files</li>
+<li class="list-item"><strong class="strong">Output</strong>: HTML (.html) files</li>
+<li class="list-item"><strong class="strong">Configuration</strong>: YAML (.yaml, .yml) sidecar files</li>
+</ul>
+<h3 class="heading-3">Dependencies</h3>
+<p class="paragraph">The core dependencies are minimal and well-maintained:</p>
+<ul class="unordered-list">
+<li class="list-item"><code class="inline-code">markdown&gt;=3.4.0</code> - Markdown processing</li>
+<li class="list-item"><code class="inline-code">pyyaml&gt;=6.0</code> - YAML frontmatter parsing</li>
+<li class="list-item"><code class="inline-code">pygments&gt;=2.15.0</code> - Syntax highlighting</li>
+<li class="list-item"><code class="inline-code">click&gt;=8.1.0</code> - CLI interface</li>
+<li class="list-item"><code class="inline-code">pathspec&gt;=0.11.0</code> - File pattern matching</li>
+</ul>
+<h2 class="heading-2">Future Enhancements</h2>
+<h3 class="heading-3">Planned Features</h3>
+<ol class="ordered-list">
+<li class="list-item"><strong class="strong">Table Support</strong>: Markdown table rendering</li>
+<li class="list-item"><strong class="strong">Math Equations</strong>: LaTeX math support</li>
+<li class="list-item"><strong class="strong">Footnotes</strong>: Academic footnote system</li>
+<li class="list-item"><strong class="strong">Bibliography</strong>: Citation management</li>
+<li class="list-item"><strong class="strong">Multi-format Output</strong>: PDF and LaTeX generation</li>
+<li class="list-item"><strong class="strong">Plugin System</strong>: Extensible architecture</li>
+<li class="list-item"><strong class="strong">Live Preview</strong>: Development server with hot reload</li>
+</ol>
+<h3 class="heading-3">API Extensions</h3>
+<div class="highlight"><pre class="code-block"><span></span><span class="c1"># Future API example</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">babbl</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownRenderer</span><span class="p">,</span> <span class="n">PDFRenderer</span><span class="p">,</span> <span class="n">LaTeXRenderer</span>
+
+<span class="c1"># Multi-format rendering</span>
+<span class="n">renderer</span> <span class="o">=</span> <span class="n">MarkdownRenderer</span><span class="p">()</span>
+<span class="n">pdf_renderer</span> <span class="o">=</span> <span class="n">PDFRenderer</span><span class="p">()</span>
+<span class="n">latex_renderer</span> <span class="o">=</span> <span class="n">LaTeXRenderer</span><span class="p">()</span>
+
+<span class="c1"># Generate multiple formats</span>
+<span class="n">html_path</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">render_file</span><span class="p">(</span><span class="s2">&quot;paper.md&quot;</span><span class="p">)</span>
+<span class="n">pdf_path</span> <span class="o">=</span> <span class="n">pdf_renderer</span><span class="o">.</span><span class="n">render_file</span><span class="p">(</span><span class="s2">&quot;paper.md&quot;</span><span class="p">)</span>
+<span class="n">latex_path</span> <span class="o">=</span> <span class="n">latex_renderer</span><span class="o">.</span><span class="n">render_file</span><span class="p">(</span><span class="s2">&quot;paper.md&quot;</span><span class="p">)</span>
+</pre></div>
+
+<h2 class="heading-2">Conclusion</h2>
+<p class="paragraph">This appendix demonstrates the advanced capabilities of the Babbl renderer. The sidecar YAML approach provides flexibility for complex projects, while the modular architecture enables easy customization and extension.</p>
+<p class="paragraph">For more information, see the <a href="main-blog.md" class="link">main documentation</a> and <a href="code-reference.md" class="link">code reference</a>. </p>
+
+</section>
+</body>
+</html>

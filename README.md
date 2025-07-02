@@ -8,8 +8,8 @@ Turn markdown into beautiful research blog posts.
 
 - **Custom Markdown Renderer**: Built from scratch with extensible HTML formatting
 - **Frontmatter Support**: YAML frontmatter in markdown files or sidecar YAML files
-- **Smart Caching**: MD5-based caching to avoid unnecessary regeneration
 - **Beautiful Templates**: Clean, responsive HTML output with modern styling
+- **Fully Customizable CSS**: Complete control over styling through CSS files
 - **CLI Interface**: Easy-to-use command-line tools
 - **Extensible**: Custom formatters for different styling needs
 
@@ -33,10 +33,16 @@ babbl render example.md
 babbl build ./docs --output-dir ./public
 ```
 
-### Show file information:
+### Generate a default CSS file:
 
 ```bash
-babbl info example.md
+babbl init-css
+```
+
+### Render with custom CSS file:
+
+```bash
+babbl render example.md --css my-styles.css
 ```
 
 ## Usage
@@ -44,15 +50,18 @@ babbl info example.md
 ### Python API
 
 ```python
-from babbl import MarkdownRenderer
+from babbl import HTMLRenderer
 from pathlib import Path
+from marko import Markdown
 
 # Initialize renderer
-renderer = MarkdownRenderer()
+markdown = Markdown(renderer=HTMLRenderer)
 
 # Render a markdown file
-output_path = renderer.render_file(Path("example.md"))
-print(f"Generated: {output_path}")
+with open("example.md", "r") as f:
+    content = f.read()
+html = markdown(content)
+print(f"Generated HTML: {html}")
 ```
 
 ### Frontmatter Support
@@ -84,7 +93,7 @@ description: "A groundbreaking study"
 Create custom HTML formatters by extending the `HTMLFormatter` class:
 
 ```python
-from babbl import HTMLFormatter, MarkdownRenderer
+from babbl import HTMLFormatter, HTMLRenderer
 
 class CustomFormatter(HTMLFormatter):
     def format_heading(self, level: int, content: str, **kwargs) -> str:
@@ -93,8 +102,55 @@ class CustomFormatter(HTMLFormatter):
     # Implement other methods...
 
 # Use custom formatter
-renderer = MarkdownRenderer(formatter=CustomFormatter())
+renderer = HTMLRenderer(formatter=CustomFormatter())
 ```
+
+### CSS Customization
+
+Babbl provides complete control over styling through CSS files:
+
+**Generate a default CSS file:**
+```bash
+babbl init-css my-styles.css
+```
+
+**Customize your styles:**
+```css
+/* my-styles.css */
+body {
+    font-family: "Georgia", serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.heading-1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.code-block {
+    background: #2c3e50;
+    color: #ecf0f1;
+    border-radius: 8px;
+}
+```
+
+**Use your custom styles:**
+```bash
+babbl render example.md --css my-styles.css
+```
+
+The CSS system supports all standard CSS properties for:
+- Body and section styling
+- All heading levels (h1-h6)
+- Paragraphs and text
+- Code blocks and inline code
+- Links and images
+- Lists and blockquotes
+- Emphasis (bold/italic)
+- Responsive design
+- Syntax highlighting
 
 ## CLI Commands
 
@@ -103,9 +159,7 @@ Render a single markdown file to HTML.
 
 Options:
 - `--output, -o`: Specify output file path
-- `--cache-dir`: Custom cache directory
-- `--force, -f`: Force regeneration (ignore cache)
-- `--clear-cache`: Clear cache before processing
+- `--css`: Path to CSS file
 
 ### `babbl build <directory>`
 Build multiple markdown files in a directory.
@@ -114,13 +168,13 @@ Options:
 - `--output-dir, -o`: Output directory
 - `--pattern`: File pattern to match (default: `*.md`)
 - `--recursive, -r`: Process subdirectories
-- `--force, -f`: Force regeneration
+- `--css`: Path to CSS file
 
-### `babbl info <file>`
-Show information about a markdown file including frontmatter.
+### `babbl init-css [file]`
+Generate a default CSS file.
 
-### `babbl clear-cache`
-Clear the cache.
+Options:
+- `--force, -f`: Overwrite existing file
 
 ## Supported Markdown Features
 
@@ -133,13 +187,6 @@ Clear the cache.
 - **Blockquotes**: `> quote`
 - **Emphasis**: **bold** and *italic*
 - **Paragraphs**: Automatic wrapping
-
-## Caching
-
-Babbl uses MD5 hashing to cache generated files. Files are only regenerated when:
-- The source markdown file has changed
-- The cache is cleared
-- The `--force` flag is used
 
 ## License
 

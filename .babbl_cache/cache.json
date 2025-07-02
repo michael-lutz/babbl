@@ -8,5 +8,71 @@
       "title": "Test Image Formatting",
       "author": "Test User"
     }
+  },
+  "/Users/michaellutz/Documents/development/babbl/docs/quick-start.md": {
+    "hash": "b3521578ef9d76a83c50c5899fd21251",
+    "output_path": "docs/output/quick-start.html",
+    "last_processed": "2025-07-01T16:33:54.508961",
+    "content_hash": "6530a58b25ce881c9471316c6ccdf7a6",
+    "metadata": {
+      "title": "Quick Start Guide",
+      "author": "Babbl Team",
+      "date": "2024-01-15",
+      "description": "Get started with Babbl in 5 minutes"
+    }
+  },
+  "/Users/michaellutz/Documents/development/babbl/docs/main-blog.md": {
+    "hash": "2d693c3cd0c3d43d1a02a2710fca1c2d",
+    "output_path": "docs/output/main-blog.html",
+    "last_processed": "2025-07-01T16:33:25.316369",
+    "content_hash": "b9aa79bfa1e79f6d747148eb4d322636",
+    "metadata": {
+      "title": "Building Beautiful Research Blogs with Babbl",
+      "author": "Dr. Michael Lutz",
+      "date": "2024-01-15",
+      "description": "A comprehensive guide to creating beautiful research blogs using the Babbl markdown renderer",
+      "tags": [
+        "research",
+        "markdown",
+        "blogging",
+        "python"
+      ]
+    }
+  },
+  "/Users/michaellutz/Documents/development/babbl/docs/code-reference.md": {
+    "hash": "507ac8054a4f5271a34d9341e28784c0",
+    "output_path": "docs/output/code-reference.html",
+    "last_processed": "2025-07-01T16:33:54.530860",
+    "content_hash": "334083ba88f92fb44cc6508b91e39cb6"
+  },
+  "/Users/michaellutz/Documents/development/babbl/docs/appendix.md": {
+    "hash": "976eec47b6a4eaaad16bfd1d3e48cbd1",
+    "output_path": "docs/output/appendix.html",
+    "last_processed": "2025-07-01T16:33:54.533873",
+    "content_hash": "8f9bf8a44ca2289e556af8711a8de73c",
+    "metadata": {
+      "title": "Appendix: Advanced Babbl Features",
+      "author": "Dr. Michael Lutz",
+      "date": "2024-01-15",
+      "description": "Technical appendix demonstrating advanced Babbl features including sidecar YAML, performance benchmarks, and custom formatters",
+      "type": "appendix",
+      "section": "technical-documentation",
+      "tags": [
+        "appendix",
+        "technical",
+        "advanced",
+        "yaml"
+      ],
+      "related_posts": [
+        "main-blog.md",
+        "code-reference.md"
+      ],
+      "version": "1.0",
+      "last_updated": "2024-01-15",
+      "review_status": "draft",
+      "word_count": 2500,
+      "reading_time": "12 minutes",
+      "difficulty": "advanced"
+    }
   }
 }
