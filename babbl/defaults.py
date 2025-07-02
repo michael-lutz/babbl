@@ -218,7 +218,7 @@ hr {
 }
 
 .toc-list li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .toc-link {
