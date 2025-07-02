@@ -67,7 +67,7 @@ section {
     overflow-x: auto;
     margin: 1rem 0;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     line-height: 1.4;
     color: #333;
 }
@@ -77,7 +77,7 @@ section {
     padding: 0.15rem 0.3rem; 
     border: none;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #333;
 }
 
