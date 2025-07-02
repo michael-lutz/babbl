@@ -60,11 +60,11 @@ The algorithm achieves O(n log n) time complexity, which is quite efficient for 
 
 This demonstrates that `babbl` can handle:
 
-- **Bold text** and *italic text*
-- `Inline code` snippets
-- Code blocks with syntax highlighting
-- Links and images
-- Lists and blockquotes
-- And much more!
+1. **Bold text** and *italic text*
+2. `Inline code` snippets
+3. Code blocks with syntax highlighting
+4. Links and images
+5. Lists and blockquotes
+6. And much more!
 
 The generated HTML will be clean, responsive, and ready for hosting. 
