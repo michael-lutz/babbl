@@ -199,6 +199,70 @@ hr {
     margin: 1rem 0;
 }
 
+/* Table of Contents Styles */
+.container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.toc {
+    position: fixed;
+    top: 11.75rem;
+    left: calc(50% - 625px);
+    width: 200px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.toc-nav {
+    margin: 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-link {
+    display: block;
+    padding: 0.25rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.content {
+    width: 100%;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .toc {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+}
+
 pre { line-height: 125%; }
 td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
 span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -277,6 +341,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 </head>
 <body>
+<div class="container">
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#quick-start-guide" class="toc-link">Quick Start Guide</a></li>
+</ul>
+</nav>
+</aside>
+<main class="content">
 <section>
 <header>
 <h1 class="title">Quick Start Guide</h1>
@@ -287,13 +360,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 </header>
 
-<h1 class="heading-1">Quick Start Guide</h1>
+<h1 id="quick-start-guide" class="heading-1">Quick Start Guide</h1>
 <p class="paragraph">Get up and running with Babbl in just a few minutes!</p>
-<h2 class="heading-2">Installation</h2>
+<h2 id="installation" class="heading-2">Installation</h2>
 <div class="highlight"><pre class="code-block"><span></span>pip<span class="w"> </span>install<span class="w"> </span>babbl
 </pre></div>
 
-<h2 class="heading-2">Your First Blog Post</h2>
+<h2 id="your-first-blog-post" class="heading-2">Your First Blog Post</h2>
 <p class="paragraph">Create a file called <code class="inline-code">my-first-post.md</code>:</p>
 <div class="highlight"><pre class="code-block"><span></span>---
 title: &quot;My First Blog Post&quot;
@@ -311,7 +384,7 @@ This is my first blog post using <span class="gs">**Babbl**</span>.
 print(&quot;Hello, Babbl!&quot;)
 </pre></div>
 
-<h2 class="heading-2">Next Steps</h2>
+<h2 id="next-steps" class="heading-2">Next Steps</h2>
 <ol class="ordered-list">
 <li class="list-item">Customize your styling</li>
 <li class="list-item">Add more content</li>
@@ -320,5 +393,7 @@ print(&quot;Hello, Babbl!&quot;)
 <p class="paragraph">That's it! You now have a beautiful research blog. </p>
 
 </section>
+</main>
+</div>
 </body>
 </html>

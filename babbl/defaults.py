@@ -190,4 +190,68 @@ hr {
     overflow-x: auto;
     margin: 1rem 0;
 }
+
+/* Table of Contents Styles */
+.container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.toc {
+    position: fixed;
+    top: 11.75rem;
+    left: calc(50% - 625px);
+    width: 200px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.toc-nav {
+    margin: 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-link {
+    display: block;
+    padding: 0.25rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.content {
+    width: 100%;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .toc {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+}
 """

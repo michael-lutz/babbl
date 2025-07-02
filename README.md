@@ -131,6 +131,33 @@ The CSS system supports all standard CSS properties for:
 - Responsive design
 - Syntax highlighting
 
+### Table of Contents
+
+Babbl can automatically generate a table of contents for documents with h1 headings:
+
+```bash
+# Generate HTML with table of contents
+babbl render example.md --toc
+```
+
+The table of contents:
+- Appears as a sidebar on the left side of the content
+- Lists all h1 headings with clickable links
+- Is responsive and collapses on mobile devices
+- Uses clean, modern styling that matches the document theme
+- Provides smooth scrolling to section anchors
+
+**Python API usage:**
+```python
+from babbl import HTMLRenderer, BabblParser
+
+parser = BabblParser()
+renderer = HTMLRenderer(show_toc=True)  # Enable table of contents
+
+document = parser.parse(content)
+html = renderer.html(document, metadata={})
+```
+
 ## CLI Commands
 
 ### `babbl render <file>`
@@ -139,6 +166,7 @@ Render a single markdown file to HTML.
 Options:
 - `--output, -o`: Specify output file path
 - `--css`: Path to CSS file
+- `--toc`: Generate table of contents for h1 headings
 
 ### `babbl build <directory>`
 Build multiple markdown files in a directory.
@@ -148,8 +176,7 @@ Options:
 - `--pattern`: File pattern to match (default: `*.md`)
 - `--recursive, -r`: Process subdirectories
 - `--css`: Path to CSS file
-
-
+- `--toc`: Generate table of contents for h1 headings
 
 ## Supported Markdown Features
 

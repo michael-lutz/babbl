@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional, cast
@@ -169,17 +170,20 @@ class BaseRenderer(ABC, Renderer):
 class HTMLRenderer(BaseRenderer):
     """Beautiful HTML renderer with clean styling and semantic classes."""
 
-    def __init__(self, highlight_syntax: bool = True, css_file_path: Optional[Path] = None):
+    def __init__(self, highlight_syntax: bool = True, css_file_path: Optional[Path] = None, show_toc: bool = False):
         """
         Initialize the HTML renderer.
 
         Args:
             highlight_syntax: Whether to use Pygments for syntax highlighting
             css_file_path: Path to CSS file
+            show_toc: Whether to show table of contents for h1 headings
         """
         super().__init__()
         self.highlight_syntax = highlight_syntax
         self.pygments_formatter = None
+        self.show_toc = show_toc
+        self.h1_headings: list[tuple[str, str]] = []  # track h1 headings for toc
 
         if css_file_path:
             self.base_css = load_file(css_file_path)
@@ -210,10 +214,16 @@ class HTMLRenderer(BaseRenderer):
 
     def html(self, element: element.Element, metadata: dict[str, str] | None) -> str:
         """Converts the base element to HTML with full document structure."""
+        # reset h1 headings for new document
+        self.h1_headings = []
+
         content = super().render(element)
         meta_str = (
             "\n".join(f"<meta name={key} content={value}>" for key, value in metadata.items()) if metadata else ""
         )
+
+        # create toc if enabled
+        toc_html = self.generate_toc() if self.show_toc else ""
 
         # create complete HTML document
         return f"""<!DOCTYPE html>
@@ -228,10 +238,15 @@ class HTMLRenderer(BaseRenderer):
 </style>
 </head>
 <body>
+<div class="container">
+{toc_html}
+<main class="content">
 <section>
 {self.get_header(metadata) if metadata else ""}
 {content}
 </section>
+</main>
+</div>
 </body>
 </html>"""
 
@@ -287,6 +302,23 @@ class HTMLRenderer(BaseRenderer):
         res += "<hr />\n"
         res += "</header>\n"
         return res
+
+    def generate_toc(self) -> str:
+        """Generate table of contents HTML from collected h1 headings."""
+        if not self.h1_headings:
+            return ""
+
+        toc_items = []
+        for i, (title, anchor_id) in enumerate(self.h1_headings):
+            toc_items.append(f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>')
+
+        return f"""<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+{chr(10).join(toc_items)}
+</ul>
+</nav>
+</aside>"""
 
     def render_paragraph(self, element: block.Paragraph) -> str:
         children = self.render_children(element)
@@ -348,7 +380,36 @@ class HTMLRenderer(BaseRenderer):
 
     def render_heading(self, element: block.Heading) -> str:
         css_class = f"heading-{element.level}"
-        return f'<h{element.level} class="{css_class}">{self.render_children(element)}</h{element.level}>\n'
+        heading_text = self.render_children(element)
+
+        # create anchor id from heading text
+        anchor_id = self.create_anchor_id(heading_text)
+
+        # track h1 headings for toc
+        if element.level == 1 and self.show_toc:
+            self.h1_headings.append((heading_text, anchor_id))
+
+        return f'<h{element.level} id="{anchor_id}" class="{css_class}">{heading_text}</h{element.level}>\n'
+
+    def create_anchor_id(self, text: str) -> str:
+        """Create a URL-friendly anchor ID from heading text."""
+        # remove html tags and decode entities
+        clean_text = re.sub(r"<[^>]+>", "", text)
+        clean_text = html.unescape(clean_text)
+
+        # convert to lowercase and replace spaces/special chars with hyphens
+        anchor_id = re.sub(r"[^\w\s-]", "", clean_text.lower())
+        anchor_id = re.sub(r"[-\s]+", "-", anchor_id)
+        anchor_id = anchor_id.strip("-")
+
+        # ensure uniqueness
+        base_id = anchor_id
+        counter = 1
+        while any(existing_id == anchor_id for _, existing_id in self.h1_headings):
+            anchor_id = f"{base_id}-{counter}"
+            counter += 1
+
+        return anchor_id
 
     def render_setext_heading(self, element: block.SetextHeading) -> str:
         return self.render_heading(cast("block.Heading", element))

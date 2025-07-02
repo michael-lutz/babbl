@@ -21,7 +21,8 @@ def main():
 @click.argument("input_file", type=click.Path(exists=True, path_type=Path))
 @click.option("--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
-def render(input_file: Path, output: Optional[Path], css: Optional[Path]):
+@click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
+def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: bool):
     """Render a markdown file to HTML."""
     if output is None:
         output_path = input_file.with_suffix(".html")
@@ -29,7 +30,7 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path]):
         output_path = output
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css)
+    renderer = HTMLRenderer(css_file_path=css, show_toc=toc)
 
     try:
         contents = load_file(input_file)
@@ -49,7 +50,8 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path]):
 @click.option("--pattern", default="*.md", help="File pattern to match")
 @click.option("--recursive", "-r", is_flag=True, help="Process subdirectories recursively")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
-def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: bool, css: Optional[Path]):
+@click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
+def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: bool, css: Optional[Path], toc: bool):
     """Build multiple markdown files in a directory."""
     if output_dir is None:
         output_dir = input_dir / "output"
@@ -67,7 +69,7 @@ def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: 
     click.echo(f"Found {len(md_files)} markdown files to process...")
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css)
+    renderer = HTMLRenderer(css_file_path=css, show_toc=toc)
 
     for md_file in md_files:
         try:

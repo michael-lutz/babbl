@@ -199,6 +199,70 @@ hr {
     margin: 1rem 0;
 }
 
+/* Table of Contents Styles */
+.container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.toc {
+    position: fixed;
+    top: 11.75rem;
+    left: calc(50% - 625px);
+    width: 200px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.toc-nav {
+    margin: 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-link {
+    display: block;
+    padding: 0.25rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.content {
+    width: 100%;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .toc {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+}
+
 pre { line-height: 125%; }
 td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
 span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -277,6 +341,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 </head>
 <body>
+<div class="container">
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#introduction" class="toc-link">Introduction</a></li>
+</ul>
+</nav>
+</aside>
+<main class="content">
 <section>
 <header>
 <h1 class="title">Building Beautiful Research Blogs with Babbl</h1>
@@ -287,9 +360,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 </header>
 
-<h1 class="heading-1">Introduction</h1>
+<h1 id="introduction" class="heading-1">Introduction</h1>
 <p class="paragraph">Welcome to the world of <strong class="strong">Babbl</strong>, a powerful markdown-to-HTML renderer designed specifically for research blogs. This tool transforms your markdown files into beautiful, responsive web pages with minimal effort.</p>
-<h2 class="heading-2">Why Babbl?</h2>
+<h2 id="why-babbl" class="heading-2">Why Babbl?</h2>
 <p class="paragraph">Traditional academic publishing platforms often have limitations:</p>
 <ul class="unordered-list">
 <li class="list-item">Complex formatting requirements</li>
@@ -304,8 +377,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="list-item">Git-based version control</li>
 <li class="list-item">Free hosting options</li>
 </ul>
-<h2 class="heading-2">Core Features</h2>
-<h3 class="heading-3">1. Custom Markdown Renderer</h3>
+<h2 id="core-features" class="heading-2">Core Features</h2>
+<h3 id="1-custom-markdown-renderer" class="heading-3">1. Custom Markdown Renderer</h3>
 <p class="paragraph">Babbl includes a custom markdown renderer built from scratch. Here's how it processes different elements:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/renderer.py</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MarkdownRenderer</span><span class="p">:</span>
@@ -321,7 +394,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="p">}</span>
 </pre></div>
 
-<h3 class="heading-3">2. Frontmatter Support</h3>
+<h3 id="2-frontmatter-support" class="heading-3">2. Frontmatter Support</h3>
 <p class="paragraph">Babbl supports YAML frontmatter both inline and in sidecar files. The frontmatter processor handles:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/frontmatter.py</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">FrontmatterProcessor</span><span class="p">:</span>
@@ -337,8 +410,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">return</span> <span class="n">merged_frontmatter</span><span class="p">,</span> <span class="n">content_without_frontmatter</span>
 </pre></div>
 
-<h2 class="heading-2">Code Examples</h2>
-<h3 class="heading-3">Python Implementation</h3>
+<h2 id="code-examples" class="heading-2">Code Examples</h2>
+<h3 id="python-implementation" class="heading-3">Python Implementation</h3>
 <p class="paragraph">Here's how you can use Babbl in your own projects:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">babbl</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownRenderer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -351,7 +424,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
-<h3 class="heading-3">CLI Usage</h3>
+<h3 id="cli-usage" class="heading-3">CLI Usage</h3>
 <p class="paragraph">Babbl provides a comprehensive command-line interface:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># Render a single file</span>
 babbl<span class="w"> </span>render<span class="w"> </span>research-paper.md
@@ -366,38 +439,38 @@ babbl<span class="w"> </span>render<span class="w"> </span>paper.md<span class="
 babbl<span class="w"> </span>info<span class="w"> </span>paper.md
 </pre></div>
 
-<h2 class="heading-2">Mathematical Content</h2>
+<h2 id="mathematical-content" class="heading-2">Mathematical Content</h2>
 <p class="paragraph">Babbl handles mathematical notation well:</p>
 <ul class="unordered-list">
 <li class="list-item"><strong class="strong">Time Complexity</strong>: O(n log n) for most operations</li>
 <li class="list-item"><strong class="strong">Space Complexity</strong>: O(n) in worst case</li>
 <li class="list-item"><strong class="strong">Algorithm Efficiency</strong>: 95% improvement over traditional methods</li>
 </ul>
-<h2 class="heading-2">Lists and References</h2>
-<h3 class="heading-3">Key Features</h3>
+<h2 id="lists-and-references" class="heading-2">Lists and References</h2>
+<h3 id="key-features" class="heading-3">Key Features</h3>
 <ol class="ordered-list">
 <li class="list-item"><strong class="strong">Extensible Architecture</strong>: Easy to customize and extend</li>
 <li class="list-item"><strong class="strong">Smart Caching</strong>: Avoids unnecessary regeneration</li>
 <li class="list-item"><strong class="strong">Multiple Output Formats</strong>: HTML, with potential for PDF/LaTeX</li>
 <li class="list-item"><strong class="strong">Version Control Friendly</strong>: Works seamlessly with Git</li>
 </ol>
-<h3 class="heading-3">Related Work</h3>
+<h3 id="related-work" class="heading-3">Related Work</h3>
 <ul class="unordered-list">
 <li class="list-item"><a href="https://jekyllrb.com/" class="link">Jekyll</a> - Static site generator</li>
 <li class="list-item"><a href="https://gohugo.io/" class="link">Hugo</a> - Fast static site generator  </li>
 <li class="list-item"><a href="https://sourcethemes.com/academic/" class="link">Academic</a> - Research-focused theme</li>
 </ul>
-<h2 class="heading-2">Images and Media</h2>
+<h2 id="images-and-media" class="heading-2">Images and Media</h2>
 <p class="paragraph">Babbl supports images with proper formatting:</p>
 <p class="paragraph"><img src="assets/babel_img.jpg" alt="Babbl Logo" class="image" /></p>
 <p class="paragraph">The image above shows the Babbl logo, demonstrating how images are rendered with responsive design.</p>
-<h2 class="heading-2">Blockquotes and Citations</h2>
+<h2 id="blockquotes-and-citations" class="heading-2">Blockquotes and Citations</h2>
 <blockquote class="blockquote">
 <p class="paragraph">&quot;The best way to predict the future is to invent it.&quot; - Alan Kay</p>
 </blockquote>
 <p class="paragraph">This quote emphasizes the importance of innovation in software development, which is exactly what Babbl aims to achieve.</p>
-<h2 class="heading-2">Advanced Features</h2>
-<h3 class="heading-3">Custom Formatters</h3>
+<h2 id="advanced-features" class="heading-2">Advanced Features</h2>
+<h3 id="custom-formatters" class="heading-3">Custom Formatters</h3>
 <p class="paragraph">You can create custom HTML formatters by extending the <code class="inline-code">HTMLFormatter</code> class:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CustomFormatter</span><span class="p">(</span><span class="n">HTMLFormatter</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_heading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -408,9 +481,9 @@ babbl<span class="w"> </span>info<span class="w"> </span>paper.md
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;pre class=&quot;my-code-block language-</span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1">&lt;/pre&gt;&#39;</span>
 </pre></div>
 
-<h3 class="heading-3">Sidecar YAML Files</h3>
+<h3 id="sidecar-yaml-files" class="heading-3">Sidecar YAML Files</h3>
 <p class="paragraph">For complex projects, you can use sidecar YAML files for metadata. See the <a href="appendix.md" class="link">appendix</a> for an example.</p>
-<h2 class="heading-2">Performance Analysis</h2>
+<h2 id="performance-analysis" class="heading-2">Performance Analysis</h2>
 <p class="paragraph">Our testing shows excellent performance:</p>
 <div class="table-container">
 <table class="table">
@@ -440,9 +513,9 @@ babbl<span class="w"> </span>info<span class="w"> </span>paper.md
 </tbody>
 </table>
 </div>
-<h2 class="heading-2">Conclusion</h2>
+<h2 id="conclusion" class="heading-2">Conclusion</h2>
 <p class="paragraph">Babbl provides a powerful, flexible solution for creating beautiful research blogs. Its extensible architecture, smart caching, and comprehensive feature set make it an excellent choice for academic publishing.</p>
-<h3 class="heading-3">Next Steps</h3>
+<h3 id="next-steps" class="heading-3">Next Steps</h3>
 <ol class="ordered-list">
 <li class="list-item"><strong class="strong">Install Babbl</strong>: <code class="inline-code">pip install babbl</code></li>
 <li class="list-item"><strong class="strong">Create your first post</strong>: Start with a simple markdown file</li>
@@ -454,5 +527,7 @@ babbl<span class="w"> </span>info<span class="w"> </span>paper.md
 <p class="paragraph"><em class="emphasis">This post was generated using Babbl v0.1.0</em> </p>
 
 </section>
+</main>
+</div>
 </body>
 </html>

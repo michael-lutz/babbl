@@ -199,6 +199,70 @@ hr {
     margin: 1rem 0;
 }
 
+/* Table of Contents Styles */
+.container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.toc {
+    position: fixed;
+    top: 11.75rem;
+    left: calc(50% - 625px);
+    width: 200px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.toc-nav {
+    margin: 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-link {
+    display: block;
+    padding: 0.25rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.content {
+    width: 100%;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .toc {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+}
+
 pre { line-height: 125%; }
 td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
 span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -277,6 +341,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 </head>
 <body>
+<div class="container">
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#appendix-advanced-babbl-features" class="toc-link">Appendix: Advanced Babbl Features</a></li>
+</ul>
+</nav>
+</aside>
+<main class="content">
 <section>
 <header>
 <h1 class="title">Appendix: Advanced Babbl Features</h1>
@@ -287,9 +360,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 </header>
 
-<h1 class="heading-1">Appendix: Advanced Babbl Features</h1>
+<h1 id="appendix-advanced-babbl-features" class="heading-1">Appendix: Advanced Babbl Features</h1>
 <p class="paragraph">This appendix demonstrates advanced features of the Babbl renderer, including frontmatter processing, complex code examples, and detailed technical specifications.</p>
-<h2 class="heading-2">Frontmatter Configuration</h2>
+<h2 id="frontmatter-configuration" class="heading-2">Frontmatter Configuration</h2>
 <p class="paragraph">This document uses YAML frontmatter for metadata. This approach is useful for:</p>
 <ul class="unordered-list">
 <li class="list-item">Document metadata and SEO information</li>
@@ -297,8 +370,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="list-item">Tags and categories</li>
 <li class="list-item">Custom metadata for integration with external systems</li>
 </ul>
-<h2 class="heading-2">Code Architecture Deep Dive</h2>
-<h3 class="heading-3">Renderer Initialization</h3>
+<h2 id="code-architecture-deep-dive" class="heading-2">Code Architecture Deep Dive</h2>
+<h3 id="renderer-initialization" class="heading-3">Renderer Initialization</h3>
 <p class="paragraph">The core renderer initialization process involves several components:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/renderer.py - lines 154-176</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MarkdownRenderer</span><span class="p">:</span>
@@ -324,7 +397,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="p">}</span>
 </pre></div>
 
-<h3 class="heading-3">Frontmatter Processing</h3>
+<h3 id="frontmatter-processing" class="heading-3">Frontmatter Processing</h3>
 <p class="paragraph">The frontmatter processor handles YAML frontmatter in markdown files:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># From babbl/load.py - lines 25-69</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_metadata</span><span class="p">(</span><span class="n">contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
@@ -377,8 +450,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">return</span> <span class="p">{},</span> <span class="n">contents</span>
 </pre></div>
 
-<h2 class="heading-2">Performance Benchmarks</h2>
-<h3 class="heading-3">Memory Usage Analysis</h3>
+<h2 id="performance-benchmarks" class="heading-2">Performance Benchmarks</h2>
+<h3 id="memory-usage-analysis" class="heading-3">Memory Usage Analysis</h3>
 <p class="paragraph">Detailed memory profiling shows efficient resource usage:</p>
 <div class="table-container">
 <table class="table">
@@ -408,7 +481,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table>
 </div>
-<h3 class="heading-3">Processing Speed</h3>
+<h3 id="processing-speed" class="heading-3">Processing Speed</h3>
 <p class="paragraph">Performance metrics across different file sizes:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># Benchmark results from testing</span>
 <span class="n">benchmark_results</span> <span class="o">=</span> <span class="p">{</span>
@@ -430,8 +503,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="p">}</span>
 </pre></div>
 
-<h2 class="heading-2">Advanced Usage Patterns</h2>
-<h3 class="heading-3">Table Support Example</h3>
+<h2 id="advanced-usage-patterns" class="heading-2">Advanced Usage Patterns</h2>
+<h3 id="table-support-example" class="heading-3">Table Support Example</h3>
 <p class="paragraph">Babbl includes full support for markdown tables with custom styling:</p>
 <div class="highlight"><pre class="code-block"><span></span>| Feature | Status | Priority | Notes |
 |---------|------|--------|-------|
@@ -481,7 +554,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table>
 </div>
 <p class="paragraph">Tables are automatically styled with clean, responsive CSS and support proper header formatting.</p>
-<h3 class="heading-3">CLI Integration</h3>
+<h3 id="cli-integration" class="heading-3">CLI Integration</h3>
 <p class="paragraph">The command-line interface supports various workflows:</p>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># Batch processing with custom output</span>
 babbl<span class="w"> </span>build<span class="w"> </span>./research-papers<span class="w"> </span>--output-dir<span class="w"> </span>./public<span class="w"> </span>--pattern<span class="w"> </span><span class="s2">&quot;*.md&quot;</span>
@@ -490,8 +563,8 @@ babbl<span class="w"> </span>build<span class="w"> </span>./research-papers<span
 babbl<span class="w"> </span>build<span class="w"> </span>./docs
 </pre></div>
 
-<h2 class="heading-2">Technical Specifications</h2>
-<h3 class="heading-3">Supported Markdown Features</h3>
+<h2 id="technical-specifications" class="heading-2">Technical Specifications</h2>
+<h3 id="supported-markdown-features" class="heading-3">Supported Markdown Features</h3>
 <ol class="ordered-list">
 <li class="list-item"><strong class="strong">Headings</strong>: All levels (H1-H6) with custom styling</li>
 <li class="list-item"><strong class="strong">Code Blocks</strong>: Syntax highlighting with Pygments</li>
@@ -503,13 +576,13 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <li class="list-item"><strong class="strong">Emphasis</strong>: Bold and italic text</li>
 <li class="list-item"><strong class="strong">Paragraphs</strong>: Automatic text wrapping</li>
 </ol>
-<h3 class="heading-3">File Format Support</h3>
+<h3 id="file-format-support" class="heading-3">File Format Support</h3>
 <ul class="unordered-list">
 <li class="list-item"><strong class="strong">Input</strong>: Markdown (.md) files</li>
 <li class="list-item"><strong class="strong">Output</strong>: HTML (.html) files</li>
 <li class="list-item"><strong class="strong">Configuration</strong>: YAML frontmatter in markdown files</li>
 </ul>
-<h3 class="heading-3">Dependencies</h3>
+<h3 id="dependencies" class="heading-3">Dependencies</h3>
 <p class="paragraph">The core dependencies are minimal and well-maintained:</p>
 <ul class="unordered-list">
 <li class="list-item"><code class="inline-code">markdown&gt;=3.4.0</code> - Markdown processing</li>
@@ -518,8 +591,8 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <li class="list-item"><code class="inline-code">click&gt;=8.1.0</code> - CLI interface</li>
 <li class="list-item"><code class="inline-code">pathspec&gt;=0.11.0</code> - File pattern matching</li>
 </ul>
-<h2 class="heading-2">Future Enhancements</h2>
-<h3 class="heading-3">Planned Features</h3>
+<h2 id="future-enhancements" class="heading-2">Future Enhancements</h2>
+<h3 id="planned-features" class="heading-3">Planned Features</h3>
 <ol class="ordered-list">
 <li class="list-item"><strong class="strong">Math Equations</strong>: LaTeX math support</li>
 <li class="list-item"><strong class="strong">Footnotes</strong>: Academic footnote system</li>
@@ -528,7 +601,7 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <li class="list-item"><strong class="strong">Plugin System</strong>: Extensible architecture</li>
 <li class="list-item"><strong class="strong">Live Preview</strong>: Development server with hot reload</li>
 </ol>
-<h3 class="heading-3">API Extensions</h3>
+<h3 id="api-extensions" class="heading-3">API Extensions</h3>
 <div class="highlight"><pre class="code-block"><span></span><span class="c1"># Future API example</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">babbl</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownRenderer</span><span class="p">,</span> <span class="n">PDFRenderer</span><span class="p">,</span> <span class="n">LaTeXRenderer</span>
 
@@ -543,10 +616,12 @@ babbl<span class="w"> </span>build<span class="w"> </span>./docs
 <span class="n">latex_path</span> <span class="o">=</span> <span class="n">latex_renderer</span><span class="o">.</span><span class="n">render_file</span><span class="p">(</span><span class="s2">&quot;paper.md&quot;</span><span class="p">)</span>
 </pre></div>
 
-<h2 class="heading-2">Conclusion</h2>
+<h2 id="conclusion" class="heading-2">Conclusion</h2>
 <p class="paragraph">This appendix demonstrates the advanced capabilities of the Babbl renderer. The sidecar YAML approach provides flexibility for complex projects, while the modular architecture enables easy customization and extension.</p>
 <p class="paragraph">For more information, see the <a href="main-blog.md" class="link">main documentation</a> and <a href="code-reference.md" class="link">code reference</a>. </p>
 
 </section>
+</main>
+</div>
 </body>
 </html>

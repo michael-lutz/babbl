@@ -4,11 +4,9 @@ author: "Michael Lutz"
 date: "2025-07-02"
 ---
 
-# Frontmatter Integration with Marko Parser
-
 This document explains how to add YAML frontmatter support to the Marko parser system.
 
-## Overview
+# Overview
 
 The frontmatter integration provides three main approaches:
 
@@ -16,9 +14,9 @@ The frontmatter integration provides three main approaches:
 2. **FrontmatterExtractor**: A utility class for extracting frontmatter without full parsing
 3. **Convenience functions**: Simple functions for common use cases
 
-## Basic Usage
+# Basic Usage
 
-### Method 1: Parse with Frontmatter Support
+## Method 1: Parse with Frontmatter Support
 
 ```python
 from babbl.frontmatter_parser import parse_with_frontmatter
@@ -39,7 +37,7 @@ print(f"Title: {frontmatter['title']}")
 print(f"Author: {frontmatter['author']}")
 ```
 
-### Method 2: Extract Frontmatter Only
+## Method 2: Extract Frontmatter Only
 
 ```python
 from babbl.frontmatter_parser import extract_frontmatter_only
@@ -49,7 +47,7 @@ print(f"Frontmatter: {frontmatter}")
 print(f"Content: {content_without_frontmatter}")
 ```
 
-### Method 3: Use Parser Directly
+## Method 3: Use Parser Directly
 
 ```python
 from babbl.frontmatter_parser import FrontmatterParser
@@ -58,7 +56,7 @@ parser = FrontmatterParser()
 frontmatter, document = parser.parse_with_frontmatter(content)
 ```
 
-## Integration with Existing Parser
+# Integration with Existing Parser
 
 To add frontmatter support to an existing Marko parser:
 
@@ -84,7 +82,7 @@ class MyCustomParser(Parser):
         return frontmatter, document
 ```
 
-## FrontmatterBlockElement
+# FrontmatterBlockElement
 
 The `FrontmatterBlockElement` is a custom block element that:
 
@@ -93,7 +91,7 @@ The `FrontmatterBlockElement` is a custom block element that:
 - Looks for YAML content between `---` delimiters
 - Parses YAML content into a metadata dictionary
 
-### Customization
+## Customization
 
 You can customize the frontmatter element:
 
@@ -112,7 +110,7 @@ class CustomFrontmatterElement(FrontmatterBlockElement):
         return super().parse(source)
 ```
 
-## Error Handling
+# Error Handling
 
 The frontmatter parser handles various error cases:
 
@@ -120,7 +118,7 @@ The frontmatter parser handles various error cases:
 2. **Missing delimiters**: If no `---` delimiters found, treats as regular content
 3. **Empty frontmatter**: If frontmatter is empty, returns empty dict `{}`
 
-## Example with Renderer
+# Example with Renderer
 
 ```python
 from babbl.frontmatter_parser import parse_with_frontmatter
@@ -151,9 +149,9 @@ final_html = f"""
 """
 ```
 
-## Advanced Usage
+# Advanced Usage
 
-### Custom Frontmatter Processing
+## Custom Frontmatter Processing
 
 ```python
 class AdvancedFrontmatterParser(FrontmatterParser):
@@ -175,7 +173,7 @@ class AdvancedFrontmatterParser(FrontmatterParser):
         return frontmatter, document
 ```
 
-### Integration with Existing Systems
+## Integration with Existing Systems
 
 ```python
 # Integrate with existing frontmatter processing
@@ -195,7 +193,7 @@ class IntegratedParser(FrontmatterParser):
         return frontmatter, document
 ```
 
-## Best Practices
+# Best Practices
 
 1. **Always check for None**: Frontmatter may be `None` if not present
 2. **Use .get() method**: Provides default values for missing keys
@@ -203,16 +201,16 @@ class IntegratedParser(FrontmatterParser):
 4. **Handle errors gracefully**: YAML parsing can fail
 5. **Consider performance**: For large documents, use `extract_frontmatter_only` if you only need metadata
 
-## Troubleshooting
+# Troubleshooting
 
-### Common Issues
+## Common Issues
 
 1. **Frontmatter not detected**: Ensure `---` delimiters are at the very beginning
 2. **YAML parsing errors**: Check YAML syntax in frontmatter
 3. **Parser conflicts**: Ensure frontmatter element has appropriate priority
 4. **Content corruption**: Verify frontmatter is properly removed from content
 
-### Debug Mode
+## Debug Mode
 
 ```python
 import logging
@@ -222,6 +220,6 @@ logging.basicConfig(level=logging.DEBUG)
 frontmatter, document = parse_with_frontmatter(content)
 ```
 
-## Conclusion
+# Conclusion
 
 The frontmatter integration provides a flexible way to add YAML frontmatter support to the Marko parser system. It maintains compatibility with existing code while adding powerful metadata extraction capabilities. 
