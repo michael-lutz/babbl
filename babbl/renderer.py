@@ -11,7 +11,7 @@ from urllib.parse import quote
 from marko import Renderer
 
 from babbl.defaults import DEFAULT_CSS
-from babbl.utils import load_file
+from babbl.load import load_file
 
 if TYPE_CHECKING:
     from marko import block, element, inline

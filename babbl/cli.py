@@ -5,9 +5,9 @@ from typing import Optional
 
 import click
 
-from babbl.custom_parser import BabblParser
+from babbl.load import load_file, load_metadata, save_file
+from babbl.parser import BabblParser
 from babbl.renderer import HTMLRenderer
-from babbl.utils import load_file, parse_frontmatter, save_file
 
 
 @click.group()
@@ -33,7 +33,7 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path]):
 
     try:
         contents = load_file(input_file)
-        metadata, contents = parse_frontmatter(contents)
+        metadata, contents = load_metadata(contents)
         document = parser.parse(contents)
         html = renderer.html(document, metadata)
         save_file(output_path, html)
@@ -75,7 +75,7 @@ def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: 
             output_file = output_dir / rel_path.with_suffix(".html")
             output_file.parent.mkdir(parents=True, exist_ok=True)
             contents = load_file(md_file)
-            metadata, contents = parse_frontmatter(contents)
+            metadata, contents = load_metadata(contents)
             document = parser.parse(contents)
             html = renderer.html(document, metadata)
             save_file(output_file, html)

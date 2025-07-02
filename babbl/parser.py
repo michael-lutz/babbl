@@ -1,9 +1,8 @@
 """Custom parser with table support for babbl."""
 
 from marko import Parser
-from marko.block import BlockElement
 
-from babbl.table_parser import Table
+from babbl.elements import Table
 
 
 class BabblParser(Parser):

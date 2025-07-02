@@ -18,7 +18,7 @@ def save_file(path: Path, contents: str) -> None:
         f.write(contents)
 
 
-def parse_frontmatter(contents: str) -> tuple[dict[str, str], str]:
+def load_metadata(contents: str) -> tuple[dict[str, str], str]:
     """Parse the frontmatter of a markdown file.
 
     This function robustly detects and parses YAML frontmatter that is delimited

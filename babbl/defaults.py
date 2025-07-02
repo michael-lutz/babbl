@@ -1,10 +1,5 @@
 """CSS configuration system for babbl."""
 
-from __future__ import annotations
-
-from pathlib import Path
-from typing import Optional
-
 DEFAULT_CSS = """body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     line-height: 1.6;
