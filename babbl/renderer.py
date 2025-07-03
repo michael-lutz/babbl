@@ -196,7 +196,7 @@ class HTMLRenderer(BaseRenderer):
         self.highlight_syntax = highlight_syntax
         self.pygments_formatter = None
         self.show_toc = show_toc
-        self.h1_headings: list[tuple[str, str]] = []  # track h1 headings for toc
+        self.toc_headings: list[tuple[str, str]] = []  # track h1 headings for toc
         self.code_processor = CodeReferenceProcessor(base_path)
 
         if css_file_path:
@@ -229,7 +229,7 @@ class HTMLRenderer(BaseRenderer):
     def html(self, element: element.Element, metadata: dict[str, str] | None) -> str:
         """Converts the base element to HTML with full document structure."""
         # reset h1 headings for new document
-        self.h1_headings = []
+        self.toc_headings = []
 
         content = super().render(element)
         meta_str = (
@@ -334,11 +334,11 @@ function toggleCodeRef(id) {{
 
     def generate_toc(self) -> str:
         """Generate table of contents HTML from collected h1 headings."""
-        if not self.h1_headings:
+        if not self.toc_headings:
             return ""
 
         toc_items = []
-        for i, (title, anchor_id) in enumerate(self.h1_headings):
+        for i, (title, anchor_id) in enumerate(self.toc_headings):
             toc_items.append(f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>')
 
         return f"""<aside class="toc">
@@ -415,8 +415,8 @@ function toggleCodeRef(id) {{
         anchor_id = self.create_anchor_id(heading_text)
 
         # track h1 headings for toc
-        if element.level == 1 and self.show_toc:
-            self.h1_headings.append((heading_text, anchor_id))
+        if (element.level == 1 or element.level == 2) and self.show_toc:
+            self.toc_headings.append((heading_text, anchor_id))
 
         return f'<h{element.level} id="{anchor_id}" class="{css_class}">{heading_text}</h{element.level}>\n'
 
@@ -434,7 +434,7 @@ function toggleCodeRef(id) {{
         # ensure uniqueness
         base_id = anchor_id
         counter = 1
-        while any(existing_id == anchor_id for _, existing_id in self.h1_headings):
+        while any(existing_id == anchor_id for _, existing_id in self.toc_headings):
             anchor_id = f"{base_id}-{counter}"
             counter += 1
 

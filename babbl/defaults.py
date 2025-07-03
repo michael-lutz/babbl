@@ -210,6 +210,15 @@ hr {
     margin: 0;
 }
 
+.toc-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
 .toc-list {
     list-style: none;
     padding: 0;
