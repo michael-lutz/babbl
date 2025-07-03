@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name=title content=Quick Start Guide>
-<meta name=author content=Michael Lutz>
-<meta name=date content=2025-07-02>
-<title>Quick Start Guide</title>
+<meta name=title content=CLI Testing>
+<meta name=author content=Test User>
+<meta name=date content=2025-01-02>
+<meta name=description content=Testing CLI functionality and edge cases>
+<title>CLI Testing</title>
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
@@ -401,45 +402,131 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main class="content">
 <section>
 <header>
-<h1 class="title">Quick Start Guide</h1>
+<h1 class="title">CLI Testing</h1>
 <div class='metadata'>
-<div class="meta-field">Author: Michael Lutz</div>
-<div class="meta-field">Date: 2025-07-02</div>
+<div class="meta-field">Author: Test User</div>
+<div class="meta-field">Date: 2025-01-02</div>
+<div class="meta-field">Description: Testing CLI functionality and edge cases</div>
 </div>
 <hr />
 </header>
 
-<h1 id="quick-start-guide" class="heading-1">Quick Start Guide</h1>
-<p class="paragraph">Get up and running with Babbl in just a few minutes!</p>
-<h2 id="installation" class="heading-2">Installation</h2>
-<div class="highlight"><pre class="code-block"><span></span>pip<span class="w"> </span>install<span class="w"> </span>babbl
-</pre></div>
+<h1 id="cli-testing" class="heading-1">CLI Testing</h1>
+<p class="paragraph">This document tests various CLI scenarios and edge cases.</p>
+<h2 id="basic-rendering" class="heading-2">Basic Rendering</h2>
+<p class="paragraph">This document should render correctly with the basic <code class="inline-code">babbl render</code> command.</p>
+<h2 id="file-paths" class="heading-2">File Paths</h2>
+<p class="paragraph">Testing various file path scenarios:</p>
+<ul class="unordered-list">
+<li class="list-item">Relative paths: <code class="inline-code">babbl render example/05-cli-testing.md</code></li>
+<li class="list-item">Absolute paths: <code class="inline-code">babbl render /full/path/to/file.md</code></li>
+<li class="list-item">Output specification: <code class="inline-code">babbl render input.md -o output.html</code></li>
+</ul>
+<h2 id="css-customization" class="heading-2">CSS Customization</h2>
+<p class="paragraph">Test custom CSS with: <code class="inline-code">babbl render input.md --css custom.css</code></p>
+<h2 id="table-of-contents" class="heading-2">Table of Contents</h2>
+<p class="paragraph">Test TOC generation with: <code class="inline-code">babbl render input.md --toc</code></p>
+<h2 id="code-reference-base-path" class="heading-2">Code Reference Base Path</h2>
+<p class="paragraph">Test code references with custom base path: <code class="inline-code">babbl render input.md --base-path /path/to/project</code></p>
+<h2 id="batch-processing" class="heading-2">Batch Processing</h2>
+<p class="paragraph">Test batch processing with: <code class="inline-code">babbl build example/ --pattern &quot;*.md&quot;</code></p>
+<h2 id="recursive-processing" class="heading-2">Recursive Processing</h2>
+<p class="paragraph">Test recursive processing with: <code class="inline-code">babbl build example/ --recursive</code></p>
+<h2 id="error-handling" class="heading-2">Error Handling</h2>
+<p class="paragraph">This document tests various error scenarios:</p>
+<h3 id="invalid-code-references" class="heading-3">Invalid Code References</h3>
+<div class="code-ref-error">Code reference not found: nonexistent/file.py - function</div>
+<h3 id="invalid-line-numbers" class="heading-3">Invalid Line Numbers</h3>
+<div class="code-ref-error">Code reference not found: babbl/cli.py - line 999</div>
+<h3 id="invalid-line-ranges" class="heading-3">Invalid Line Ranges</h3>
+<div class="code-ref-error">Code reference not found: babbl/cli.py - lines 999-1000</div>
+<h2 id="edge-cases" class="heading-2">Edge Cases</h2>
+<h3 id="empty-code-blocks" class="heading-3">Empty Code Blocks</h3>
+<pre class="code-block"><code>
 
-<h2 id="your-first-blog-post" class="heading-2">Your First Blog Post</h2>
-<p class="paragraph">Create a file called <code class="inline-code">my-first-post.md</code>:</p>
-<div class="highlight"><pre class="code-block"><span></span>---
-title: &quot;My First Blog Post&quot;
-author: &quot;Your Name&quot;
-<span class="gu">date: &quot;2024-01-15&quot;</span>
-<span class="gu">---</span>
-
-<span class="gh"># Hello World!</span>
-
-This is my first blog post using <span class="gs">**Babbl**</span>.
-
-<span class="gu">## Code Example</span>
-
-```python
-print(&quot;Hello, Babbl!&quot;)
-</pre></div>
-
-<h2 id="next-steps" class="heading-2">Next Steps</h2>
-<ol class="ordered-list">
-<li class="list-item">Customize your styling</li>
-<li class="list-item">Add more content</li>
-<li class="list-item">Deploy your blog</li>
-</ol>
-<p class="paragraph">That's it! You now have a beautiful research blog. </p>
+</code></pre>
+<h3 id="tables-with-irregular-data" class="heading-3">Tables with Irregular Data</h3>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Col1</th>
+<th>Col2</th>
+<th>Col3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data</td>
+<td></td>
+<td>More Data</td>
+</tr>
+<tr>
+<td></td>
+<td>Missing</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="mixed-content-types" class="heading-3">Mixed Content Types</h3>
+<p class="paragraph">This paragraph contains <strong class="strong">bold</strong>, <em class="emphasis">italic</em>, <code class="inline-code">code</code>, and <a href="https://example.com" class="link">links</a>.</p>
+<blockquote class="blockquote">
+<p class="paragraph">Blockquote with <strong class="strong">formatting</strong> and <code class="inline-code">code</code>.</p>
+</blockquote>
+<ul class="unordered-list">
+<li class="list-item">List with <strong class="strong">bold</strong> items</li>
+<li class="list-item">List with <em class="emphasis">italic</em> items  </li>
+<li class="list-item">List with <code class="inline-code">code</code> items</li>
+</ul>
+<h2 id="performance-testing" class="heading-2">Performance Testing</h2>
+<p class="paragraph">This section contains a lot of content to test rendering performance:</p>
+<p class="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p class="paragraph">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p class="paragraph">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+<p class="paragraph">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+<p class="paragraph">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+<p class="paragraph">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+<h2 id="code-references-in-lists" class="heading-2">Code References in Lists</h2>
+<ul class="unordered-list">
+<li class="list-item">Function: @code-ref babbl/cli.py render</li>
+<li class="list-item">Class: @code-ref babbl/renderer.py HTMLRenderer</li>
+<li class="list-item">Method: @code-ref babbl/elements.py parse_table_from_text</li>
+</ul>
+<h2 id="tables-with-code-references" class="heading-2">Tables with Code References</h2>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Component</th>
+<th>File</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parser</td>
+<td>babbl/parser.py</td>
+<td>@code-ref babbl/parser.py BabblParser</td>
+</tr>
+<tr>
+<td>Renderer</td>
+<td>babbl/renderer.py</td>
+<td>@code-ref babbl/renderer.py HTMLRenderer</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>babbl/cli.py</td>
+<td>@code-ref babbl/cli.py main</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 </section>
 </main>

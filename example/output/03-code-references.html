@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name=title content=Code Reference Demo>
-<meta name=author content=Michael Lutz>
+<meta name=title content=Code References>
+<meta name=author content=Test User>
 <meta name=date content=2025-01-02>
-<meta name=description content=Demonstrating the new code reference feature in Babbl>
-<title>Code Reference Demo</title>
+<meta name=description content=Testing code reference functionality in Babbl>
+<title>Code References</title>
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
@@ -402,25 +402,60 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main class="content">
 <section>
 <header>
-<h1 class="title">Code Reference Demo</h1>
+<h1 class="title">Code References</h1>
 <div class='metadata'>
-<div class="meta-field">Author: Michael Lutz</div>
+<div class="meta-field">Author: Test User</div>
 <div class="meta-field">Date: 2025-01-02</div>
-<div class="meta-field">Description: Demonstrating the new code reference feature in Babbl</div>
+<div class="meta-field">Description: Testing code reference functionality in Babbl</div>
 </div>
 <hr />
 </header>
 
-<h1 id="code-reference-demo" class="heading-1">Code Reference Demo</h1>
-<p class="paragraph">This document demonstrates the new code reference feature in Babbl, which allows you to reference specific code elements from Python files and automatically generate dropdowns with the referenced code.</p>
+<h1 id="code-references" class="heading-1">Code References</h1>
+<p class="paragraph">Babbl supports referencing code from Python files using the <code class="inline-code">@code-ref</code> directive.</p>
 <h2 id="function-references" class="heading-2">Function References</h2>
-<p class="paragraph">You can reference functions by name:</p>
+<p class="paragraph">Reference a function by name:</p>
+<div class="highlight"><pre class="code-block"><span></span><span class="ni">@code</span>-ref babbl/cli.py render
+</pre></div>
+
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ed799528')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-5611c7b4')">
+<span class="code-ref-title">babbl/cli.py - render</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-5611c7b4">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">toc</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a markdown file to HTML.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">BabblParser</span><span class="p">()</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="n">HTMLRenderer</span><span class="p">(</span><span class="n">css_file_path</span><span class="o">=</span><span class="n">css</span><span class="p">,</span> <span class="n">show_toc</span><span class="o">=</span><span class="n">toc</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">contents</span> <span class="o">=</span> <span class="n">load_metadata</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="n">document</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+        <span class="n">save_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully rendered: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error rendering file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+<h2 id="class-references" class="heading-2">Class References</h2>
+<p class="paragraph">Reference an entire class:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-dec298a9')">
 <span class="code-ref-title">babbl/renderer.py - HTMLRenderer</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-ed799528">
+<div class="code-ref-content" id="code-ref-dec298a9">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
 
@@ -493,15 +528,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 </div>
 </div>
-<p class="paragraph">This will show the entire HTMLRenderer class definition.</p>
 <h2 id="method-references" class="heading-2">Method References</h2>
-<p class="paragraph">You can also reference specific methods:</p>
+<p class="paragraph">Reference a specific method:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-71cfb544')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-f7920520')">
 <span class="code-ref-title">babbl/renderer.py - render_fenced_code</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-71cfb544">
+<div class="code-ref-content" id="code-ref-f7920520">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_fenced_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">FencedCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a fenced code block&quot;&quot;&quot;</span>
         <span class="k">pass</span>
@@ -509,29 +543,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 </div>
 </div>
-<p class="paragraph">This shows the render_fenced_code method implementation.</p>
 <h2 id="line-number-references" class="heading-2">Line Number References</h2>
-<p class="paragraph">Reference specific lines:</p>
+<p class="paragraph">Reference a specific line:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-486f72dc')">
-<span class="code-ref-title">babbl/cli.py - line 25</span>
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-9ba9edc9')">
+<span class="code-ref-title">babbl/parser.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-486f72dc">
-<div class="highlight"><pre class="code-block"><span></span><span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--base-path&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path_type</span><span class="o">=</span><span class="n">Path</span><span class="p">),</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Base path for resolving code references&quot;</span><span class="p">)</span>
+<div class="code-ref-content" id="code-ref-9ba9edc9">
+<div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom parser with table support for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
 </div>
 </div>
-<p class="paragraph">This shows line 25 from the CLI file.</p>
 <h2 id="line-range-references" class="heading-2">Line Range References</h2>
 <p class="paragraph">Reference a range of lines:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-02701c81')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-5b3cb434')">
 <span class="code-ref-title">babbl/elements.py - lines 1-20</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-02701c81">
+<div class="code-ref-content" id="code-ref-5b3cb434">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom elements that are not supported by marko.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -556,15 +588,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 </div>
 </div>
-<p class="paragraph">This shows the first 20 lines of the elements file.</p>
-<h2 id="class-references" class="heading-2">Class References</h2>
-<p class="paragraph">Reference entire classes:</p>
+<h2 id="error-handling" class="heading-2">Error Handling</h2>
+<p class="paragraph">If a reference doesn't exist, you'll see an error:</p>
+<div class="code-ref-error">Code reference not found: babbl/cli.py - nonexistent_function</div>
+<h2 id="multiple-references" class="heading-2">Multiple References</h2>
+<p class="paragraph">You can include multiple references in the same document:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-7cf4597a')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-d33ace1d')">
 <span class="code-ref-title">babbl/code_ref.py - CodeReferenceProcessor</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-7cf4597a">
+<div class="code-ref-content" id="code-ref-d33ace1d">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
 
@@ -734,91 +768,33 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 </div>
 </div>
-<p class="paragraph">This shows the complete CodeReferenceProcessor class.</p>
-<h2 id="error-handling" class="heading-2">Error Handling</h2>
-<p class="paragraph">If a reference is not found, you'll see an error message:</p>
-<div class="code-ref-error">Code reference not found: babbl/renderer.py - nonexistent_function</div>
-<h2 id="multiple-references" class="heading-2">Multiple References</h2>
-<p class="paragraph">You can include multiple references in the same document:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-d005b5d9')">
-<span class="code-ref-title">babbl/parser.py - BabblParser</span>
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-4fb557dd')">
+<span class="code-ref-title">babbl/defaults.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-d005b5d9">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># Add table support</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">Table</span><span class="p">)</span>
-        <span class="c1"># Add code reference support</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">CodeReference</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text with table and code reference support.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<div class="code-ref-content" id="code-ref-4fb557dd">
+<div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;CSS configuration system for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
 </div>
 </div>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-bd679dd6')">
-<span class="code-ref-title">babbl/cli.py - render</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-bd679dd6">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">toc</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a markdown file to HTML.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output</span>
-
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">BabblParser</span><span class="p">()</span>
-    <span class="n">renderer</span> <span class="o">=</span> <span class="n">HTMLRenderer</span><span class="p">(</span><span class="n">css_file_path</span><span class="o">=</span><span class="n">css</span><span class="p">,</span> <span class="n">show_toc</span><span class="o">=</span><span class="n">toc</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
-        <span class="n">metadata</span><span class="p">,</span> <span class="n">contents</span> <span class="o">=</span> <span class="n">load_metadata</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
-        <span class="n">document</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
-        <span class="n">save_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
-        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully rendered: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error rendering file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-<h2 id="usage-in-documentation" class="heading-2">Usage in Documentation</h2>
-<p class="paragraph">This feature is particularly useful for:</p>
+<h2 id="usage-examples" class="heading-2">Usage Examples</h2>
+<p class="paragraph">Code references are useful for:</p>
 <ul class="unordered-list">
-<li class="list-item"><strong class="strong">API Documentation</strong>: Reference specific functions and methods</li>
-<li class="list-item"><strong class="strong">Code Reviews</strong>: Point to specific lines or functions</li>
+<li class="list-item"><strong class="strong">Documentation</strong>: Reference specific functions and methods</li>
+<li class="list-item"><strong class="strong">Code Reviews</strong>: Point to specific lines or functions  </li>
 <li class="list-item"><strong class="strong">Tutorials</strong>: Show relevant code sections inline</li>
-<li class="list-item"><strong class="strong">Research Papers</strong>: Include code examples from your codebase</li>
+<li class="list-item"><strong class="strong">Research</strong>: Include code examples from your codebase</li>
 </ul>
-<h2 id="how-it-works" class="heading-2">How It Works</h2>
-<p class="paragraph">The code reference system:</p>
-<ol class="ordered-list">
-<li class="list-item"><strong class="strong">Parses</strong> the markdown for <code class="inline-code">@code-ref</code> directives</li>
-<li class="list-item"><strong class="strong">Extracts</strong> code from the specified file using AST parsing</li>
-<li class="list-item"><strong class="strong">Generates</strong> collapsible dropdowns with syntax highlighting</li>
-<li class="list-item"><strong class="strong">Handles</strong> various reference types (functions, classes, line numbers, ranges)</li>
-</ol>
 <h2 id="supported-reference-types" class="heading-2">Supported Reference Types</h2>
 <ul class="unordered-list">
 <li class="list-item"><strong class="strong">Function names</strong>: <code class="inline-code">function_name</code></li>
-<li class="list-item"><strong class="strong">Class names</strong>: <code class="inline-code">ClassName</code></li>
+<li class="list-item"><strong class="strong">Class names</strong>: <code class="inline-code">ClassName</code> </li>
 <li class="list-item"><strong class="strong">Method names</strong>: <code class="inline-code">method_name</code></li>
 <li class="list-item"><strong class="strong">Single lines</strong>: <code class="inline-code">line 42</code></li>
-<li class="list-item"><strong class="strong">Line ranges</strong>: <code class="inline-code">lines 10-20</code> or <code class="inline-code">lines 10:20</code></li>
+<li class="list-item"><strong class="strong">Line ranges</strong>: <code class="inline-code">lines 10-20</code> or <code class="inline-code">lines 10:20</code> </li>
 </ul>
-<h2 id="file-support" class="heading-2">File Support</h2>
-<p class="paragraph">Currently supports Python files with automatic syntax highlighting. The system can be extended to support other languages by adding appropriate lexers to the language mapping. </p>
 
 </section>
 </main>

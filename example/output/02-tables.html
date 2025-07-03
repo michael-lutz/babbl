@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name=title content=Table Examples>
-<meta name=author content=Michael Lutz>
-<meta name=date content=2025-07-02>
-<title>Table Examples</title>
+<meta name=title content=Table Support>
+<meta name=author content=Test User>
+<meta name=date content=2025-01-02>
+<meta name=description content=Testing table functionality in Babbl>
+<title>Table Support</title>
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
@@ -401,45 +402,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main class="content">
 <section>
 <header>
-<h1 class="title">Table Examples</h1>
+<h1 class="title">Table Support</h1>
 <div class='metadata'>
-<div class="meta-field">Author: Michael Lutz</div>
-<div class="meta-field">Date: 2025-07-02</div>
+<div class="meta-field">Author: Test User</div>
+<div class="meta-field">Date: 2025-01-02</div>
+<div class="meta-field">Description: Testing table functionality in Babbl</div>
 </div>
 <hr />
 </header>
 
-<h1 id="table-examples" class="heading-1">Table Examples</h1>
+<h1 id="table-support" class="heading-1">Table Support</h1>
+<p class="paragraph">Babbl supports markdown tables with proper styling and formatting.</p>
 <h2 id="basic-table" class="heading-2">Basic Table</h2>
-<div class="table-container">
-<table class="table">
-<thead>
-<tr>
-<th>Component</th>
-<th>Memory (MB)</th>
-<th>Percentage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Renderer Core</td>
-<td>2.1</td>
-<td>50%</td>
-</tr>
-<tr>
-<td>Frontmatter Processor</td>
-<td>0.9</td>
-<td>22%</td>
-</tr>
-<tr>
-<td>HTML Formatter</td>
-<td>1.2</td>
-<td>28%</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="user-information" class="heading-2">User Information</h2>
 <div class="table-container">
 <table class="table">
 <thead>
@@ -451,91 +425,140 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td>John</td>
+<td>Alice</td>
 <td>25</td>
 <td>New York</td>
 </tr>
 <tr>
-<td>Jane</td>
+<td>Bob</td>
 <td>30</td>
-<td>London</td>
+<td>Los Angeles</td>
 </tr>
 <tr>
-<td>Bob</td>
-<td>35</td>
-<td>Paris</td>
+<td>Carol</td>
+<td>28</td>
+<td>Chicago</td>
 </tr>
 </tbody>
 </table>
 </div>
-<h2 id="feature-status" class="heading-2">Feature Status</h2>
+<h2 id="table-with-alignment" class="heading-2">Table with Alignment</h2>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Left Aligned</th>
+<th>Center Aligned</th>
+<th>Right Aligned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left</td>
+<td>Center</td>
+<td>Right</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Data</td>
+<td>Data</td>
+</tr>
+<tr>
+<td>More</td>
+<td>More</td>
+<td>More</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="complex-table" class="heading-2">Complex Table</h2>
 <div class="table-container">
 <table class="table">
 <thead>
 <tr>
 <th>Feature</th>
-<th>Status</th>
-<th>Priority</th>
+<th>Supported</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Tables</td>
+<td>Basic Tables</td>
 <td>✅</td>
-<td>High</td>
-<td>Now supported</td>
+<td>Standard markdown syntax</td>
 </tr>
 <tr>
-<td>Syntax Highlighting</td>
+<td>Alignment</td>
 <td>✅</td>
-<td>High</td>
-<td>Pygments integration</td>
+<td>Left, center, right alignment</td>
 </tr>
 <tr>
-<td>Frontmatter</td>
+<td>Nested Content</td>
 <td>✅</td>
-<td>Medium</td>
-<td>YAML parsing</td>
+<td>Can contain links, **bold**, *italic*</td>
 </tr>
 <tr>
-<td>Custom CSS</td>
+<td>Code</td>
 <td>✅</td>
-<td>Medium</td>
-<td>File-based styling</td>
+<td>`inline code` and code blocks</td>
+</tr>
+<tr>
+<td>Images</td>
+<td>✅</td>
+<td>![alt text](url)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<h2 id="performance-comparison" class="heading-2">Performance Comparison</h2>
+<h2 id="table-with-long-content" class="heading-2">Table with Long Content</h2>
 <div class="table-container">
 <table class="table">
 <thead>
 <tr>
-<th>Operation</th>
-<th>Time (ms)</th>
-<th>Memory (MB)</th>
-<th>CPU (%)</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Parse</td>
-<td>15.2</td>
-<td>2.1</td>
-<td>12</td>
+<td>This is a very long cell that might wrap to multiple lines</td>
+<td>Short cell</td>
+<td>Another long cell with lots of content that demonstrates how the table handles overflow</td>
 </tr>
 <tr>
-<td>Render</td>
-<td>8.7</td>
-<td>1.8</td>
-<td>8</td>
+<td>Short</td>
+<td>Medium length content here</td>
+<td>Very short</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="empty-cells" class="heading-2">Empty Cells</h2>
+<div class="table-container">
+<table class="table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John</td>
+<td>john@example.com</td>
+<td></td>
 </tr>
 <tr>
-<td>Save</td>
-<td>3.1</td>
-<td>0.5</td>
-<td>2</td>
+<td>Jane</td>
+<td></td>
+<td>555-1234</td>
+</tr>
+<tr>
+<td></td>
+<td>jane@example.com</td>
+<td>555-5678</td>
 </tr>
 </tbody>
 </table>
