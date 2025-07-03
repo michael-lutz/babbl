@@ -22,7 +22,8 @@ def main():
 @click.option("--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
-def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: bool):
+@click.option("--base-path", type=click.Path(path_type=Path), help="Base path for resolving code references")
+def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: bool, base_path: Optional[Path]):
     """Render a markdown file to HTML."""
     if output is None:
         output_path = input_file.with_suffix(".html")
@@ -30,7 +31,7 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
         output_path = output
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css, show_toc=toc)
+    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path)
 
     try:
         contents = load_file(input_file)
@@ -51,7 +52,16 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
 @click.option("--recursive", "-r", is_flag=True, help="Process subdirectories recursively")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
-def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: bool, css: Optional[Path], toc: bool):
+@click.option("--base-path", type=click.Path(path_type=Path), help="Base path for resolving code references")
+def build(
+    input_dir: Path,
+    output_dir: Optional[Path],
+    pattern: str,
+    recursive: bool,
+    css: Optional[Path],
+    toc: bool,
+    base_path: Optional[Path],
+):
     """Build multiple markdown files in a directory."""
     if output_dir is None:
         output_dir = input_dir / "output"
@@ -69,7 +79,7 @@ def build(input_dir: Path, output_dir: Optional[Path], pattern: str, recursive: 
     click.echo(f"Found {len(md_files)} markdown files to process...")
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css, show_toc=toc)
+    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path)
 
     for md_file in md_files:
         try:

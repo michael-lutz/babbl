@@ -11,6 +11,7 @@ from urllib.parse import quote
 
 from marko import Renderer
 
+from babbl.code_ref import CodeReferenceProcessor
 from babbl.defaults import DEFAULT_CSS
 from babbl.load import load_file
 
@@ -166,11 +167,22 @@ class BaseRenderer(ABC, Renderer):
         """Render a table header cell element"""
         pass
 
+    @abstractmethod
+    def render_code_reference(self, element: Any) -> str:
+        """Render a code reference element"""
+        pass
+
 
 class HTMLRenderer(BaseRenderer):
     """Beautiful HTML renderer with clean styling and semantic classes."""
 
-    def __init__(self, highlight_syntax: bool = True, css_file_path: Optional[Path] = None, show_toc: bool = False):
+    def __init__(
+        self,
+        highlight_syntax: bool = True,
+        css_file_path: Optional[Path] = None,
+        show_toc: bool = False,
+        base_path: Optional[Path] = None,
+    ):
         """
         Initialize the HTML renderer.
 
@@ -178,12 +190,14 @@ class HTMLRenderer(BaseRenderer):
             highlight_syntax: Whether to use Pygments for syntax highlighting
             css_file_path: Path to CSS file
             show_toc: Whether to show table of contents for h1 headings
+            base_path: Base path for resolving code reference file paths
         """
         super().__init__()
         self.highlight_syntax = highlight_syntax
         self.pygments_formatter = None
         self.show_toc = show_toc
         self.h1_headings: list[tuple[str, str]] = []  # track h1 headings for toc
+        self.code_processor = CodeReferenceProcessor(base_path)
 
         if css_file_path:
             self.base_css = load_file(css_file_path)
@@ -247,6 +261,21 @@ class HTMLRenderer(BaseRenderer):
 </section>
 </main>
 </div>
+<script>
+function toggleCodeRef(id) {{
+    const content = document.getElementById(id);
+    const header = content.previousElementSibling;
+    const toggle = header.querySelector('.code-ref-toggle');
+    
+    if (content.classList.contains('show')) {{
+        content.classList.remove('show');
+        toggle.textContent = '▼';
+    }} else {{
+        content.classList.add('show');
+        toggle.textContent = '▲';
+    }}
+}}
+</script>
 </body>
 </html>"""
 
@@ -517,3 +546,86 @@ class HTMLRenderer(BaseRenderer):
     def render_table_head_cell(self, element: Any) -> str:
         """Render a table header cell element."""
         return f"<th>{self.render_children(element)}</th>\n"
+
+    def render_code_reference(self, element: Any) -> str:
+        """Render a code reference element."""
+        # extract code from the referenced file
+        code = self.code_processor.extract_code(element.file_path, element.reference)
+
+        if not code:
+            return f'<div class="code-ref-error">Code reference not found: {element.file_path} - {element.reference}</div>\n'
+
+        # create a unique id for the dropdown
+        import uuid
+
+        dropdown_id = f"code-ref-{uuid.uuid4().hex[:8]}"
+
+        # escape the code for HTML
+        escaped_code = html.escape(code)
+
+        # determine language for syntax highlighting
+        file_ext = Path(element.file_path).suffix.lower()
+        lang_map = {
+            ".py": "python",
+            ".js": "javascript",
+            ".ts": "typescript",
+            ".java": "java",
+            ".cpp": "cpp",
+            ".c": "c",
+            ".h": "c",
+            ".cs": "csharp",
+            ".php": "php",
+            ".rb": "ruby",
+            ".go": "go",
+            ".rs": "rust",
+            ".swift": "swift",
+            ".kt": "kotlin",
+            ".scala": "scala",
+            ".sh": "bash",
+            ".bash": "bash",
+            ".zsh": "bash",
+            ".fish": "bash",
+            ".sql": "sql",
+            ".html": "html",
+            ".css": "css",
+            ".scss": "scss",
+            ".sass": "sass",
+            ".less": "less",
+            ".xml": "xml",
+            ".json": "json",
+            ".yaml": "yaml",
+            ".yml": "yaml",
+            ".toml": "toml",
+            ".ini": "ini",
+            ".cfg": "ini",
+            ".conf": "ini",
+            ".md": "markdown",
+            ".txt": "text",
+        }
+        language = lang_map.get(file_ext, "text")
+
+        # apply syntax highlighting if available
+        if self.highlight_syntax and self.pygments_formatter:
+            try:
+                lexer = self.get_lexer_by_name(language)
+                highlighted_code = self.highlight(code, lexer, self.pygments_formatter)
+                # ensure proper class structure
+                highlighted_code = highlighted_code.replace(
+                    '<div class="highlight"><pre>', '<div class="highlight"><pre class="code-block">'
+                )
+                code_html = highlighted_code
+            except:
+                # fallback to plain code
+                code_html = f'<pre class="code-block language-{language}"><code>{escaped_code}</code></pre>'
+        else:
+            code_html = f'<pre class="code-block language-{language}"><code>{escaped_code}</code></pre>'
+
+        return f"""<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('{dropdown_id}')">
+<span class="code-ref-title">{element.file_path} - {element.reference}</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="{dropdown_id}">
+{code_html}
+</div>
+</div>\n"""

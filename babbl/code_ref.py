@@ -1,0 +1,173 @@
+"""Code reference processor for extracting code from Python files."""
+
+import ast
+import re
+from pathlib import Path
+from typing import List, Optional, Tuple
+
+
+class CodeReferenceProcessor:
+    """Process code references and extract code from Python files."""
+
+    def __init__(self, base_path: Optional[Path] = None):
+        """
+        Initialize the code reference processor.
+
+        Args:
+            base_path: Base path for resolving relative file paths
+        """
+        self.base_path = base_path or Path.cwd()
+
+    def extract_code(self, file_path: str, reference: str) -> Optional[str]:
+        """
+        Extract code from a file based on the reference.
+
+        Args:
+            file_path: Path to the Python file
+            reference: Reference string (function name, class name, line numbers, etc.)
+
+        Returns:
+            Extracted code string or None if not found
+        """
+        try:
+            full_path = self._resolve_path(file_path)
+            if not full_path.exists():
+                return None
+
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read()
+                lines = content.split("\n")
+
+            # try different reference types
+            code = self._extract_by_function_class(lines, reference)
+            if code:
+                return code
+
+            code = self._extract_by_line_numbers(lines, reference)
+            if code:
+                return code
+
+            code = self._extract_by_line_range(lines, reference)
+            if code:
+                return code
+
+            return None
+
+        except Exception:
+            return None
+
+    def _resolve_path(self, file_path: str) -> Path:
+        """Resolve file path relative to base path."""
+        path = Path(file_path)
+        if path.is_absolute():
+            return path
+        return self.base_path / path
+
+    def _extract_by_function_class(self, lines: List[str], reference: str) -> Optional[str]:
+        """Extract code by function or class name using AST."""
+        try:
+            content = "\n".join(lines)
+            tree = ast.parse(content)
+
+            for node in ast.walk(tree):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                    if node.name == reference:
+                        start_line = node.lineno - 1  # ast uses 1-based indexing
+                        end_line = node.end_lineno if hasattr(node, "end_lineno") else start_line + 1
+
+                        # find the actual end of the function/class
+                        end_line = self._find_block_end(lines, start_line, node)
+
+                        return "\n".join(lines[start_line:end_line])
+
+            return None
+        except Exception:
+            return None
+
+    def _extract_by_line_numbers(self, lines: List[str], reference: str) -> Optional[str]:
+        """Extract code by specific line numbers."""
+        # pattern: line 5, line 10, etc.
+        line_match = re.match(r"line\s+(\d+)", reference, re.IGNORECASE)
+        if line_match:
+            line_num = int(line_match.group(1)) - 1  # convert to 0-based
+            if 0 <= line_num < len(lines):
+                return lines[line_num]
+        return None
+
+    def _extract_by_line_range(self, lines: List[str], reference: str) -> Optional[str]:
+        """Extract code by line range."""
+        # pattern: lines 5-10, lines 5:10, etc.
+        range_match = re.match(r"lines?\s+(\d+)[-:]\s*(\d+)", reference, re.IGNORECASE)
+        if range_match:
+            start_line = int(range_match.group(1)) - 1  # convert to 0-based
+            end_line = int(range_match.group(2))  # keep 1-based for slicing
+
+            if 0 <= start_line < len(lines) and start_line < end_line <= len(lines):
+                return "\n".join(lines[start_line:end_line])
+        return None
+
+    def _find_block_end(self, lines: List[str], start_line: int, node: ast.AST) -> int:
+        """Find the end of a code block by analyzing indentation."""
+        if start_line >= len(lines):
+            return start_line + 1
+
+        # get the indentation of the first line
+        first_line = lines[start_line]
+        base_indent = len(first_line) - len(first_line.lstrip())
+
+        # find the next line with same or less indentation
+        for i in range(start_line + 1, len(lines)):
+            line = lines[i]
+            if not line.strip():  # skip empty lines
+                continue
+
+            current_indent = len(line) - len(line.lstrip())
+            if current_indent <= base_indent:
+                return i
+
+        return len(lines)
+
+    def get_file_info(self, file_path: str) -> Optional[dict]:
+        """
+        Get information about a Python file.
+
+        Args:
+            file_path: Path to the Python file
+
+        Returns:
+            Dictionary with file information or None if file not found
+        """
+        try:
+            full_path = self._resolve_path(file_path)
+            if not full_path.exists():
+                return None
+
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read()
+                lines = content.split("\n")
+
+            tree = ast.parse(content)
+
+            functions = []
+            classes = []
+
+            for node in ast.walk(tree):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    functions.append(
+                        {
+                            "name": node.name,
+                            "line": node.lineno,
+                            "type": "async function" if isinstance(node, ast.AsyncFunctionDef) else "function",
+                        }
+                    )
+                elif isinstance(node, ast.ClassDef):
+                    classes.append({"name": node.name, "line": node.lineno})
+
+            return {
+                "path": str(full_path),
+                "line_count": len(lines),
+                "functions": sorted(functions, key=lambda x: x["line"]),
+                "classes": sorted(classes, key=lambda x: x["line"]),
+            }
+        except Exception:
+            return None

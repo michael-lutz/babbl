@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name=title content=Code Reference Demo>
+<meta name=author content=Michael Lutz>
+<meta name=date content=2025-01-02>
+<meta name=description content=Demonstrating the new code reference feature in Babbl>
+<title>Code Reference Demo</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    color: #333;
+    background-color: #fff;
+}
+
+section {
+    padding: 0;
+}
+
+.title {
+    font-size: 2.0rem;
+    margin-top: 1.0rem;
+    margin-bottom: 0.0rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-1 { 
+    font-size: 1.6rem; 
+    margin-top: 1.0rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-2 { 
+    font-size: 1.4rem; 
+    margin-top: 1rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-3 { 
+    font-size: 1.2rem; 
+    margin-top: 1.0rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.heading-4, .heading-5, .heading-6 { 
+    font-size: 1rem; 
+    margin-top: 1rem; 
+    margin-bottom: 0.5rem; 
+    color: #333;
+    font-weight: 600;
+}
+
+.paragraph { 
+    margin-bottom: 1rem; 
+    text-align: left;
+    font-size: .9rem;
+}
+
+.code-block { 
+    background: #f5f5f5; 
+    padding: 1rem; 
+    border: none;
+    overflow-x: auto;
+    margin: 0;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.inline-code { 
+    background: #f5f5f5; 
+    padding: 0.15rem 0.3rem; 
+    border: none;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.link { 
+    color: #0066cc; 
+    text-decoration: none; 
+}
+
+.link:hover { 
+    text-decoration: underline;
+}
+
+.image { 
+    max-width: 100%; 
+    height: auto; 
+    margin: 1rem 0; 
+    border: none;
+}
+
+.unordered-list, .ordered-list { 
+    margin: 1rem 0; 
+    padding-left: 2rem; 
+}
+
+.list-item { 
+    margin-bottom: 0.5rem; 
+    line-height: 1.6;
+    font-size: .9rem;
+}
+
+.blockquote { 
+    border-left: 3px solid #ddd; 
+    padding-left: 1rem; 
+    margin: 0.5rem 0; 
+    font-style: italic;
+    color: #666;
+    background: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
+.strong { 
+    font-weight: 600; 
+    color: #333;
+}
+
+.emphasis { 
+    font-style: italic; 
+    color: #333;
+}
+
+.metadata {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.meta-field {
+    margin-bottom: 0.25rem;
+    line-height: 1.2rem;
+}
+
+.meta-field:last-child {
+    margin-bottom: 0;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: #ddd;
+    margin: 1.5rem 0;
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.table tr:hover {
+    background: #f1f3f4;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.toc {
+    position: fixed;
+    top: 11.75rem;
+    left: calc(50% - 625px);
+    width: 200px;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.toc-nav {
+    margin: 0;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.75rem;
+}
+
+.toc-link {
+    display: block;
+    padding: 0.25rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.content {
+    width: 100%;
+}
+
+/* Code Reference Styles */
+.code-reference {
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.code-ref-header {
+    background: #f8f9fa;
+    padding: 0.75rem .9rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.code-ref-header:hover {
+    background: #e9ecef;
+}
+
+.code-ref-title {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.code-ref-toggle {
+    font-size: 0.75rem;
+    color: #6c757d;
+    transition: transform 0.2s ease;
+}
+
+.code-ref-content {
+    display: none;
+    padding: 0;
+    background: #fff;
+}
+
+.code-ref-content.show {
+    display: block;
+}
+
+.code-ref-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    margin: 1rem 0;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .toc {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    body {
+        padding: 1rem;
+    }
+}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f0f0f0; }
+.highlight .c { color: #60A0B0; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #F00 } /* Error */
+.highlight .k { color: #007020; font-weight: bold } /* Keyword */
+.highlight .o { color: #666 } /* Operator */
+.highlight .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #007020 } /* Comment.Preproc */
+.highlight .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #F00 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888 } /* Generic.Output */
+.highlight .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #04D } /* Generic.Traceback */
+.highlight .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #007020 } /* Keyword.Pseudo */
+.highlight .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #902000 } /* Keyword.Type */
+.highlight .m { color: #40A070 } /* Literal.Number */
+.highlight .s { color: #4070A0 } /* Literal.String */
+.highlight .na { color: #4070A0 } /* Name.Attribute */
+.highlight .nb { color: #007020 } /* Name.Builtin */
+.highlight .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.highlight .no { color: #60ADD5 } /* Name.Constant */
+.highlight .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.highlight .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #007020 } /* Name.Exception */
+.highlight .nf { color: #06287E } /* Name.Function */
+.highlight .nl { color: #002070; font-weight: bold } /* Name.Label */
+.highlight .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #BB60D5 } /* Name.Variable */
+.highlight .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #BBB } /* Text.Whitespace */
+.highlight .mb { color: #40A070 } /* Literal.Number.Bin */
+.highlight .mf { color: #40A070 } /* Literal.Number.Float */
+.highlight .mh { color: #40A070 } /* Literal.Number.Hex */
+.highlight .mi { color: #40A070 } /* Literal.Number.Integer */
+.highlight .mo { color: #40A070 } /* Literal.Number.Oct */
+.highlight .sa { color: #4070A0 } /* Literal.String.Affix */
+.highlight .sb { color: #4070A0 } /* Literal.String.Backtick */
+.highlight .sc { color: #4070A0 } /* Literal.String.Char */
+.highlight .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.highlight .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #4070A0 } /* Literal.String.Double */
+.highlight .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.highlight .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.highlight .sx { color: #C65D09 } /* Literal.String.Other */
+.highlight .sr { color: #235388 } /* Literal.String.Regex */
+.highlight .s1 { color: #4070A0 } /* Literal.String.Single */
+.highlight .ss { color: #517918 } /* Literal.String.Symbol */
+.highlight .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #06287E } /* Name.Function.Magic */
+.highlight .vc { color: #BB60D5 } /* Name.Variable.Class */
+.highlight .vg { color: #BB60D5 } /* Name.Variable.Global */
+.highlight .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.highlight .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.highlight .il { color: #40A070 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="container">
+
+<main class="content">
+<section>
+<header>
+<h1 class="title">Code Reference Demo</h1>
+<div class='metadata'>
+<div class="meta-field">Author: Michael Lutz</div>
+<div class="meta-field">Date: 2025-01-02</div>
+<div class="meta-field">Description: Demonstrating the new code reference feature in Babbl</div>
+</div>
+<hr />
+</header>
+
+<h1 id="code-reference-demo" class="heading-1">Code Reference Demo</h1>
+<p class="paragraph">This document demonstrates the new code reference feature in Babbl, which allows you to reference specific code elements from Python files and automatically generate dropdowns with the referenced code.</p>
+<h2 id="function-references" class="heading-2">Function References</h2>
+<p class="paragraph">You can reference functions by name:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ed799528')">
+<span class="code-ref-title">babbl/renderer.py - HTMLRenderer</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-ed799528">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">highlight_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">css_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the HTML renderer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            highlight_syntax: Whether to use Pygments for syntax highlighting</span>
+<span class="sd">            css_file_path: Path to CSS file</span>
+<span class="sd">            show_toc: Whether to show table of contents for h1 headings</span>
+<span class="sd">            base_path: Base path for resolving code reference file paths</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="n">highlight_syntax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="o">=</span> <span class="n">show_toc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h1_headings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># track h1 headings for toc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_processor</span> <span class="o">=</span> <span class="n">CodeReferenceProcessor</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">css_file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">css_file_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">DEFAULT_CSS</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>  <span class="c1"># type: ignore</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>  <span class="c1"># type: ignore</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lexer_by_name</span>  <span class="c1"># type: ignore</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span> <span class="o">=</span> <span class="n">highlight</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_lexer_by_name</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;friendly&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">escape_html</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replaces unsafe HTML characters with their escaped equivalents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;#x27;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">escape_url</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape urls to prevent code injection craziness.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;/#:()*?=%@+,&amp;&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the base element to HTML with full document structure.&quot;&quot;&quot;</span>
+        <span class="c1"># reset h1 headings for new document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h1_headings</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">content</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="n">meta_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;meta name=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> content=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&gt;&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># create toc if enabled</span>
+        <span class="n">toc_html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_toc</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># create complete HTML document</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;!DOCTYPE html&gt;</span>
+</pre></div>
+
+</div>
+</div>
+<p class="paragraph">This will show the entire HTMLRenderer class definition.</p>
+<h2 id="method-references" class="heading-2">Method References</h2>
+<p class="paragraph">You can also reference specific methods:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-71cfb544')">
+<span class="code-ref-title">babbl/renderer.py - render_fenced_code</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-71cfb544">
+<div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_fenced_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">FencedCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a fenced code block&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+
+</div>
+</div>
+<p class="paragraph">This shows the render_fenced_code method implementation.</p>
+<h2 id="line-number-references" class="heading-2">Line Number References</h2>
+<p class="paragraph">Reference specific lines:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-486f72dc')">
+<span class="code-ref-title">babbl/cli.py - line 25</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-486f72dc">
+<div class="highlight"><pre class="code-block"><span></span><span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--base-path&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path_type</span><span class="o">=</span><span class="n">Path</span><span class="p">),</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Base path for resolving code references&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<p class="paragraph">This shows line 25 from the CLI file.</p>
+<h2 id="line-range-references" class="heading-2">Line Range References</h2>
+<p class="paragraph">Reference a range of lines:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-02701c81')">
+<span class="code-ref-title">babbl/elements.py - lines 1-20</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-02701c81">
+<div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom elements that are not supported by marko.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">marko</span><span class="w"> </span><span class="kn">import</span> <span class="n">block</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">marko.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">marko.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Source</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Table</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">BlockElement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Table element for markdown tables.&quot;&quot;&quot;</span>
+
+    <span class="n">priority</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*\|.*\|.*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">rows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+</pre></div>
+
+</div>
+</div>
+<p class="paragraph">This shows the first 20 lines of the elements file.</p>
+<h2 id="class-references" class="heading-2">Class References</h2>
+<p class="paragraph">Reference entire classes:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-7cf4597a')">
+<span class="code-ref-title">babbl/code_ref.py - CodeReferenceProcessor</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-7cf4597a">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the code reference processor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            base_path: Base path for resolving relative file paths</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="ow">or</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract code from a file based on the reference.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: Path to the Python file</span>
+<span class="sd">            reference: Reference string (function name, class name, line numbers, etc.)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Extracted code string or None if not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># try different reference types</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_function_class</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">code</span>
+
+            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_numbers</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">code</span>
+
+            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_range</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">code</span>
+
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve file path relative to base path.&quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">path</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">/</span> <span class="n">path</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_function_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by function or class name using AST.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">reference</span><span class="p">:</span>
+                        <span class="n">start_line</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># ast uses 1-based indexing</span>
+                        <span class="n">end_line</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">end_lineno</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;end_lineno&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
+
+                        <span class="c1"># find the actual end of the function/class</span>
+                        <span class="n">end_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_block_end</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+                        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by specific line numbers.&quot;&quot;&quot;</span>
+        <span class="c1"># pattern: line 5, line 10, etc.</span>
+        <span class="n">line_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;line\s+(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line_match</span><span class="p">:</span>
+            <span class="n">line_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">line_num</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_num</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by line range.&quot;&quot;&quot;</span>
+        <span class="c1"># pattern: lines 5-10, lines 5:10, etc.</span>
+        <span class="n">range_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;lines?\s+(\d+)[-:]\s*(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">range_match</span><span class="p">:</span>
+            <span class="n">start_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
+            <span class="n">end_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># keep 1-based for slicing</span>
+
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="n">end_line</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_line</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">AST</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the end of a code block by analyzing indentation.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># get the indentation of the first line</span>
+        <span class="n">first_line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">]</span>
+        <span class="n">base_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+
+        <span class="c1"># find the next line with same or less indentation</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>  <span class="c1"># skip empty lines</span>
+                <span class="k">continue</span>
+
+            <span class="n">current_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">current_indent</span> <span class="o">&lt;=</span> <span class="n">base_indent</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get information about a Python file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: Path to the Python file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary with file information or None if file not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+            <span class="n">functions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)):</span>
+                    <span class="n">functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;async function&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
+                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">})</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">full_path</span><span class="p">),</span>
+                <span class="s2">&quot;line_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span>
+                <span class="s2">&quot;functions&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
+                <span class="s2">&quot;classes&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
+            <span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+
+</div>
+</div>
+<p class="paragraph">This shows the complete CodeReferenceProcessor class.</p>
+<h2 id="error-handling" class="heading-2">Error Handling</h2>
+<p class="paragraph">If a reference is not found, you'll see an error message:</p>
+<div class="code-ref-error">Code reference not found: babbl/renderer.py - nonexistent_function</div>
+<h2 id="multiple-references" class="heading-2">Multiple References</h2>
+<p class="paragraph">You can include multiple references in the same document:</p>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-d005b5d9')">
+<span class="code-ref-title">babbl/parser.py - BabblParser</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-d005b5d9">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Add table support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">Table</span><span class="p">)</span>
+        <span class="c1"># Add code reference support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">CodeReference</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text with table and code reference support.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-bd679dd6')">
+<span class="code-ref-title">babbl/cli.py - render</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-bd679dd6">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">toc</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a markdown file to HTML.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">BabblParser</span><span class="p">()</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="n">HTMLRenderer</span><span class="p">(</span><span class="n">css_file_path</span><span class="o">=</span><span class="n">css</span><span class="p">,</span> <span class="n">show_toc</span><span class="o">=</span><span class="n">toc</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">contents</span> <span class="o">=</span> <span class="n">load_metadata</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="n">document</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+        <span class="n">save_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully rendered: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error rendering file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+<h2 id="usage-in-documentation" class="heading-2">Usage in Documentation</h2>
+<p class="paragraph">This feature is particularly useful for:</p>
+<ul class="unordered-list">
+<li class="list-item"><strong class="strong">API Documentation</strong>: Reference specific functions and methods</li>
+<li class="list-item"><strong class="strong">Code Reviews</strong>: Point to specific lines or functions</li>
+<li class="list-item"><strong class="strong">Tutorials</strong>: Show relevant code sections inline</li>
+<li class="list-item"><strong class="strong">Research Papers</strong>: Include code examples from your codebase</li>
+</ul>
+<h2 id="how-it-works" class="heading-2">How It Works</h2>
+<p class="paragraph">The code reference system:</p>
+<ol class="ordered-list">
+<li class="list-item"><strong class="strong">Parses</strong> the markdown for <code class="inline-code">@code-ref</code> directives</li>
+<li class="list-item"><strong class="strong">Extracts</strong> code from the specified file using AST parsing</li>
+<li class="list-item"><strong class="strong">Generates</strong> collapsible dropdowns with syntax highlighting</li>
+<li class="list-item"><strong class="strong">Handles</strong> various reference types (functions, classes, line numbers, ranges)</li>
+</ol>
+<h2 id="supported-reference-types" class="heading-2">Supported Reference Types</h2>
+<ul class="unordered-list">
+<li class="list-item"><strong class="strong">Function names</strong>: <code class="inline-code">function_name</code></li>
+<li class="list-item"><strong class="strong">Class names</strong>: <code class="inline-code">ClassName</code></li>
+<li class="list-item"><strong class="strong">Method names</strong>: <code class="inline-code">method_name</code></li>
+<li class="list-item"><strong class="strong">Single lines</strong>: <code class="inline-code">line 42</code></li>
+<li class="list-item"><strong class="strong">Line ranges</strong>: <code class="inline-code">lines 10-20</code> or <code class="inline-code">lines 10:20</code></li>
+</ul>
+<h2 id="file-support" class="heading-2">File Support</h2>
+<p class="paragraph">Currently supports Python files with automatic syntax highlighting. The system can be extended to support other languages by adding appropriate lexers to the language mapping. </p>
+
+</section>
+</main>
+</div>
+<script>
+function toggleCodeRef(id) {
+    const content = document.getElementById(id);
+    const header = content.previousElementSibling;
+    const toggle = header.querySelector('.code-ref-toggle');
+    
+    if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        toggle.textContent = '▼';
+    } else {
+        content.classList.add('show');
+        toggle.textContent = '▲';
+    }
+}
+</script>
+</body>
+</html>

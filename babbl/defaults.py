@@ -65,7 +65,7 @@ section {
     padding: 1rem; 
     border: none;
     overflow-x: auto;
-    margin: 1rem 0;
+    margin: 0;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
     font-size: 0.75rem;
     line-height: 1.4;
@@ -191,7 +191,6 @@ hr {
     margin: 1rem 0;
 }
 
-/* Table of Contents Styles */
 .container {
     position: relative;
     max-width: 750px;
@@ -239,6 +238,62 @@ hr {
 
 .content {
     width: 100%;
+}
+
+/* Code Reference Styles */
+.code-reference {
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.code-ref-header {
+    background: #f8f9fa;
+    padding: 0.75rem .9rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.code-ref-header:hover {
+    background: #e9ecef;
+}
+
+.code-ref-title {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.code-ref-toggle {
+    font-size: 0.75rem;
+    color: #6c757d;
+    transition: transform 0.2s ease;
+}
+
+.code-ref-content {
+    display: none;
+    padding: 0;
+    background: #fff;
+}
+
+.code-ref-content.show {
+    display: block;
+}
+
+.code-ref-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem 1rem;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    margin: 1rem 0;
 }
 
 /* Responsive design for mobile */

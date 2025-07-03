@@ -213,3 +213,36 @@ def parse_table_from_text(text: str) -> Table | None:
         return Table(headers, rows)
     except Exception:
         return None
+
+
+class CodeReference(block.BlockElement):
+    """Code reference element for referencing code from files."""
+
+    priority = 7
+    pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
+
+    def __init__(self, file_path: str, reference: str):
+        self.file_path = file_path
+        self.reference = reference
+        self.children = []
+
+    @classmethod
+    def match(cls, source: "Source") -> bool:
+        """Check if the current position contains a code reference."""
+        line = source._buffer[source.pos :].split("\n")[0]
+        return bool(cls.pattern.match(line.strip()))
+
+    @classmethod
+    def parse(cls, source: "Source") -> "CodeReference":
+        """Parse a code reference from the source."""
+        line = source.next_line().strip()
+        source.consume()
+
+        match = cls.pattern.match(line)
+        if not match:
+            raise ValueError("Invalid code reference format")
+
+        file_path = match.group(1)
+        reference = match.group(2).strip()
+
+        return cls(file_path, reference)
