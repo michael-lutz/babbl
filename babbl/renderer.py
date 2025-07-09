@@ -182,6 +182,7 @@ class HTMLRenderer(BaseRenderer):
         css_file_path: Optional[Path] = None,
         show_toc: bool = False,
         base_path: Optional[Path] = None,
+        current_file_path: Optional[Path] = None,
     ):
         """
         Initialize the HTML renderer.
@@ -191,13 +192,14 @@ class HTMLRenderer(BaseRenderer):
             css_file_path: Path to CSS file
             show_toc: Whether to show table of contents for h1 headings
             base_path: Base path for resolving code reference file paths
+            current_file_path: Path to the current markdown file being processed
         """
         super().__init__()
         self.highlight_syntax = highlight_syntax
         self.pygments_formatter = None
         self.show_toc = show_toc
         self.toc_headings: list[tuple[str, str]] = []  # track h1 headings for toc
-        self.code_processor = CodeReferenceProcessor(base_path)
+        self.code_processor = CodeReferenceProcessor(base_path, current_file_path)
 
         if css_file_path:
             self.base_css = load_file(css_file_path)
@@ -550,10 +552,15 @@ function toggleCodeRef(id) {{
     def render_code_reference(self, element: Any) -> str:
         """Render a code reference element."""
         # extract code from the referenced file
-        code = self.code_processor.extract_code(element.file_path, element.reference)
+        syntax_type = getattr(element, 'syntax_type', 'old')
+        code = self.code_processor.extract_code(element.file_path, element.reference, syntax_type)
 
         if not code:
-            return f'<div class="code-ref-error">Code reference not found: {element.file_path} - {element.reference}</div>\n'
+            if syntax_type == "hash":
+                error_msg = f'Code reference not found: #{element.reference}'
+            else:
+                error_msg = f'Code reference not found: {element.file_path} - {element.reference}'
+            return f'<div class="code-ref-error">{error_msg}</div>\n'
 
         # create a unique id for the dropdown
         import uuid
@@ -564,7 +571,11 @@ function toggleCodeRef(id) {{
         escaped_code = html.escape(code)
 
         # determine language for syntax highlighting
-        file_ext = Path(element.file_path).suffix.lower()
+        if element.file_path:
+            file_ext = Path(element.file_path).suffix.lower()
+        else:
+            file_ext = ".py"  # default for hash references
+            
         lang_map = {
             ".py": "python",
             ".js": "javascript",
@@ -620,9 +631,15 @@ function toggleCodeRef(id) {{
         else:
             code_html = f'<pre class="code-block language-{language}"><code>{escaped_code}</code></pre>'
 
+        # Generate appropriate title based on syntax type
+        if syntax_type == "hash":
+            title = f"#{element.reference}"
+        else:
+            title = f"{element.file_path} - {element.reference}"
+
         return f"""<div class="code-reference">
 <div class="code-ref-header" onclick="toggleCodeRef('{dropdown_id}')">
-<span class="code-ref-title">{element.file_path} - {element.reference}</span>
+<span class="code-ref-title">{title}</span>
 <span class="code-ref-toggle">▼</span>
 </div>
 <div class="code-ref-content" id="{dropdown_id}">

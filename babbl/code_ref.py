@@ -9,27 +9,36 @@ from typing import List, Optional, Tuple
 class CodeReferenceProcessor:
     """Process code references and extract code from Python files."""
 
-    def __init__(self, base_path: Optional[Path] = None):
+    def __init__(self, base_path: Optional[Path] = None, current_file_path: Optional[Path] = None):
         """
         Initialize the code reference processor.
 
         Args:
-            base_path: Base path for resolving relative file paths
+            base_path: Base path for resolving relative file paths (fallback)
+            current_file_path: Path to the current markdown file being processed
         """
         self.base_path = base_path or Path.cwd()
+        self.current_file_path = current_file_path
+        self.current_file_cache = {}  # Cache for current file analysis
 
-    def extract_code(self, file_path: str, reference: str) -> Optional[str]:
+    def extract_code(self, file_path: str, reference: str, syntax_type: str = "link") -> Optional[str]:
         """
         Extract code from a file based on the reference.
 
         Args:
-            file_path: Path to the Python file
+            file_path: Path to the Python file (can be empty for hash references)
             reference: Reference string (function name, class name, line numbers, etc.)
+            syntax_type: Type of syntax used ("link", "hash")
 
         Returns:
             Extracted code string or None if not found
         """
         try:
+            # Handle hash references that don't specify a file
+            if syntax_type == "hash" and not file_path:
+                # For hash references without file path, search in common locations
+                return self._extract_hash_reference(reference)
+            
             full_path = self._resolve_path(file_path)
             if not full_path.exists():
                 return None
@@ -57,10 +66,18 @@ class CodeReferenceProcessor:
             return None
 
     def _resolve_path(self, file_path: str) -> Path:
-        """Resolve file path relative to base path."""
+        """Resolve file path relative to current markdown file or base path."""
         path = Path(file_path)
         if path.is_absolute():
             return path
+        
+        # If we have a current file path, resolve relative to its directory
+        if self.current_file_path:
+            relative_path = self.current_file_path.parent / path
+            if relative_path.exists():
+                return relative_path
+        
+        # Fallback to base path
         return self.base_path / path
 
     def _extract_by_function_class(self, lines: List[str], reference: str) -> Optional[str]:
@@ -126,6 +143,40 @@ class CodeReferenceProcessor:
                 return i
 
         return len(lines)
+
+    def _extract_hash_reference(self, reference: str) -> Optional[str]:
+        """
+        Extract code for a hash reference by searching in common locations.
+        
+        Args:
+            reference: The reference name (function, class, etc.)
+            
+        Returns:
+            Extracted code string or None if not found
+        """
+        # Common Python file locations to search
+        search_paths = [
+            self.base_path / "**/*.py",
+        ]
+        
+        import glob
+        
+        for pattern in search_paths:
+            for file_path in glob.glob(str(pattern), recursive=True):
+                try:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        content = f.read()
+                        lines = content.split("\n")
+                    
+                    # Try to find the reference in this file
+                    code = self._extract_by_function_class(lines, reference)
+                    if code:
+                        return code
+                        
+                except Exception:
+                    continue
+                    
+        return None
 
     def get_file_info(self, file_path: str) -> Optional[dict]:
         """

@@ -7,57 +7,75 @@ description: "Testing code reference functionality in Babbl"
 
 # Code References
 
-Babbl supports referencing code from Python files using the `@code-ref` directive.
+Babbl supports referencing code from Python files using markdown link syntax and simple hash references.
 
-## Function References
+## Markdown Link Syntax
+
+### Function References
 
 Reference a function by name:
 
-```markdown
-@code-ref babbl/cli.py render
-```
+[Render function](../babbl/cli.py#render)
 
-@code-ref babbl/cli.py render
-
-## Class References
+### Class References
 
 Reference an entire class:
 
-@code-ref babbl/renderer.py HTMLRenderer
+[HTML Renderer](../babbl/renderer.py#HTMLRenderer)
 
-## Method References
+### Method References
 
 Reference a specific method:
 
-@code-ref babbl/renderer.py render_fenced_code
+[Render fenced code](../babbl/renderer.py#render_fenced_code)
 
-## Line Number References
+### Line Number References
 
 Reference a specific line:
 
-@code-ref babbl/parser.py line 1
+[Parser line 1](../babbl/parser.py#L1)
 
-[babbl/parser.py line 1](../babbl/parser.py#L1)
+[Load file line 8](../babbl/load.py#L8)
 
-## Line Range References
+### Line Range References
 
 Reference a range of lines:
 
-@code-ref babbl/elements.py lines 1-20
+[Elements lines 1-20](../babbl/elements.py#L1-20)
+
+## Simple Hash References
+
+For quick references without specifying the file path:
+
+### Class References
+
+#HTMLRenderer
+
+#BabblParser
+
+#CodeReferenceProcessor
+
+### Function References
+
+#extract_code
+
+#render_code_reference
+
+#load_file
 
 ## Error Handling
 
 If a reference doesn't exist, you'll see an error:
 
-@code-ref babbl/cli.py nonexistent_function
+[Nonexistent function](../babbl/cli.py#nonexistent_function)
 
 ## Multiple References
 
 You can include multiple references in the same document:
 
-@code-ref babbl/code_ref.py CodeReferenceProcessor
+[Code reference processor](../babbl/code_ref.py#CodeReferenceProcessor)
 
-@code-ref babbl/defaults.py line 1
+[Defaults line 1](../babbl/defaults.py#L1)
 
 ## Usage Examples
 
@@ -70,8 +88,26 @@ Code references are useful for:
 
 ## Supported Reference Types
 
+- **Class names**: `ClassName`
 - **Function names**: `function_name`
-- **Class names**: `ClassName` 
 - **Method names**: `method_name`
-- **Single lines**: `line 42`
-- **Line ranges**: `lines 10-20` or `lines 10:20` 
+- **Single lines**: `L25` or `line 25`
+- **Line ranges**: `L10-20`
+
+## Syntax Examples
+
+### Markdown Link Format
+```markdown
+[Description](../path/to/file.py#reference)
+```
+
+### Hash Reference Format
+```markdown
+#reference
+```
+
+Where `reference` can be:
+- Class name: `HTMLRenderer`
+- Function name: `render`
+- Line number: `L25`
+- Line range: `L10-20`

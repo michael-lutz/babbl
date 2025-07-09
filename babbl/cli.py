@@ -31,7 +31,7 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
         output_path = output
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path)
+    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path, current_file_path=input_file)
 
     try:
         contents = load_file(input_file)
@@ -79,10 +79,12 @@ def build(
     click.echo(f"Found {len(md_files)} markdown files to process...")
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path)
 
     for md_file in md_files:
         try:
+            # Create a renderer for each file to pass the current file path
+            renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path, current_file_path=md_file)
+            
             rel_path = md_file.relative_to(input_dir)
             output_file = output_dir / rel_path.with_suffix(".html")
             output_file.parent.mkdir(parents=True, exist_ok=True)

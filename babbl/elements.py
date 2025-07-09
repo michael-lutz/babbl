@@ -1,7 +1,7 @@
 """Custom elements that are not supported by marko."""
 
 import re
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
 from marko import block
 from marko.element import Element
@@ -219,18 +219,26 @@ class CodeReference(block.BlockElement):
     """Code reference element for referencing code from files."""
 
     priority = 7
-    pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
+    # Support both old @code-ref syntax and new markdown link syntax
+    old_pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
+    # Pattern for [description](path#anchor) format
+    link_pattern = re.compile(r"^\s*\[([^\]]+)\]\(([^)]+)\)\s*$", re.MULTILINE)
+    # Pattern for simple #reference format
+    hash_pattern = re.compile(r"^\s*#([a-zA-Z_][a-zA-Z0-9_]*)\s*$", re.MULTILINE)
 
-    def __init__(self, file_path: str, reference: str):
+    def __init__(self, file_path: str, reference: str, syntax_type: str = "old"):
         self.file_path = file_path
         self.reference = reference
+        self.syntax_type = syntax_type  # "old", "link", or "hash"
         self.children = []
 
     @classmethod
     def match(cls, source: "Source") -> bool:
         """Check if the current position contains a code reference."""
-        line = source._buffer[source.pos :].split("\n")[0]
-        return bool(cls.pattern.match(line.strip()))
+        line = source._buffer[source.pos :].split("\n")[0].strip()
+        return (bool(cls.old_pattern.match(line)) or 
+                bool(cls.link_pattern.match(line)) or 
+                bool(cls.hash_pattern.match(line)))
 
     @classmethod
     def parse(cls, source: "Source") -> "CodeReference":
@@ -238,11 +246,74 @@ class CodeReference(block.BlockElement):
         line = source.next_line().strip()
         source.consume()
 
-        match = cls.pattern.match(line)
-        if not match:
-            raise ValueError("Invalid code reference format")
+        # Try old @code-ref syntax first
+        match = cls.old_pattern.match(line)
+        if match:
+            file_path = match.group(1)
+            reference = match.group(2).strip()
+            return cls(file_path, reference, "old")
 
-        file_path = match.group(1)
-        reference = match.group(2).strip()
+        # Try markdown link syntax
+        match = cls.link_pattern.match(line)
+        if match:
+            description = match.group(1)
+            url = match.group(2)
+            
+            # Parse the URL to extract file path and reference
+            file_path, reference = cls._parse_link_url(url, description)
+            return cls(file_path, reference, "link")
 
-        return cls(file_path, reference)
+        # Try simple hash reference
+        match = cls.hash_pattern.match(line)
+        if match:
+            reference = match.group(1)
+            # For hash references, we'll need to determine the file path from context
+            # For now, use empty string - this will be handled by the processor
+            return cls("", reference, "hash")
+
+        raise ValueError("Invalid code reference format")
+
+    @classmethod
+    def _parse_link_url(cls, url: str, description: str) -> tuple[str, str]:
+        """Parse a link URL to extract file path and reference."""
+        # Handle anchor-style references like ../path/file.py#L10
+        if '#' in url:
+            file_path, anchor = url.split('#', 1)
+            
+            # Convert GitHub-style line anchors to our format
+            if anchor.startswith('L'):
+                try:
+                    # Check for range format L1-20
+                    if '-' in anchor:
+                        line_part = anchor[1:]  # Remove 'L'
+                        start_line, end_line = line_part.split('-', 1)
+                        reference = f"lines {start_line}-{end_line}"
+                    else:
+                        line_num = int(anchor[1:])
+                        reference = f"line {line_num}"
+                except ValueError:
+                    reference = anchor
+            else:
+                reference = anchor
+        else:
+            file_path = url
+            # Try to extract reference from description
+            # Look for patterns like "line 1", "lines 1-5", function names, etc.
+            desc_lower = description.lower()
+            if 'line ' in desc_lower:
+                # Extract line reference from description
+                line_match = re.search(r'line\s+(\d+)', desc_lower)
+                if line_match:
+                    reference = f"line {line_match.group(1)}"
+                else:
+                    # Try range
+                    range_match = re.search(r'lines\s+(\d+)[-:]\s*(\d+)', desc_lower)
+                    if range_match:
+                        reference = f"lines {range_match.group(1)}-{range_match.group(2)}"
+                    else:
+                        reference = description
+            else:
+                # Assume description is the reference (function/class name)
+                reference = description.split()[-1] if description else "content"
+        
+        return file_path, reference
