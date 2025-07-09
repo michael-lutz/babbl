@@ -45,7 +45,12 @@ class CodeReferenceProcessor:
 
             with open(full_path, "r", encoding="utf-8") as f:
                 content = f.read()
-                lines = content.split("\n")
+                
+            # Handle HTML files differently
+            if file_path.lower().endswith('.html'):
+                return self._extract_html_content(content, reference)
+                
+            lines = content.split("\n")
 
             # try different reference types
             code = self._extract_by_function_class(lines, reference)
@@ -177,6 +182,60 @@ class CodeReferenceProcessor:
                     continue
                     
         return None
+
+    def _extract_html_content(self, content: str, reference: str) -> Optional[str]:
+        """
+        Extract HTML content based on the reference.
+        
+        Args:
+            content: The HTML file content
+            reference: Reference string (e.g., "body", "content", or element ID)
+            
+        Returns:
+            Extracted HTML content or None if not found
+        """
+        content = content.strip()
+        
+        # If reference is "body", extract body content
+        if reference.lower() == "body":
+            # Find body tag and extract its content
+            body_start = content.lower().find('<body')
+            if body_start != -1:
+                # Find end of opening body tag
+                body_tag_end = content.find('>', body_start)
+                if body_tag_end != -1:
+                    # Find closing body tag
+                    body_end = content.lower().rfind('</body>')
+                    if body_end != -1:
+                        return content[body_tag_end + 1:body_end].strip()
+            
+            # If no body tag found, return entire content
+            return content
+            
+        # If reference is "content" or similar, return entire content
+        if reference.lower() in ["content", "all", "full"]:
+            return content
+            
+        # Try to find element by ID
+        if reference.startswith('#'):
+            element_id = reference[1:]
+            # Look for element with this ID
+            import re
+            pattern = rf'<[^>]+id\s*=\s*["\']?{re.escape(element_id)}["\']?[^>]*>'
+            match = re.search(pattern, content, re.IGNORECASE)
+            if match:
+                # Find the matching closing tag (simplified approach)
+                start_pos = match.start()
+                tag_name = re.match(r'<(\w+)', match.group()).group(1)
+                
+                # Find the closing tag
+                end_pattern = rf'</{tag_name}>'
+                end_match = re.search(end_pattern, content[start_pos:], re.IGNORECASE)
+                if end_match:
+                    return content[start_pos:start_pos + end_match.end()].strip()
+                    
+        # Default: return entire content
+        return content
 
     def get_file_info(self, file_path: str) -> Optional[dict]:
         """

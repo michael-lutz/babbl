@@ -562,6 +562,10 @@ function toggleCodeRef(id) {{
                 error_msg = f'Code reference not found: {element.file_path} - {element.reference}'
             return f'<div class="code-ref-error">{error_msg}</div>\n'
 
+        # Check if this is an HTML file - if so, render as HTML directly
+        if element.file_path and element.file_path.lower().endswith('.html'):
+            return f'<div class="html-inclusion">\n{code}\n</div>\n'
+
         # create a unique id for the dropdown
         import uuid
 

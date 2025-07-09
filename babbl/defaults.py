@@ -305,6 +305,16 @@ hr {
     margin: 1rem 0;
 }
 
+/* HTML Inclusion Styles */
+.html-inclusion {
+    margin: 1rem 0;
+    border: none;
+    border-radius: 0;
+    overflow: auto;
+    background: transparent;
+    padding: 0;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 768px) {
     .toc {

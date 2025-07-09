@@ -297,23 +297,27 @@ class CodeReference(block.BlockElement):
                 reference = anchor
         else:
             file_path = url
-            # Try to extract reference from description
-            # Look for patterns like "line 1", "lines 1-5", function names, etc.
-            desc_lower = description.lower()
-            if 'line ' in desc_lower:
-                # Extract line reference from description
-                line_match = re.search(r'line\s+(\d+)', desc_lower)
-                if line_match:
-                    reference = f"line {line_match.group(1)}"
-                else:
-                    # Try range
-                    range_match = re.search(r'lines\s+(\d+)[-:]\s*(\d+)', desc_lower)
-                    if range_match:
-                        reference = f"lines {range_match.group(1)}-{range_match.group(2)}"
-                    else:
-                        reference = description
+            # For HTML files, default to extracting body content
+            if file_path.lower().endswith('.html'):
+                reference = "body"
             else:
-                # Assume description is the reference (function/class name)
-                reference = description.split()[-1] if description else "content"
+                # Try to extract reference from description
+                # Look for patterns like "line 1", "lines 1-5", function names, etc.
+                desc_lower = description.lower()
+                if 'line ' in desc_lower:
+                    # Extract line reference from description
+                    line_match = re.search(r'line\s+(\d+)', desc_lower)
+                    if line_match:
+                        reference = f"line {line_match.group(1)}"
+                    else:
+                        # Try range
+                        range_match = re.search(r'lines\s+(\d+)[-:]\s*(\d+)', desc_lower)
+                        if range_match:
+                            reference = f"lines {range_match.group(1)}-{range_match.group(2)}"
+                        else:
+                            reference = description
+                else:
+                    # Assume description is the reference (function/class name)
+                    reference = description.split()[-1] if description else "content"
         
         return file_path, reference
