@@ -37,6 +37,8 @@ Reference a specific line:
 
 @code-ref babbl/parser.py line 1
 
+[babbl/parser.py line 1](../babbl/parser.py#L1)
+
 ## Line Range References
 
 Reference a range of lines:
