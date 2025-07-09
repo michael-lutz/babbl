@@ -194,7 +194,12 @@ class CodeReferenceProcessor:
         Returns:
             Extracted HTML content or None if not found
         """
+        if not content:
+            return None
+            
         content = content.strip()
+        if not content:
+            return None
         
         # If reference is "body", extract body content
         if reference.lower() == "body":
@@ -207,7 +212,8 @@ class CodeReferenceProcessor:
                     # Find closing body tag
                     body_end = content.lower().rfind('</body>')
                     if body_end != -1:
-                        return content[body_tag_end + 1:body_end].strip()
+                        extracted = content[body_tag_end + 1:body_end].strip()
+                        return extracted if extracted else content
             
             # If no body tag found, return entire content
             return content
@@ -226,13 +232,16 @@ class CodeReferenceProcessor:
             if match:
                 # Find the matching closing tag (simplified approach)
                 start_pos = match.start()
-                tag_name = re.match(r'<(\w+)', match.group()).group(1)
-                
-                # Find the closing tag
-                end_pattern = rf'</{tag_name}>'
-                end_match = re.search(end_pattern, content[start_pos:], re.IGNORECASE)
-                if end_match:
-                    return content[start_pos:start_pos + end_match.end()].strip()
+                tag_name_match = re.match(r'<(\w+)', match.group())
+                if tag_name_match:
+                    tag_name = tag_name_match.group(1)
+                    
+                    # Find the closing tag
+                    end_pattern = rf'</{tag_name}>'
+                    end_match = re.search(end_pattern, content[start_pos:], re.IGNORECASE)
+                    if end_match:
+                        extracted = content[start_pos:start_pos + end_match.end()].strip()
+                        return extracted if extracted else content
                     
         # Default: return entire content
         return content
