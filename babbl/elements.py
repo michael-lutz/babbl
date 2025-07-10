@@ -182,7 +182,9 @@ def parse_table_from_text(text: str) -> Table | None:
         return None
 
     # check for header separator
-    has_separator = any(re.match(r"^\s*\|[\s\-:|]+\|\s*$", line) for line in table_lines)
+    has_separator = any(
+        re.match(r"^\s*\|[\s\-:|]+\|\s*$", line) for line in table_lines
+    )
 
     if not has_separator:
         return None
@@ -221,8 +223,10 @@ class CodeReference(block.BlockElement):
     priority = 7
     # Support both old @code-ref syntax and new markdown link syntax
     old_pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
-    # Pattern for [description](path#anchor) format
-    link_pattern = re.compile(r"^\s*\[([^\]]+)\]\(([^)]+)\)\s*$", re.MULTILINE)
+    # Pattern for [description](path#anchor) format - only match code-like anchors
+    link_pattern = re.compile(
+        r"^\s*\[([^\]]+)\]\(([^)]*#[a-zA-Z_L][^)]*)\)\s*$", re.MULTILINE
+    )
     # Pattern for simple #reference format
     hash_pattern = re.compile(r"^\s*#([a-zA-Z_][a-zA-Z0-9_]*)\s*$", re.MULTILINE)
 
@@ -236,17 +240,21 @@ class CodeReference(block.BlockElement):
     def match(cls, source: "Source") -> bool:
         """Check if the current position contains a code reference."""
         line = source._buffer[source.pos :].split("\n")[0].strip()
-        return (bool(cls.old_pattern.match(line)) or 
-                bool(cls.link_pattern.match(line)) or 
-                bool(cls.hash_pattern.match(line)))
+        return (
+            bool(cls.old_pattern.match(line))
+            or bool(cls.link_pattern.match(line))
+            or bool(cls.hash_pattern.match(line))
+        )
 
     @classmethod
     def parse(cls, source: "Source") -> "CodeReference":
         """Parse a code reference from the source."""
-        next_line = source.next_line()
-        if next_line is None:
+        # Get the current line and consume it properly
+        line = source.next_line()
+        if line is None:
             raise ValueError("Expected code reference line but reached end of source")
-        line = next_line.strip()
+
+        line = line.strip()
         source.consume()
 
         # Try old @code-ref syntax first
@@ -261,7 +269,7 @@ class CodeReference(block.BlockElement):
         if match:
             description = match.group(1)
             url = match.group(2)
-            
+
             # Parse the URL to extract file path and reference
             file_path, reference = cls._parse_link_url(url, description)
             return cls(file_path, reference, "link")
@@ -280,16 +288,18 @@ class CodeReference(block.BlockElement):
     def _parse_link_url(cls, url: str, description: str) -> tuple[str, str]:
         """Parse a link URL to extract file path and reference."""
         # Handle anchor-style references like ../path/file.py#L10
-        if '#' in url:
-            file_path, anchor = url.split('#', 1)
-            
+        if "#" in url:
+            file_path, anchor = url.split("#", 1)
+
             # Convert GitHub-style line anchors to our format
-            if anchor.startswith('L'):
+            if anchor.startswith("L"):
                 try:
-                    # Check for range format L1-20
-                    if '-' in anchor:
-                        line_part = anchor[1:]  # Remove 'L'
-                        start_line, end_line = line_part.split('-', 1)
+                    # Check for range format L1-L20
+                    if "-L" in anchor:
+                        # Format: L1-L20
+                        parts = anchor.split("-L")
+                        start_line = parts[0][1:]  # Remove 'L' from start
+                        end_line = parts[1]
                         reference = f"lines {start_line}-{end_line}"
                     else:
                         line_num = int(anchor[1:])
@@ -301,26 +311,30 @@ class CodeReference(block.BlockElement):
         else:
             file_path = url
             # For HTML files, default to extracting body content
-            if file_path.lower().endswith('.html'):
+            if file_path.lower().endswith(".html"):
                 reference = "body"
             else:
                 # Try to extract reference from description
                 # Look for patterns like "line 1", "lines 1-5", function names, etc.
                 desc_lower = description.lower()
-                if 'line ' in desc_lower:
+                if "line " in desc_lower:
                     # Extract line reference from description
-                    line_match = re.search(r'line\s+(\d+)', desc_lower)
+                    line_match = re.search(r"line\s+(\d+)", desc_lower)
                     if line_match:
                         reference = f"line {line_match.group(1)}"
                     else:
                         # Try range
-                        range_match = re.search(r'lines\s+(\d+)[-:]\s*(\d+)', desc_lower)
+                        range_match = re.search(
+                            r"lines\s+(\d+)[-:]\s*(\d+)", desc_lower
+                        )
                         if range_match:
-                            reference = f"lines {range_match.group(1)}-{range_match.group(2)}"
+                            reference = (
+                                f"lines {range_match.group(1)}-{range_match.group(2)}"
+                            )
                         else:
                             reference = description
                 else:
                     # Assume description is the reference (function/class name)
                     reference = description.split()[-1] if description else "content"
-        
+
         return file_path, reference

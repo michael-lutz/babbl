@@ -436,11 +436,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="function-references" class="heading-3">Function References</h3>
 <p class="paragraph">Reference a function by name:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0af9e02e')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-31493bf4')">
 <span class="code-ref-title">../babbl/cli.py - render</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-0af9e02e">
+<div class="code-ref-content" id="code-ref-31493bf4">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">toc</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a markdown file to HTML.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -460,6 +460,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully rendered: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error rendering file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Full traceback:</span><span class="se">\n</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
 </pre></div>
 
@@ -468,11 +469,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="class-references" class="heading-3">Class References</h3>
 <p class="paragraph">Reference an entire class:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ee36f843')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-aca90d54')">
 <span class="code-ref-title">../babbl/renderer.py - HTMLRenderer</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-ee36f843">
+<div class="code-ref-content" id="code-ref-aca90d54">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
 
@@ -550,11 +551,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="method-references" class="heading-3">Method References</h3>
 <p class="paragraph">Reference a specific method:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-fbcd4990')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-e2584992')">
 <span class="code-ref-title">../babbl/renderer.py - render_fenced_code</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-fbcd4990">
+<div class="code-ref-content" id="code-ref-e2584992">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_fenced_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">FencedCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a fenced code block&quot;&quot;&quot;</span>
         <span class="k">pass</span>
@@ -565,22 +566,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="line-number-references" class="heading-3">Line Number References</h3>
 <p class="paragraph">Reference a specific line:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-b03317a1')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-45747a2a')">
 <span class="code-ref-title">../babbl/parser.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-b03317a1">
+<div class="code-ref-content" id="code-ref-45747a2a">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom parser with table support for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-07a0013c')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-d6e2f2cb')">
 <span class="code-ref-title">../babbl/load.py - line 8</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-07a0013c">
+<div class="code-ref-content" id="code-ref-d6e2f2cb">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </pre></div>
 
@@ -589,11 +590,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="line-range-references" class="heading-3">Line Range References</h3>
 <p class="paragraph">Reference a range of lines:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-72141066')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-9d121740')">
 <span class="code-ref-title">../babbl/elements.py - lines 1-20</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-72141066">
+<div class="code-ref-content" id="code-ref-9d121740">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom elements that are not supported by marko.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -622,11 +623,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p class="paragraph">For quick references without specifying the file path:</p>
 <h3 id="class-references" class="heading-3">Class References</h3>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-e1857e9b')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-9fe1e74c')">
 <span class="code-ref-title">#HTMLRenderer</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-e1857e9b">
+<div class="code-ref-content" id="code-ref-9fe1e74c">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
 
@@ -702,11 +703,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-f4e277cd')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-5b510850')">
 <span class="code-ref-title">#BabblParser</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-f4e277cd">
+<div class="code-ref-content" id="code-ref-5b510850">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
 
@@ -725,11 +726,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-97c024bb')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-23e3cc6c')">
 <span class="code-ref-title">#CodeReferenceProcessor</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-97c024bb">
+<div class="code-ref-content" id="code-ref-23e3cc6c">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
 
@@ -918,7 +919,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="sd">        Returns:</span>
 <span class="sd">            Extracted HTML content or None if not found</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+            
         <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         
         <span class="c1"># If reference is &quot;body&quot;, extract body content</span>
         <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span>
@@ -931,7 +937,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                     <span class="c1"># Find closing body tag</span>
                     <span class="n">body_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;&lt;/body&gt;&#39;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">body_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
             
             <span class="c1"># If no body tag found, return entire content</span>
             <span class="k">return</span> <span class="n">content</span>
@@ -950,13 +957,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                 <span class="c1"># Find the matching closing tag (simplified approach)</span>
                 <span class="n">start_pos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                <span class="n">tag_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;(\w+)&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                
-                <span class="c1"># Find the closing tag</span>
-                <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
-                <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:</span><span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">tag_name_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;(\w+)&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">tag_name_match</span><span class="p">:</span>
+                    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">tag_name_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    
+                    <span class="c1"># Find the closing tag</span>
+                    <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+                    <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
+                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:</span><span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
                     
         <span class="c1"># Default: return entire content</span>
         <span class="k">return</span> <span class="n">content</span>
@@ -1011,11 +1021,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <h3 id="function-references" class="heading-3">Function References</h3>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-4f638eb6')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0d6449f1')">
 <span class="code-ref-title">#extract_code</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-4f638eb6">
+<div class="code-ref-content" id="code-ref-0d6449f1">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">syntax_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Extract code from a file based on the reference.</span>
@@ -1069,11 +1079,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-cebf9e55')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-7ace1be4')">
 <span class="code-ref-title">#render_code_reference</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-cebf9e55">
+<div class="code-ref-content" id="code-ref-7ace1be4">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_code_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a code reference element&quot;&quot;&quot;</span>
         <span class="k">pass</span>
@@ -1082,11 +1092,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-a182ee3e')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-f42c299b')">
 <span class="code-ref-title">#load_file</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-a182ee3e">
+<div class="code-ref-content" id="code-ref-f42c299b">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the contents of a file as a string.&quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -1101,11 +1111,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="multiple-references" class="heading-2">Multiple References</h2>
 <p class="paragraph">You can include multiple references in the same document:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-2448fb6a')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0b5ebb63')">
 <span class="code-ref-title">../babbl/code_ref.py - CodeReferenceProcessor</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-2448fb6a">
+<div class="code-ref-content" id="code-ref-0b5ebb63">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
 
@@ -1294,7 +1304,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="sd">        Returns:</span>
 <span class="sd">            Extracted HTML content or None if not found</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+            
         <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         
         <span class="c1"># If reference is &quot;body&quot;, extract body content</span>
         <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span>
@@ -1307,7 +1322,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                     <span class="c1"># Find closing body tag</span>
                     <span class="n">body_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;&lt;/body&gt;&#39;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">body_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
             
             <span class="c1"># If no body tag found, return entire content</span>
             <span class="k">return</span> <span class="n">content</span>
@@ -1326,13 +1342,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                 <span class="c1"># Find the matching closing tag (simplified approach)</span>
                 <span class="n">start_pos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                <span class="n">tag_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;(\w+)&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                
-                <span class="c1"># Find the closing tag</span>
-                <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
-                <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:</span><span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">tag_name_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;(\w+)&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">tag_name_match</span><span class="p">:</span>
+                    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">tag_name_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    
+                    <span class="c1"># Find the closing tag</span>
+                    <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+                    <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
+                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:</span><span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
                     
         <span class="c1"># Default: return entire content</span>
         <span class="k">return</span> <span class="n">content</span>
@@ -1386,11 +1405,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-6be92fd6')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-88b558f3')">
 <span class="code-ref-title">../babbl/defaults.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-6be92fd6">
+<div class="code-ref-content" id="code-ref-88b558f3">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;CSS configuration system for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
@@ -1410,7 +1429,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="list-item"><strong class="strong">Function names</strong>: <code class="inline-code">function_name</code></li>
 <li class="list-item"><strong class="strong">Method names</strong>: <code class="inline-code">method_name</code></li>
 <li class="list-item"><strong class="strong">Single lines</strong>: <code class="inline-code">L25</code> or <code class="inline-code">line 25</code></li>
-<li class="list-item"><strong class="strong">Line ranges</strong>: <code class="inline-code">L10-20</code></li>
+<li class="list-item"><strong class="strong">Line ranges</strong>: <code class="inline-code">L10-L20</code></li>
 </ul>
 <h2 id="syntax-examples" class="heading-2">Syntax Examples</h2>
 <h3 id="markdown-link-format" class="heading-3">Markdown Link Format</h3>
@@ -1426,7 +1445,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="list-item">Class name: <code class="inline-code">HTMLRenderer</code></li>
 <li class="list-item">Function name: <code class="inline-code">render</code></li>
 <li class="list-item">Line number: <code class="inline-code">L25</code></li>
-<li class="list-item">Line range: <code class="inline-code">L10-20</code></li>
+<li class="list-item">Line range: <code class="inline-code">L10-L20</code></li>
 </ul>
 
 </section>

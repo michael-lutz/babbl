@@ -129,7 +129,7 @@ babbl/
 - `[Parser class](../babbl/parser.py#BabblParser)` - Extract class
 - `[Render function](../babbl/cli.py#render)` - Extract function  
 - `[Line 15](../babbl/load.py#L15)` - Extract single line
-- `[Lines 10-20](../babbl/renderer.py#L10-20)` - Extract line range
+- `[Lines 10-20](../babbl/renderer.py#L10-L20)` - Extract line range
 
 ### Simple Hash References
 - `#HTMLRenderer` - Extract class from any file in project

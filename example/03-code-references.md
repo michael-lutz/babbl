@@ -41,7 +41,7 @@ Reference a specific line:
 
 Reference a range of lines:
 
-[Elements lines 1-20](../babbl/elements.py#L1-20)
+[Elements lines 1-20](../babbl/elements.py#L1-L20)
 
 ## Simple Hash References
 
@@ -92,7 +92,7 @@ Code references are useful for:
 - **Function names**: `function_name`
 - **Method names**: `method_name`
 - **Single lines**: `L25` or `line 25`
-- **Line ranges**: `L10-20`
+- **Line ranges**: `L10-L20`
 
 ## Syntax Examples
 
@@ -110,4 +110,4 @@ Where `reference` can be:
 - Class name: `HTMLRenderer`
 - Function name: `render`
 - Line number: `L25`
-- Line range: `L10-20`
+- Line range: `L10-L20`
