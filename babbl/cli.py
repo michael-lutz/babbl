@@ -1,5 +1,6 @@
 """Command-line interface for babbl."""
 
+import traceback
 from pathlib import Path
 from typing import Optional
 
@@ -42,6 +43,7 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
         click.echo(f"Successfully rendered: {output_path}")
     except Exception as e:
         click.echo(f"Error rendering file: {e}", err=True)
+        click.echo(f"Full traceback:\n{traceback.format_exc()}", err=True)
         raise click.Abort()
 
 
@@ -97,5 +99,6 @@ def build(
 
         except Exception as e:
             click.echo(f"✗ Error processing {md_file.name}: {e}", err=True)
+            click.echo(f"Full traceback:\n{traceback.format_exc()}", err=True)
 
     click.echo(f"\nBuild complete! Output directory: {output_dir}")
