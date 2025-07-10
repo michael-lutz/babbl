@@ -223,11 +223,11 @@ class CodeReference(block.BlockElement):
     priority = 7
     # Support both old @code-ref syntax and new markdown link syntax
     old_pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
-    # Pattern for [description](path#anchor) format - only match code-like anchors
+    # Pattern for [description](path#anchor) format - only match code-like anchors on their own line
     link_pattern = re.compile(
         r"^\s*\[([^\]]+)\]\(([^)]*#[a-zA-Z_L][^)]*)\)\s*$", re.MULTILINE
     )
-    # Pattern for simple #reference format
+    # Pattern for simple #reference format on its own line
     hash_pattern = re.compile(r"^\s*#([a-zA-Z_][a-zA-Z0-9_]*)\s*$", re.MULTILINE)
 
     def __init__(self, file_path: str, reference: str, syntax_type: str = "old"):
@@ -239,17 +239,32 @@ class CodeReference(block.BlockElement):
     @classmethod
     def match(cls, source: "Source") -> bool:
         """Check if the current position contains a code reference."""
+        if source.exhausted:
+            return False
         line = source._buffer[source.pos :].split("\n")[0].strip()
-        return (
+
+        # Check if this is a code reference pattern
+        is_match = (
             bool(cls.old_pattern.match(line))
             or bool(cls.link_pattern.match(line))
             or bool(cls.hash_pattern.match(line))
         )
 
+        # Additional check: make sure next_line() will work in parse()
+        if is_match:
+            # Test if next_line() would return None
+            test_line = source.next_line()
+            if test_line is None:
+                # If next_line() returns None, don't match to avoid the error
+                return False
+            # We don't consume here, just test
+
+        return is_match
+
     @classmethod
     def parse(cls, source: "Source") -> "CodeReference":
         """Parse a code reference from the source."""
-        # Get the current line and consume it properly
+        # Get the line using next_line()
         line = source.next_line()
         if line is None:
             raise ValueError("Expected code reference line but reached end of source")
@@ -301,6 +316,17 @@ class CodeReference(block.BlockElement):
                         start_line = parts[0][1:]  # Remove 'L' from start
                         end_line = parts[1]
                         reference = f"lines {start_line}-{end_line}"
+                    # Also check for old format L1-20 (without second L)
+                    elif "-" in anchor and anchor.count("-") == 1:
+                        # Format: L1-20
+                        parts = anchor.split("-")
+                        if parts[0].startswith("L") and parts[1].isdigit():
+                            start_line = parts[0][1:]  # Remove 'L' from start
+                            end_line = parts[1]
+                            reference = f"lines {start_line}-{end_line}"
+                        else:
+                            line_num = int(anchor[1:])
+                            reference = f"line {line_num}"
                     else:
                         line_num = int(anchor[1:])
                         reference = f"line {line_num}"
