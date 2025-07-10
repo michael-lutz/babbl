@@ -227,6 +227,8 @@ class CodeReference(block.BlockElement):
     link_pattern = re.compile(
         r"^\s*\[([^\]]+)\]\(([^)]*#[a-zA-Z_L][^)]*)\)\s*$", re.MULTILINE
     )
+    # Pattern for HTML file links without anchors
+    html_pattern = re.compile(r"^\s*\[([^\]]+)\]\(([^)]*\.html)\)\s*$", re.MULTILINE)
     # Pattern for simple #reference format on its own line
     hash_pattern = re.compile(r"^\s*#([a-zA-Z_][a-zA-Z0-9_]*)\s*$", re.MULTILINE)
 
@@ -247,6 +249,7 @@ class CodeReference(block.BlockElement):
         is_match = (
             bool(cls.old_pattern.match(line))
             or bool(cls.link_pattern.match(line))
+            or bool(cls.html_pattern.match(line))
             or bool(cls.hash_pattern.match(line))
         )
 
@@ -288,6 +291,14 @@ class CodeReference(block.BlockElement):
             # Parse the URL to extract file path and reference
             file_path, reference = cls._parse_link_url(url, description)
             return cls(file_path, reference, "link")
+
+        # Try HTML file link syntax
+        match = cls.html_pattern.match(line)
+        if match:
+            description = match.group(1)
+            file_path = match.group(2)
+            # For HTML files, use "body" as the default reference
+            return cls(file_path, "body", "html")
 
         # Try simple hash reference
         match = cls.hash_pattern.match(line)
