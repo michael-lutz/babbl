@@ -243,7 +243,10 @@ class CodeReference(block.BlockElement):
     @classmethod
     def parse(cls, source: "Source") -> "CodeReference":
         """Parse a code reference from the source."""
-        line = source.next_line().strip()
+        next_line = source.next_line()
+        if next_line is None:
+            raise ValueError("Expected code reference line but reached end of source")
+        line = next_line.strip()
         source.consume()
 
         # Try old @code-ref syntax first
