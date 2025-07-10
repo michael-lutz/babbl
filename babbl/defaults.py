@@ -315,6 +315,24 @@ hr {
     padding: 0;
 }
 
+/* Math Styles */
+.math-inline {
+    display: inline;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.math-display {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* MathML styling */
+math {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 768px) {
     .toc {

@@ -15,6 +15,12 @@ from babbl.code_ref import CodeReferenceProcessor
 from babbl.defaults import DEFAULT_CSS
 from babbl.load import load_file
 
+try:
+    from latex2mathml.converter import convert as latex_to_mathml
+    LATEX_AVAILABLE = True
+except ImportError:
+    LATEX_AVAILABLE = False
+
 if TYPE_CHECKING:
     from marko import block, element, inline
 
@@ -224,6 +230,29 @@ class HTMLRenderer(BaseRenderer):
         return html.escape(html.unescape(raw)).replace("&#x27;", "'")
 
     @staticmethod
+    def escape_html_preserve_mathml(raw: str) -> str:
+        """Escape HTML but preserve MathML tags."""
+        # Extract MathML tags and replace with placeholders
+        mathml_tags = []
+        placeholder_pattern = "###MATHML_PLACEHOLDER_{}_###"
+        
+        def replace_mathml(match):
+            mathml_tags.append(match.group(0))
+            return placeholder_pattern.format(len(mathml_tags) - 1)
+        
+        # Replace MathML tags with placeholders
+        text = re.sub(r'<math[^>]*>.*?</math>', replace_mathml, raw)
+        
+        # Escape the rest of the HTML
+        text = html.escape(html.unescape(text)).replace("&#x27;", "'")
+        
+        # Restore MathML tags
+        for i, mathml_tag in enumerate(mathml_tags):
+            text = text.replace(placeholder_pattern.format(i), mathml_tag)
+        
+        return text
+
+    @staticmethod
     def escape_url(raw: str) -> str:
         """Escape urls to prevent code injection craziness."""
         return html.escape(quote(html.unescape(raw), safe="/#:()*?=%@+,&"))
@@ -413,8 +442,9 @@ function toggleCodeRef(id) {{
         css_class = f"heading-{element.level}"
         heading_text = self.render_children(element)
 
-        # create anchor id from heading text
-        anchor_id = self.create_anchor_id(heading_text)
+        # create anchor id from heading text (remove MathML for clean anchor)
+        clean_heading_text = re.sub(r'<math[^>]*>.*?</math>', '', heading_text)
+        anchor_id = self.create_anchor_id(clean_heading_text)
 
         # track h1 headings for toc
         if (element.level == 1 or element.level == 2) and self.show_toc:
@@ -442,6 +472,39 @@ function toggleCodeRef(id) {{
 
         return anchor_id
 
+    def process_latex_math_text(self, text: str) -> str:
+        """Process LaTeX math expressions in raw text before HTML escaping."""
+        if not LATEX_AVAILABLE:
+            return text
+        
+        def replace_inline_math(match):
+            latex_code = match.group(1)
+            try:
+                # Convert LaTeX to MathML
+                mathml = latex_to_mathml(latex_code)
+                return mathml
+            except Exception:
+                # Fallback to original text if conversion fails
+                return match.group(0)
+        
+        def replace_display_math(match):
+            latex_code = match.group(1)
+            try:
+                # Convert LaTeX to MathML
+                mathml = latex_to_mathml(latex_code)
+                return f'<div class="math-display">{mathml}</div>'
+            except Exception:
+                # Fallback to original text if conversion fails
+                return match.group(0)
+        
+        # Process inline math $...$
+        text = re.sub(r'\$([^$]+)\$', replace_inline_math, text)
+        
+        # Process display math $$...$$
+        text = re.sub(r'\$\$([^$]+)\$\$', replace_display_math, text)
+        
+        return text
+
     def render_setext_heading(self, element: block.SetextHeading) -> str:
         return self.render_heading(cast("block.Heading", element))
 
@@ -462,7 +525,13 @@ function toggleCodeRef(id) {{
 
     def render_plain_text(self, element: Any) -> str:
         if isinstance(element.children, str):
-            return self.escape_html(element.children)
+            # Process LaTeX math before HTML escaping
+            text = element.children
+            if LATEX_AVAILABLE:
+                text = self.process_latex_math_text(text)
+                # Don't escape MathML tags, but escape the rest
+                return self.escape_html_preserve_mathml(text)
+            return self.escape_html(text)
         return self.render_children(element)
 
     def render_link(self, element: inline.Link) -> str:
@@ -489,7 +558,13 @@ function toggleCodeRef(id) {{
         return self.render_raw_text(cast("inline.RawText", element))
 
     def render_raw_text(self, element: inline.RawText) -> str:
-        return self.escape_html(element.children)
+        # Process LaTeX math before HTML escaping
+        text = element.children
+        if LATEX_AVAILABLE:
+            text = self.process_latex_math_text(text)
+            # Don't escape MathML tags, but escape the rest
+            return self.escape_html_preserve_mathml(text)
+        return self.escape_html(text)
 
     def render_line_break(self, element: inline.LineBreak) -> str:
         if element.soft:
