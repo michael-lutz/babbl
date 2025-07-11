@@ -326,38 +326,53 @@ function toggleCodeRef(id) {{
         meta = metadata.copy()
         res = "<header>\n"
         if "title" in meta:
-            res += f'<h1 class="title">{meta["title"]}</h1>\n'
+            title_value = self.process_math_in_metadata(meta["title"])
+            res += f'<h1 class="title">{title_value}</h1>\n'
             meta.pop("title")
         res += "<div class='metadata'>\n"
         if "author" in meta:
-            res += f'<div class="meta-field">Author: {meta["author"]}</div>\n'
+            author_value = self.process_math_in_metadata(meta["author"])
+            res += f'<div class="meta-field">Author: {author_value}</div>\n'
             meta.pop("author")
         if "date" in meta:
-            res += f'<div class="meta-field">Date: {meta["date"]}</div>\n'
+            date_value = self.process_math_in_metadata(meta["date"])
+            res += f'<div class="meta-field">Date: {date_value}</div>\n'
             meta.pop("date")
         if "summary" in meta:
-            res += f'<div class="meta-field">Summary: {meta["summary"]}</div>\n'
+            summary_value = self.process_math_in_metadata(meta["summary"])
+            res += f'<div class="meta-field">Summary: {summary_value}</div>\n'
             meta.pop("summary")
         if "description" in meta:
-            res += f'<div class="meta-field">Description: {meta["description"]}</div>\n'
+            description_value = self.process_math_in_metadata(meta["description"])
+            res += f'<div class="meta-field">Description: {description_value}</div>\n'
             meta.pop("description")
         if "tags" in meta:
-            res += f'<div class="meta-field">Tags: {", ".join(meta["tags"])}</div>\n'
+            if isinstance(meta["tags"], list):
+                processed_tags = [self.process_math_in_metadata(str(tag)) for tag in meta["tags"]]
+                res += f'<div class="meta-field">Tags: {", ".join(processed_tags)}</div>\n'
+            else:
+                tags_value = self.process_math_in_metadata(str(meta["tags"]))
+                res += f'<div class="meta-field">Tags: {tags_value}</div>\n'
             meta.pop("tags")
         if "categories" in meta:
-            res += f'<div class="meta-field">Categories: {meta["categories"]}</div>\n'
+            categories_value = self.process_math_in_metadata(meta["categories"])
+            res += f'<div class="meta-field">Categories: {categories_value}</div>\n'
             meta.pop("categories")
         if "slug" in meta:
-            res += f'<div class="meta-field">Slug: {meta["slug"]}</div>\n'
+            slug_value = self.process_math_in_metadata(meta["slug"])
+            res += f'<div class="meta-field">Slug: {slug_value}</div>\n'
             meta.pop("slug")
         if "layout" in meta:
-            res += f'<div class="meta-field">Layout: {meta["layout"]}</div>\n'
+            layout_value = self.process_math_in_metadata(meta["layout"])
+            res += f'<div class="meta-field">Layout: {layout_value}</div>\n'
             meta.pop("layout")
         if "draft" in meta:
-            res += f'<div class="meta-field">Draft: {meta["draft"]}</div>\n'
+            draft_value = self.process_math_in_metadata(meta["draft"])
+            res += f'<div class="meta-field">Draft: {draft_value}</div>\n'
             meta.pop("draft")
         for key, value in meta.items():
-            res += f'<div class="meta-field">{key}: {value}</div>\n'
+            processed_value = self.process_math_in_metadata(str(value))
+            res += f'<div class="meta-field">{key}: {processed_value}</div>\n'
         res += "</div>\n"
         res += "<hr />\n"
         res += "</header>\n"
@@ -504,6 +519,17 @@ function toggleCodeRef(id) {{
         text = re.sub(r'\$\$([^$]+)\$\$', replace_display_math, text)
         
         return text
+
+    def process_math_in_metadata(self, text: str) -> str:
+        """Process LaTeX math expressions in metadata values and escape HTML."""
+        if not LATEX_AVAILABLE:
+            return self.escape_html(text)
+        
+        # Process LaTeX math expressions
+        processed_text = self.process_latex_math_text(text)
+        
+        # Escape HTML but preserve MathML tags
+        return self.escape_html_preserve_mathml(processed_text)
 
     def render_setext_heading(self, element: block.SetextHeading) -> str:
         return self.render_heading(cast("block.Heading", element))
