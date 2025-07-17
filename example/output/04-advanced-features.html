@@ -326,6 +326,24 @@ hr {
     padding: 0;
 }
 
+/* Math Styles */
+.math-inline {
+    display: inline;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.math-display {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* MathML styling */
+math {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 768px) {
     .toc {
@@ -419,7 +437,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#advanced-features" class="toc-link">Advanced Features</a></li>
+<li><a href="#table-of-contents" class="toc-link">Table of Contents</a></li>
+<li><a href="#custom-css" class="toc-link">Custom CSS</a></li>
+<li><a href="#metadata-support" class="toc-link">Metadata Support</a></li>
+<li><a href="#syntax-highlighting" class="toc-link">Syntax Highlighting</a></li>
+<li><a href="#html-integration" class="toc-link">HTML Integration</a></li>
+<li><a href="#code-references-with-context" class="toc-link">Code References with Context</a></li>
+<li><a href="#mixed-content" class="toc-link">Mixed Content</a></li>
+<li><a href="#long-content-test" class="toc-link">Long Content Test</a></li>
+</ul>
+</nav>
+</aside>
 <main class="content">
 <section>
 <header>
@@ -494,11 +526,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="code-references-with-context" class="heading-2">Code References with Context</h2>
 <p class="paragraph">Reference code with additional context:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-97b89f9b')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-62fc9a85')">
 <span class="code-ref-title">babbl/cli.py - main</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-97b89f9b">
+<div class="code-ref-content" id="code-ref-62fc9a85">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Babbl: Turn markdown into beautiful research blog posts.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
@@ -508,11 +540,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <p class="paragraph">The main CLI function handles command registration and execution.</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-8dc165c7')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-18484ebe')">
 <span class="code-ref-title">babbl/renderer.py - render_heading</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-8dc165c7">
+<div class="code-ref-content" id="code-ref-18484ebe">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_heading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">Heading</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a heading element&quot;&quot;&quot;</span>
         <span class="k">pass</span>
@@ -603,11 +635,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p class="paragraph">This is a blockquote with some important information that should be highlighted.</p>
 </blockquote>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-e3eac865')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-df5f245e')">
 <span class="code-ref-title">babbl/parser.py - BabblParser</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-e3eac865">
+<div class="code-ref-content" id="code-ref-df5f245e">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
 

@@ -321,6 +321,24 @@ hr {
     padding: 0;
 }
 
+/* Math Styles */
+.math-inline {
+    display: inline;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.math-display {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* MathML styling */
+math {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 768px) {
     .toc {
@@ -414,7 +432,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#babbl-testing-suite" class="toc-link">Babbl Testing Suite</a></li>
+<li><a href="#test-files" class="toc-link">Test Files</a></li>
+<li><a href="#running-the-tests" class="toc-link">Running the Tests</a></li>
+<li><a href="#feature-coverage" class="toc-link">Feature Coverage</a></li>
+<li><a href="#adding-new-tests" class="toc-link">Adding New Tests</a></li>
+</ul>
+</nav>
+</aside>
 <main class="content">
 <section>
 
