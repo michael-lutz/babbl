@@ -29,7 +29,7 @@ Inline `code` can be used for short snippets.
 
 Here's a [link to GitHub](https://github.com) and an image:
 
-![Test Image](assets/babel_img.jpg)
+![Test Image](../assets/babel_img.jpg)
 
 ## Lists
 

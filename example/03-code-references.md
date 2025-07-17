@@ -35,7 +35,7 @@ Reference a specific line:
 
 [Parser line 1](../babbl/parser.py#L1)
 
-[Load file line 8](../babbl/load.py#L8)
+[Load file line 8](../babbl/util.py#L8)
 
 ### Line Range References
 
@@ -73,9 +73,9 @@ If a reference doesn't exist, you'll see an error:
 
 You can include multiple references in the same document:
 
-[Code reference processor](../babbl/code_ref.py#CodeReferenceProcessor)
-
 [Defaults line 1](../babbl/defaults.py#L1)
+
+[Code reference processor](../babbl/util.py#extract_code)
 
 ## Usage Examples
 

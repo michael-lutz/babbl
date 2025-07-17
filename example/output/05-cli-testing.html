@@ -435,25 +435,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-<aside class="toc">
-<nav class="toc-nav">
-<ul class="toc-list">
-<li><a href="#cli-testing" class="toc-link">CLI Testing</a></li>
-<li><a href="#basic-rendering" class="toc-link">Basic Rendering</a></li>
-<li><a href="#file-paths" class="toc-link">File Paths</a></li>
-<li><a href="#css-customization" class="toc-link">CSS Customization</a></li>
-<li><a href="#table-of-contents" class="toc-link">Table of Contents</a></li>
-<li><a href="#code-reference-base-path" class="toc-link">Code Reference Base Path</a></li>
-<li><a href="#batch-processing" class="toc-link">Batch Processing</a></li>
-<li><a href="#recursive-processing" class="toc-link">Recursive Processing</a></li>
-<li><a href="#error-handling" class="toc-link">Error Handling</a></li>
-<li><a href="#edge-cases" class="toc-link">Edge Cases</a></li>
-<li><a href="#performance-testing" class="toc-link">Performance Testing</a></li>
-<li><a href="#code-references-in-lists" class="toc-link">Code References in Lists</a></li>
-<li><a href="#tables-with-code-references" class="toc-link">Tables with Code References</a></li>
-</ul>
-</nav>
-</aside>
+
 <main class="content">
 <section>
 <header>
@@ -490,11 +472,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="error-handling" class="heading-2">Error Handling</h2>
 <p class="paragraph">This document tests various error scenarios:</p>
 <h3 id="invalid-code-references" class="heading-3">Invalid Code References</h3>
-<div class="code-ref-error">Code reference not found: nonexistent/file.py - function</div>
+<div class="code-ref-error">Code reference not found: ../nonexistent/file.py - function</div>
 <h3 id="invalid-line-numbers" class="heading-3">Invalid Line Numbers</h3>
-<div class="code-ref-error">Code reference not found: babbl/cli.py - line 999</div>
+<div class="code-ref-error">Code reference not found: ../babbl/cli.py - line 999</div>
 <h3 id="invalid-line-ranges" class="heading-3">Invalid Line Ranges</h3>
-<div class="code-ref-error">Code reference not found: babbl/cli.py - lines 999-1000</div>
+<div class="code-ref-error">Code reference not found: ../babbl/cli.py - lines 999-1000</div>
 <h2 id="edge-cases" class="heading-2">Edge Cases</h2>
 <h3 id="empty-code-blocks" class="heading-3">Empty Code Blocks</h3>
 <pre class="code-block"><code>
@@ -549,9 +531,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p class="paragraph">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
 <h2 id="code-references-in-lists" class="heading-2">Code References in Lists</h2>
 <ul class="unordered-list">
-<li class="list-item">Function: @code-ref babbl/cli.py render</li>
-<li class="list-item">Class: @code-ref babbl/renderer.py HTMLRenderer</li>
-<li class="list-item">Method: @code-ref babbl/elements.py parse_table_from_text</li>
+<li class="list-item">Function: <a href="../babbl/cli.py#render" class="link">render</a></li>
+<li class="list-item">Class: <a href="../babbl/renderer.py#HTMLRenderer" class="link">HTMLRenderer</a></li>
+<li class="list-item">Method: <a href="../babbl/elements.py#parse_table_from_text" class="link">parse_table_from_text</a></li>
 </ul>
 <h2 id="tables-with-code-references" class="heading-2">Tables with Code References</h2>
 <div class="table-container">
@@ -567,17 +549,190 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td>Parser</td>
 <td>babbl/parser.py</td>
-<td>@code-ref babbl/parser.py BabblParser</td>
+<td><div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0f3d6094')">
+<span class="code-ref-title">../babbl/parser.py - BabblParser</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-0f3d6094">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Add table support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">Table</span><span class="p">)</span>
+        <span class="c1"># Add code reference support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">CodeReference</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text with table and code reference support.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div></td>
 </tr>
 <tr>
 <td>Renderer</td>
 <td>babbl/renderer.py</td>
-<td>@code-ref babbl/renderer.py HTMLRenderer</td>
+<td><div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0c1cb1f2')">
+<span class="code-ref-title">../babbl/renderer.py - HTMLRenderer</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-0c1cb1f2">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">highlight_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">css_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the HTML renderer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            highlight_syntax: Whether to use Pygments for syntax highlighting</span>
+<span class="sd">            css_file_path: Path to CSS file</span>
+<span class="sd">            show_toc: Whether to show table of contents for h1 headings</span>
+<span class="sd">            base_path: Base path for resolving code reference file paths</span>
+<span class="sd">            current_file_path: Path to the current markdown file being processed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="n">highlight_syntax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="o">=</span> <span class="n">show_toc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># track h1 headings for toc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">current_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">output_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span> <span class="o">=</span> <span class="n">output_file_path</span>
+
+        <span class="k">if</span> <span class="n">css_file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">css_file_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">DEFAULT_CSS</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>  <span class="c1"># type: ignore</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>  <span class="c1"># type: ignore</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lexer_by_name</span>  <span class="c1"># type: ignore</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span> <span class="o">=</span> <span class="n">highlight</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_lexer_by_name</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;friendly&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_html</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replaces unsafe HTML characters with their escaped equivalents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;#x27;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_html_preserve_mathml</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape HTML but preserve MathML tags.&quot;&quot;&quot;</span>
+        <span class="n">mathml_tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">placeholder_pattern</span> <span class="o">=</span> <span class="s2">&quot;###MATHML_PLACEHOLDER_</span><span class="si">{}</span><span class="s2">_###&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">replace_mathml</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+            <span class="n">mathml_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">placeholder_pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mathml_tags</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;math[^&gt;]*&gt;.*?&lt;/math&gt;&quot;</span><span class="p">,</span> <span class="n">replace_mathml</span><span class="p">,</span> <span class="n">raw</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;#x27;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mathml_tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mathml_tags</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">placeholder_pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">mathml_tag</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_url</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape urls to prevent code injection.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;/#:()*?=%@+,&amp;&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_image_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve relative image paths relative to the current file and output directory.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_path</span>
+
+        <span class="c1"># if it&#39;s already an absolute URL or absolute path, return as is</span>
+        <span class="k">if</span> <span class="n">image_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+        <span class="c1"># resolve the image path relative to the current markdown file</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">:</span>
+            <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">resolve_path</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">)</span>
+
+            <span class="c1"># if the image exists, calculate the relative path from output file to image</span>
+            <span class="k">if</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="c1"># use output file path if available, otherwise use output directory</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="p">:</span>
+                    <span class="c1"># calculate relative path from output file location to image</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="c1"># fallback: use os.path.relpath for robust relative path calculation</span>
+                        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+                        <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="o">.</span><span class="n">parent</span><span class="p">))</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">rel_path</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># fallback to output directory</span>
+                    <span class="n">output_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">))</span>
+
+        <span class="c1"># fallback to original path</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the base element to HTML with full document structure.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">content</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="n">meta_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;meta name=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> content=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&gt;&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">toc_html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_toc</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;!DOCTYPE html&gt;</span>
+</pre></div>
+
+</div>
+</div></td>
 </tr>
 <tr>
 <td>CLI</td>
 <td>babbl/cli.py</td>
-<td>@code-ref babbl/cli.py main</td>
+<td><div class="code-reference">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-6a47be91')">
+<span class="code-ref-title">../babbl/cli.py - main</span>
+<span class="code-ref-toggle">▼</span>
+</div>
+<div class="code-ref-content" id="code-ref-6a47be91">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Babbl: Turn markdown into beautiful research blog posts.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+
+</div>
+</div></td>
 </tr>
 </tbody>
 </table>

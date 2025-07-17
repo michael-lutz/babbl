@@ -6,9 +6,9 @@ from typing import Optional
 
 import click
 
-from babbl.load import load_file, load_metadata, save_file
 from babbl.parser import BabblParser
 from babbl.renderer import HTMLRenderer
+from babbl.util import load_file, load_metadata, save_file
 
 
 @click.group()
@@ -20,9 +20,7 @@ def main():
 
 @main.command()
 @click.argument("input_file", type=click.Path(exists=True, path_type=Path))
-@click.option(
-    "--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path"
-)
+@click.option("--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
 @click.option(
@@ -49,6 +47,8 @@ def render(
         show_toc=toc,
         base_path=base_path,
         current_file_path=input_file,
+        output_dir=output_path.parent,
+        output_file_path=output_path,
     )
 
     try:
@@ -65,16 +65,10 @@ def render(
 
 
 @main.command()
-@click.argument(
-    "input_dir", type=click.Path(exists=True, file_okay=False, path_type=Path)
-)
-@click.option(
-    "--output-dir", "-o", type=click.Path(path_type=Path), help="Output directory"
-)
+@click.argument("input_dir", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option("--output-dir", "-o", type=click.Path(path_type=Path), help="Output directory")
 @click.option("--pattern", default="*.md", help="File pattern to match")
-@click.option(
-    "--recursive", "-r", is_flag=True, help="Process subdirectories recursively"
-)
+@click.option("--recursive", "-r", is_flag=True, help="Process subdirectories recursively")
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
 @click.option(
@@ -111,17 +105,19 @@ def build(
 
     for md_file in md_files:
         try:
+            rel_path = md_file.relative_to(input_dir)
+            output_file = output_dir / rel_path.with_suffix(".html")
+            output_file.parent.mkdir(parents=True, exist_ok=True)
+
             # Create a renderer for each file to pass the current file path
             renderer = HTMLRenderer(
                 css_file_path=css,
                 show_toc=toc,
                 base_path=base_path,
                 current_file_path=md_file,
+                output_dir=output_dir,
+                output_file_path=output_file,
             )
-
-            rel_path = md_file.relative_to(input_dir)
-            output_file = output_dir / rel_path.with_suffix(".html")
-            output_file.parent.mkdir(parents=True, exist_ok=True)
             contents = load_file(md_file)
             metadata, contents = load_metadata(contents)
             document = parser.parse(contents)

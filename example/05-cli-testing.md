@@ -47,15 +47,15 @@ This document tests various error scenarios:
 
 ### Invalid Code References
 
-@code-ref nonexistent/file.py function
+[function](../nonexistent/file.py#function)
 
 ### Invalid Line Numbers
 
-@code-ref babbl/cli.py line 999
+[line 999](../babbl/cli.py#L999)
 
 ### Invalid Line Ranges
 
-@code-ref babbl/cli.py lines 999-1000
+[lines 999-1000](../babbl/cli.py#L999-L1000)
 
 ## Edge Cases
 
@@ -102,14 +102,14 @@ Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit la
 
 ## Code References in Lists
 
-- Function: @code-ref babbl/cli.py render
-- Class: @code-ref babbl/renderer.py HTMLRenderer
-- Method: @code-ref babbl/elements.py parse_table_from_text
+- Function: [render](../babbl/cli.py#render)
+- Class: [HTMLRenderer](../babbl/renderer.py#HTMLRenderer)
+- Method: [parse_table_from_text](../babbl/elements.py#parse_table_from_text)
 
 ## Tables with Code References
 
 | Component | File | Reference |
 |-----------|------|-----------|
-| Parser | babbl/parser.py | @code-ref babbl/parser.py BabblParser |
-| Renderer | babbl/renderer.py | @code-ref babbl/renderer.py HTMLRenderer |
-| CLI | babbl/cli.py | @code-ref babbl/cli.py main | 
+| Parser | babbl/parser.py | [BabblParser](../babbl/parser.py#BabblParser) |
+| Renderer | babbl/renderer.py | [HTMLRenderer](../babbl/renderer.py#HTMLRenderer) |
+| CLI | babbl/cli.py | [main](../babbl/cli.py#main) | 

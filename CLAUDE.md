@@ -62,32 +62,30 @@ Babbl is a Python-based markdown-to-HTML converter designed for research blog po
 
 3. **Custom Elements (`babbl/elements.py`)**: Extended markdown elements:
    - `Table`: Full markdown table parsing and rendering
-   - `CodeReference`: File-based code inclusion with `@code-ref` syntax
+   - `CodeReference`: File-based code inclusion via markdown links
    - Various table sub-elements (TableHead, TableBody, TableRow, etc.)
 
-4. **Code Reference Processor (`babbl/code_ref.py`)**: Handles code extraction from files:
+4. **Utilities (`babbl/util.py`)**: Handles code extraction and file operations:
    - Function/class extraction using AST parsing
    - Line number/range extraction
    - Support for multiple programming languages
    - Base path resolution for relative file paths
-
-5. **File Operations (`babbl/load.py`)**: Utilities for:
    - File I/O operations
    - YAML frontmatter parsing
    - Content processing
 
-6. **CLI Interface (`babbl/cli.py`)**: Click-based command-line interface:
+5. **CLI Interface (`babbl/cli.py`)**: Click-based command-line interface:
    - `babbl render` - Single file rendering
    - `babbl build` - Directory-based batch processing
    - Options for CSS, TOC, and code reference base paths
 
-7. **Defaults (`babbl/defaults.py`)**: Contains default CSS styling
+6. **Defaults (`babbl/defaults.py`)**: Contains default CSS styling
 
 ### Key Features
 
 - **Frontmatter Support**: YAML frontmatter parsing with metadata extraction
 - **Table Support**: Full markdown table parsing with responsive styling
-- **Code References**: Include code snippets from files using `@code-ref filepath reference` syntax
+- **Code References**: Include code snippets from files using markdown link syntax
 - **Syntax Highlighting**: Pygments integration for code blocks
 - **Table of Contents**: Auto-generated TOC for h1/h2 headings
 - **Responsive Design**: Mobile-friendly HTML output
@@ -111,8 +109,7 @@ babbl/
 ├── parser.py            # Custom Marko parser
 ├── renderer.py          # HTML renderer implementation
 ├── elements.py          # Custom markdown elements
-├── code_ref.py          # Code reference processor
-├── load.py              # File I/O utilities
+├── util.py              # File I/O utilities and code reference processor
 └── defaults.py          # Default CSS and configuration
 ```
 

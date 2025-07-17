@@ -435,20 +435,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-<aside class="toc">
-<nav class="toc-nav">
-<ul class="toc-list">
-<li><a href="#code-references" class="toc-link">Code References</a></li>
-<li><a href="#markdown-link-syntax" class="toc-link">Markdown Link Syntax</a></li>
-<li><a href="#simple-hash-references" class="toc-link">Simple Hash References</a></li>
-<li><a href="#error-handling" class="toc-link">Error Handling</a></li>
-<li><a href="#multiple-references" class="toc-link">Multiple References</a></li>
-<li><a href="#usage-examples" class="toc-link">Usage Examples</a></li>
-<li><a href="#supported-reference-types" class="toc-link">Supported Reference Types</a></li>
-<li><a href="#syntax-examples" class="toc-link">Syntax Examples</a></li>
-</ul>
-</nav>
-</aside>
+
 <main class="content">
 <section>
 <header>
@@ -467,11 +454,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="function-references" class="heading-3">Function References</h3>
 <p class="paragraph">Reference a function by name:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-548c9620')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-15d8d9f1')">
 <span class="code-ref-title">../babbl/cli.py - render</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-548c9620">
+<div class="code-ref-content" id="code-ref-15d8d9f1">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span>
     <span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
@@ -485,11 +472,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="class-references" class="heading-3">Class References</h3>
 <p class="paragraph">Reference an entire class:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ce209e9e')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-b507b79a')">
 <span class="code-ref-title">../babbl/renderer.py - HTMLRenderer</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-ce209e9e">
+<div class="code-ref-content" id="code-ref-b507b79a">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
 
@@ -500,6 +487,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="n">show_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the HTML renderer.</span>
@@ -516,7 +505,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="o">=</span> <span class="n">show_toc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># track h1 headings for toc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code_processor</span> <span class="o">=</span> <span class="n">CodeReferenceProcessor</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">current_file_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">current_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">output_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span> <span class="o">=</span> <span class="n">output_file_path</span>
 
         <span class="k">if</span> <span class="n">css_file_path</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">css_file_path</span><span class="p">)</span>
@@ -563,17 +555,53 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape urls to prevent code injection.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;/#:()*?=%@+,&amp;&quot;</span><span class="p">))</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_image_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve relative image paths relative to the current file and output directory.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_path</span>
+
+        <span class="c1"># if it&#39;s already an absolute URL or absolute path, return as is</span>
+        <span class="k">if</span> <span class="n">image_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+        <span class="c1"># resolve the image path relative to the current markdown file</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">:</span>
+            <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">resolve_path</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">)</span>
+
+            <span class="c1"># if the image exists, calculate the relative path from output file to image</span>
+            <span class="k">if</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="c1"># use output file path if available, otherwise use output directory</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="p">:</span>
+                    <span class="c1"># calculate relative path from output file location to image</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="c1"># fallback: use os.path.relpath for robust relative path calculation</span>
+                        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+                        <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file_path</span><span class="o">.</span><span class="n">parent</span><span class="p">))</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">rel_path</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># fallback to output directory</span>
+                    <span class="n">output_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">))</span>
+
+        <span class="c1"># fallback to original path</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_escape_url</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the base element to HTML with full document structure.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">content</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
         <span class="n">meta_str</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&lt;meta name=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> content=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&gt;&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">metadata</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;meta name=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> content=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&gt;&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="p">)</span>
 
         <span class="n">toc_html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_toc</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -586,11 +614,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="method-references" class="heading-3">Method References</h3>
 <p class="paragraph">Reference a specific method:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-30fe0be2')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ef532468')">
 <span class="code-ref-title">../babbl/renderer.py - render_fenced_code</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-30fe0be2">
+<div class="code-ref-content" id="code-ref-ef532468">
 <div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_fenced_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">FencedCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a fenced code block&quot;&quot;&quot;</span>
         <span class="k">pass</span>
@@ -601,23 +629,23 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="line-number-references" class="heading-3">Line Number References</h3>
 <p class="paragraph">Reference a specific line:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-bb67eadc')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-fafd3a6a')">
 <span class="code-ref-title">../babbl/parser.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-bb67eadc">
+<div class="code-ref-content" id="code-ref-fafd3a6a">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom parser with table support for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ffb7adc1')">
-<span class="code-ref-title">../babbl/load.py - line 8</span>
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-23c57171')">
+<span class="code-ref-title">../babbl/util.py - line 8</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-ffb7adc1">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="code-ref-content" id="code-ref-23c57171">
+<div class="highlight"><pre class="code-block"><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 </pre></div>
 
 </div>
@@ -625,11 +653,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="line-range-references" class="heading-3">Line Range References</h3>
 <p class="paragraph">Reference a range of lines:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-9f0abbc4')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-d953ae76')">
 <span class="code-ref-title">../babbl/elements.py - lines 1-20</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-9f0abbc4">
+<div class="code-ref-content" id="code-ref-d953ae76">
 <div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;Custom elements that are not supported by marko.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -657,766 +685,41 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="simple-hash-references" class="heading-2">Simple Hash References</h2>
 <p class="paragraph">For quick references without specifying the file path:</p>
 <h3 id="class-references" class="heading-3">Class References</h3>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0054a1b8')">
-<span class="code-ref-title">#HTMLRenderer</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-0054a1b8">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">highlight_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">css_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">show_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the HTML renderer.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            highlight_syntax: Whether to use Pygments for syntax highlighting</span>
-<span class="sd">            css_file_path: Path to CSS file</span>
-<span class="sd">            show_toc: Whether to show table of contents for h1 headings</span>
-<span class="sd">            base_path: Base path for resolving code reference file paths</span>
-<span class="sd">            current_file_path: Path to the current markdown file being processed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="n">highlight_syntax</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="o">=</span> <span class="n">show_toc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># track h1 headings for toc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code_processor</span> <span class="o">=</span> <span class="n">CodeReferenceProcessor</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">current_file_path</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">css_file_path</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">css_file_path</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_css</span> <span class="o">=</span> <span class="n">DEFAULT_CSS</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>  <span class="c1"># type: ignore</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>  <span class="c1"># type: ignore</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lexer_by_name</span>  <span class="c1"># type: ignore</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span> <span class="o">=</span> <span class="n">highlight</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_lexer_by_name</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">pygments_formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;friendly&quot;</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">highlight_syntax</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_html</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replaces unsafe HTML characters with their escaped equivalents.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;#x27;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_html_preserve_mathml</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape HTML but preserve MathML tags.&quot;&quot;&quot;</span>
-        <span class="n">mathml_tags</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">placeholder_pattern</span> <span class="o">=</span> <span class="s2">&quot;###MATHML_PLACEHOLDER_</span><span class="si">{}</span><span class="s2">_###&quot;</span>
-
-        <span class="k">def</span><span class="w"> </span><span class="nf">replace_mathml</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
-            <span class="n">mathml_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">placeholder_pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mathml_tags</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;math[^&gt;]*&gt;.*?&lt;/math&gt;&quot;</span><span class="p">,</span> <span class="n">replace_mathml</span><span class="p">,</span> <span class="n">raw</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;#x27;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mathml_tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mathml_tags</span><span class="p">):</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">placeholder_pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">mathml_tag</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">text</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_escape_url</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape urls to prevent code injection.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">raw</span><span class="p">),</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;/#:()*?=%@+,&amp;&quot;</span><span class="p">))</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the base element to HTML with full document structure.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">toc_headings</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="n">content</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-        <span class="n">meta_str</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&lt;meta name=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> content=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&gt;&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">metadata</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-        <span class="p">)</span>
-
-        <span class="n">toc_html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_toc</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_toc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;!DOCTYPE html&gt;</span>
-</pre></div>
-
-</div>
-</div>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-11f2009d')">
-<span class="code-ref-title">#BabblParser</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-11f2009d">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># Add table support</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">Table</span><span class="p">)</span>
-        <span class="c1"># Add code reference support</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">CodeReference</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text with table and code reference support.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-0964cec5')">
-<span class="code-ref-title">#CodeReferenceProcessor</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-0964cec5">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the code reference processor.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            base_path: Base path for resolving relative file paths (fallback)</span>
-<span class="sd">            current_file_path: Path to the current markdown file being processed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="ow">or</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">current_file_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_cache</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># cache for current file analysis</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">syntax_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract code from a file based on the reference.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            file_path: Path to the Python file (can be empty for hash references)</span>
-<span class="sd">            reference: Reference string (function name, class name, line numbers, etc.)</span>
-<span class="sd">            syntax_type: Type of syntax used (&quot;link&quot;, &quot;hash&quot;)</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Extracted code string or None if not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Handle hash references that don&#39;t specify a file</span>
-            <span class="k">if</span> <span class="n">syntax_type</span> <span class="o">==</span> <span class="s2">&quot;hash&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_path</span><span class="p">:</span>
-                <span class="c1"># For hash references without file path, search in common locations</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_hash_reference</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
-
-            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">None</span>
-
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-            <span class="c1"># Handle HTML files differently</span>
-            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_html_content</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="c1"># try different reference types</span>
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_function_class</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_numbers</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_range</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve file path relative to current markdown file or base path.&quot;&quot;&quot;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">path</span>
-
-        <span class="c1"># If we have a current file path, resolve relative to its directory</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">:</span>
-            <span class="n">relative_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">path</span>
-            <span class="k">if</span> <span class="n">relative_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="n">relative_path</span>
-
-        <span class="c1"># Fallback to base path</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">/</span> <span class="n">path</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_function_class</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by function or class name using AST.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">reference</span><span class="p">:</span>
-                        <span class="n">start_line</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># ast uses 1-based indexing</span>
-                        <span class="n">end_line</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">node</span><span class="o">.</span><span class="n">end_lineno</span>
-                            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;end_lineno&quot;</span><span class="p">)</span>
-                            <span class="k">else</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
-                        <span class="p">)</span>
-
-                        <span class="c1"># find the actual end of the function/class</span>
-                        <span class="n">end_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_block_end</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-
-                        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_numbers</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by specific line numbers.&quot;&quot;&quot;</span>
-        <span class="c1"># pattern: line 5, line 10, etc.</span>
-        <span class="n">line_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;line\s+(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">line_match</span><span class="p">:</span>
-            <span class="n">line_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
-            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">line_num</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_num</span><span class="p">]</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by line range.&quot;&quot;&quot;</span>
-        <span class="c1"># pattern: lines 5-10, lines 5:10, etc.</span>
-        <span class="n">range_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;lines?\s+(\d+)[-:]\s*(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">range_match</span><span class="p">:</span>
-            <span class="n">start_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
-            <span class="n">end_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># keep 1-based for slicing</span>
-
-            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="n">end_line</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-                <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_find_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_line</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">AST</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the end of a code block by analyzing indentation.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
-
-        <span class="n">first_line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">]</span>
-        <span class="n">base_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-                <span class="k">continue</span>
-
-            <span class="n">current_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">current_indent</span> <span class="o">&lt;=</span> <span class="n">base_indent</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">i</span>
-
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_hash_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract code for a hash reference by searching in common locations.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            reference: The reference name (function, class, etc.)</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Extracted code string or None if not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Common Python file locations to search</span>
-        <span class="n">search_paths</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;**/*.py&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
-
-        <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-
-        <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">search_paths</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pattern</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                        <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-                    <span class="c1"># Try to find the reference in this file</span>
-                    <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_function_class</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">code</span>
-
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">continue</span>
-
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_html_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract HTML content based on the reference.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span>
-            <span class="n">body_start</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;body&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">body_start</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">body_tag_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">body_start</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">body_tag_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">body_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;&lt;/body&gt;&quot;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">body_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
-            <span class="k">return</span> <span class="n">content</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">content</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
-            <span class="n">element_id</span> <span class="o">=</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-
-            <span class="n">pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;[^&gt;]+id\s*=\s*[&quot;</span><span class="se">\&#39;</span><span class="s1">]?</span><span class="si">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">element_id</span><span class="p">)</span><span class="si">}</span><span class="s1">[&quot;</span><span class="se">\&#39;</span><span class="s1">]?[^&gt;]*&gt;&#39;</span>
-            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-                <span class="n">start_pos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                <span class="n">tag_name_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;(\w+)&quot;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
-                <span class="k">if</span> <span class="n">tag_name_match</span><span class="p">:</span>
-                    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">tag_name_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">&quot;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
-                    <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-                        <span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
-                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span>
-                            <span class="n">start_pos</span> <span class="p">:</span> <span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
-                        <span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
-
-        <span class="k">return</span> <span class="n">content</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get information about a Python file.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            file_path: Path to the Python file</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Dictionary with file information or None if file not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">None</span>
-
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-            <span class="n">functions</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)):</span>
-                    <span class="n">functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="p">{</span>
-                            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                            <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
-                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span>
-                                <span class="s2">&quot;async function&quot;</span>
-                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)</span>
-                                <span class="k">else</span> <span class="s2">&quot;function&quot;</span>
-                            <span class="p">),</span>
-                        <span class="p">}</span>
-                    <span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
-                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">})</span>
-
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">full_path</span><span class="p">),</span>
-                <span class="s2">&quot;line_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span>
-                <span class="s2">&quot;functions&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;classes&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
-            <span class="p">}</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-</pre></div>
-
-</div>
-</div>
+<p class="paragraph">#HTMLRenderer</p>
+<p class="paragraph">#BabblParser</p>
+<p class="paragraph">#CodeReferenceProcessor</p>
 <h3 id="function-references" class="heading-3">Function References</h3>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-b97ef1a7')">
-<span class="code-ref-title">#extract_code</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-b97ef1a7">
-<div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">syntax_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span>
-</pre></div>
-
-</div>
-</div>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-935335ce')">
-<span class="code-ref-title">#render_code_reference</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-935335ce">
-<div class="highlight"><pre class="code-block"><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">render_code_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a code reference element&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</pre></div>
-
-</div>
-</div>
-<div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-b218aac7')">
-<span class="code-ref-title">#load_file</span>
-<span class="code-ref-toggle">▼</span>
-</div>
-<div class="code-ref-content" id="code-ref-b218aac7">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the contents of a file as a string.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
+<p class="paragraph">#extract_code</p>
+<p class="paragraph">#render_code_reference</p>
+<p class="paragraph">#load_file</p>
 <h2 id="error-handling" class="heading-2">Error Handling</h2>
 <p class="paragraph">If a reference doesn't exist, you'll see an error:</p>
 <div class="code-ref-error">Code reference not found: ../babbl/cli.py - nonexistent_function</div>
 <h2 id="multiple-references" class="heading-2">Multiple References</h2>
 <p class="paragraph">You can include multiple references in the same document:</p>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-682560c2')">
-<span class="code-ref-title">../babbl/code_ref.py - CodeReferenceProcessor</span>
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-4dff1a68')">
+<span class="code-ref-title">../babbl/defaults.py - line 1</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-682560c2">
-<div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CodeReferenceProcessor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process code references and extract code from Python files.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the code reference processor.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            base_path: Base path for resolving relative file paths (fallback)</span>
-<span class="sd">            current_file_path: Path to the current markdown file being processed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="ow">or</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">current_file_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_file_cache</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># cache for current file analysis</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">syntax_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract code from a file based on the reference.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            file_path: Path to the Python file (can be empty for hash references)</span>
-<span class="sd">            reference: Reference string (function name, class name, line numbers, etc.)</span>
-<span class="sd">            syntax_type: Type of syntax used (&quot;link&quot;, &quot;hash&quot;)</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Extracted code string or None if not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Handle hash references that don&#39;t specify a file</span>
-            <span class="k">if</span> <span class="n">syntax_type</span> <span class="o">==</span> <span class="s2">&quot;hash&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_path</span><span class="p">:</span>
-                <span class="c1"># For hash references without file path, search in common locations</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_hash_reference</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
-
-            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">None</span>
-
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-            <span class="c1"># Handle HTML files differently</span>
-            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_html_content</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="c1"># try different reference types</span>
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_function_class</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_numbers</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_line_range</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">code</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve file path relative to current markdown file or base path.&quot;&quot;&quot;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">path</span>
-
-        <span class="c1"># If we have a current file path, resolve relative to its directory</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="p">:</span>
-            <span class="n">relative_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_file_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">path</span>
-            <span class="k">if</span> <span class="n">relative_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="n">relative_path</span>
-
-        <span class="c1"># Fallback to base path</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">/</span> <span class="n">path</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_function_class</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by function or class name using AST.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
-                    <span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">reference</span><span class="p">:</span>
-                        <span class="n">start_line</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># ast uses 1-based indexing</span>
-                        <span class="n">end_line</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">node</span><span class="o">.</span><span class="n">end_lineno</span>
-                            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;end_lineno&quot;</span><span class="p">)</span>
-                            <span class="k">else</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
-                        <span class="p">)</span>
-
-                        <span class="c1"># find the actual end of the function/class</span>
-                        <span class="n">end_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_block_end</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-
-                        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_numbers</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by specific line numbers.&quot;&quot;&quot;</span>
-        <span class="c1"># pattern: line 5, line 10, etc.</span>
-        <span class="n">line_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;line\s+(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">line_match</span><span class="p">:</span>
-            <span class="n">line_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
-            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">line_num</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_num</span><span class="p">]</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_by_line_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract code by line range.&quot;&quot;&quot;</span>
-        <span class="c1"># pattern: lines 5-10, lines 5:10, etc.</span>
-        <span class="n">range_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;lines?\s+(\d+)[-:]\s*(\d+)&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">range_match</span><span class="p">:</span>
-            <span class="n">start_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to 0-based</span>
-            <span class="n">end_line</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">range_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># keep 1-based for slicing</span>
-
-            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="n">end_line</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-                <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">:</span><span class="n">end_line</span><span class="p">])</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_find_block_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_line</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">AST</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the end of a code block by analyzing indentation.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span>
-
-        <span class="n">first_line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">]</span>
-        <span class="n">base_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-                <span class="k">continue</span>
-
-            <span class="n">current_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">current_indent</span> <span class="o">&lt;=</span> <span class="n">base_indent</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">i</span>
-
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_hash_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract code for a hash reference by searching in common locations.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            reference: The reference name (function, class, etc.)</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Extracted code string or None if not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Common Python file locations to search</span>
-        <span class="n">search_paths</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">/</span> <span class="s2">&quot;**/*.py&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
-
-        <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-
-        <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">search_paths</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pattern</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                        <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-                    <span class="c1"># Try to find the reference in this file</span>
-                    <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_by_function_class</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">code</span>
-
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">continue</span>
-
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_html_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract HTML content based on the reference.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span>
-            <span class="n">body_start</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;body&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">body_start</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">body_tag_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">body_start</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">body_tag_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">body_end</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;&lt;/body&gt;&quot;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">body_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">body_tag_end</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">body_end</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
-            <span class="k">return</span> <span class="n">content</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">content</span>
-
-        <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
-            <span class="n">element_id</span> <span class="o">=</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-
-            <span class="n">pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;&lt;[^&gt;]+id\s*=\s*[&quot;</span><span class="se">\&#39;</span><span class="s1">]?</span><span class="si">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">element_id</span><span class="p">)</span><span class="si">}</span><span class="s1">[&quot;</span><span class="se">\&#39;</span><span class="s1">]?[^&gt;]*&gt;&#39;</span>
-            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-                <span class="n">start_pos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                <span class="n">tag_name_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;(\w+)&quot;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
-                <span class="k">if</span> <span class="n">tag_name_match</span><span class="p">:</span>
-                    <span class="n">tag_name</span> <span class="o">=</span> <span class="n">tag_name_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">end_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">&quot;&lt;/</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
-                    <span class="n">end_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-                        <span class="n">end_pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:],</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">end_match</span><span class="p">:</span>
-                        <span class="n">extracted</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span>
-                            <span class="n">start_pos</span> <span class="p">:</span> <span class="n">start_pos</span> <span class="o">+</span> <span class="n">end_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
-                        <span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                        <span class="k">return</span> <span class="n">extracted</span> <span class="k">if</span> <span class="n">extracted</span> <span class="k">else</span> <span class="n">content</span>
-
-        <span class="k">return</span> <span class="n">content</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get information about a Python file.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            file_path: Path to the Python file</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Dictionary with file information or None if file not found</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">full_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">full_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">None</span>
-
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-            <span class="n">functions</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)):</span>
-                    <span class="n">functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="p">{</span>
-                            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                            <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
-                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span>
-                                <span class="s2">&quot;async function&quot;</span>
-                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">AsyncFunctionDef</span><span class="p">)</span>
-                                <span class="k">else</span> <span class="s2">&quot;function&quot;</span>
-                            <span class="p">),</span>
-                        <span class="p">}</span>
-                    <span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">):</span>
-                    <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span><span class="p">})</span>
-
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">full_path</span><span class="p">),</span>
-                <span class="s2">&quot;line_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span>
-                <span class="s2">&quot;functions&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
-                <span class="s2">&quot;classes&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]),</span>
-            <span class="p">}</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+<div class="code-ref-content" id="code-ref-4dff1a68">
+<div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;CSS configuration system for babbl.&quot;&quot;&quot;</span>
 </pre></div>
 
 </div>
 </div>
 <div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-668f35a1')">
-<span class="code-ref-title">../babbl/defaults.py - line 1</span>
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-e37e59bf')">
+<span class="code-ref-title">../babbl/util.py - extract_code</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-668f35a1">
-<div class="highlight"><pre class="code-block"><span></span><span class="sd">&quot;&quot;&quot;CSS configuration system for babbl.&quot;&quot;&quot;</span>
+<div class="code-ref-content" id="code-ref-e37e59bf">
+<div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_code</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">syntax_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span>
+    <span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">current_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </pre></div>
 
 </div>

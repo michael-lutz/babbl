@@ -11,9 +11,8 @@ from urllib.parse import quote
 
 from marko import Renderer
 
-from babbl.code_ref import CodeReferenceProcessor
 from babbl.defaults import DEFAULT_CSS
-from babbl.load import load_file
+from babbl.util import extract_code, load_file
 
 try:
     from latex2mathml.converter import convert as latex_to_mathml
@@ -190,6 +189,8 @@ class HTMLRenderer(BaseRenderer):
         show_toc: bool = False,
         base_path: Optional[Path] = None,
         current_file_path: Optional[Path] = None,
+        output_dir: Optional[Path] = None,
+        output_file_path: Optional[Path] = None,
     ):
         """
         Initialize the HTML renderer.
@@ -206,7 +207,10 @@ class HTMLRenderer(BaseRenderer):
         self.pygments_formatter = None
         self.show_toc = show_toc
         self.toc_headings: list[tuple[str, str]] = []  # track h1 headings for toc
-        self.code_processor = CodeReferenceProcessor(base_path, current_file_path)
+        self.base_path = base_path
+        self.current_file_path = current_file_path
+        self.output_dir = output_dir
+        self.output_file_path = output_file_path
 
         if css_file_path:
             self.base_css = load_file(css_file_path)
@@ -253,17 +257,53 @@ class HTMLRenderer(BaseRenderer):
         """Escape urls to prevent code injection."""
         return html.escape(quote(html.unescape(raw), safe="/#:()*?=%@+,&"))
 
+    def _resolve_image_url(self, image_path: str) -> str:
+        """Resolve relative image paths relative to the current file and output directory."""
+        from pathlib import Path
+
+        from .util import resolve_path
+
+        # if it's already an absolute URL or absolute path, return as is
+        if image_path.startswith(("http://", "https://", "//", "/")):
+            return self._escape_url(image_path)
+
+        # resolve the image path relative to the current markdown file
+        if self.current_file_path:
+            resolved_path = resolve_path(image_path, self.base_path, self.current_file_path)
+
+            # if the image exists, calculate the relative path from output file to image
+            if resolved_path.exists():
+                # use output file path if available, otherwise use output directory
+                if self.output_file_path:
+                    # calculate relative path from output file location to image
+                    try:
+                        relative_path = resolved_path.relative_to(self.output_file_path.parent)
+                        return self._escape_url(str(relative_path))
+                    except ValueError:
+                        # fallback: use os.path.relpath for robust relative path calculation
+                        import os
+
+                        rel_path = os.path.relpath(str(resolved_path), str(self.output_file_path.parent))
+                        return self._escape_url(rel_path)
+                else:
+                    # fallback to output directory
+                    output_dir = self.output_dir or self.current_file_path.parent
+                    try:
+                        relative_path = resolved_path.relative_to(output_dir)
+                        return self._escape_url(str(relative_path))
+                    except ValueError:
+                        return self._escape_url(str(resolved_path))
+
+        # fallback to original path
+        return self._escape_url(image_path)
+
     def html(self, element: element.Element, metadata: dict[str, str] | None) -> str:
         """Converts the base element to HTML with full document structure."""
         self.toc_headings = []
 
         content = super().render(element)
         meta_str = (
-            "\n".join(
-                f"<meta name={key} content={value}>" for key, value in metadata.items()
-            )
-            if metadata
-            else ""
+            "\n".join(f"<meta name={key} content={value}>" for key, value in metadata.items()) if metadata else ""
         )
 
         toc_html = self.generate_toc() if self.show_toc else ""
@@ -345,12 +385,8 @@ function toggleCodeRef(id) {{
             meta.pop("description")
         if "tags" in meta:
             if isinstance(meta["tags"], list):
-                processed_tags = [
-                    self._process_math_in_metadata(str(tag)) for tag in meta["tags"]
-                ]
-                res += (
-                    f'<div class="meta-field">Tags: {", ".join(processed_tags)}</div>\n'
-                )
+                processed_tags = [self._process_math_in_metadata(str(tag)) for tag in meta["tags"]]
+                res += f'<div class="meta-field">Tags: {", ".join(processed_tags)}</div>\n'
             else:
                 tags_value = self._process_math_in_metadata(str(meta["tags"]))
                 res += f'<div class="meta-field">Tags: {tags_value}</div>\n'
@@ -386,9 +422,7 @@ function toggleCodeRef(id) {{
 
         toc_items = []
         for i, (title, anchor_id) in enumerate(self.toc_headings):
-            toc_items.append(
-                f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>'
-            )
+            toc_items.append(f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>')
 
         return f"""<aside class="toc">
 <nav class="toc-nav">
@@ -443,15 +477,9 @@ function toggleCodeRef(id) {{
                 # fallback to plain code block
                 pass
 
-        lang_class = (
-            f' class="language-{self._escape_html(element.lang)}"'
-            if element.lang
-            else ""
-        )
+        lang_class = f' class="language-{self._escape_html(element.lang)}"' if element.lang else ""
         escaped_code = html.escape(code_content)
-        return (
-            f'<pre class="code-block"{lang_class}><code>{escaped_code}</code></pre>\n'
-        )
+        return f'<pre class="code-block"{lang_class}><code>{escaped_code}</code></pre>\n'
 
     def render_code_block(self, element: block.CodeBlock) -> str:
         return self.render_fenced_code(cast("block.FencedCode", element))
@@ -566,7 +594,10 @@ function toggleCodeRef(id) {{
     def render_image(self, element: inline.Image) -> str:
         template = '<img src="{}" alt="{}" class="image"{} />'
         title = f' title="{self._escape_html(element.title)}"' if element.title else ""
-        url = self._escape_url(element.dest)
+
+        # resolve relative image paths
+        url = self._resolve_image_url(element.dest)
+
         render_func = self.render
         self.render = self.render_plain_text  # type: ignore
         body = self.render_children(element)
@@ -592,6 +623,38 @@ function toggleCodeRef(id) {{
         escaped_code = html.escape(cast(str, element.children))
         return f'<code class="inline-code">{escaped_code}</code>'
 
+    def _render_table_cell_content(self, cell_content: str) -> str:
+        """Parse and render markdown content within a table cell."""
+        # Import here to avoid circular imports
+        from marko.element import Element
+
+        from babbl.parser import BabblParser
+
+        # If the content contains markdown links, images, or code references, parse it
+        if any(marker in cell_content for marker in ["![", "](", "[", "**", "*", "`"]):
+            try:
+                parser = BabblParser()
+                # Parse the cell content as inline markdown
+                # We need to wrap it in a paragraph context for proper parsing
+                wrapped_content = f"{cell_content.strip()}"
+                parsed = parser.parse(wrapped_content)
+
+                # Render the parsed content and extract just the inner content
+                rendered = self.render(parsed)
+                # Remove paragraph tags if they exist
+                if rendered.startswith('<p class="paragraph">') and rendered.endswith("</p>\n"):
+                    rendered = rendered[21:-5]  # Remove <p class="paragraph"> and </p>\n
+                elif rendered.startswith("<p>") and rendered.endswith("</p>\n"):
+                    rendered = rendered[3:-5]  # Remove <p> and </p>\n
+
+                return rendered.strip()
+            except Exception:
+                # If parsing fails, fall back to escaped HTML
+                return self._escape_html(cell_content)
+        else:
+            # For simple text content, just escape HTML
+            return self._escape_html(cell_content)
+
     def render_table(self, element: Any) -> str:
         """Render a table element."""
         # Handle our custom Table element
@@ -600,14 +663,16 @@ function toggleCodeRef(id) {{
 
             html += "<thead>\n<tr>\n"
             for header in element.headers:
-                html += f"<th>{self._escape_html(header)}</th>\n"
+                rendered_header = self._render_table_cell_content(header)
+                html += f"<th>{rendered_header}</th>\n"
             html += "</tr>\n</thead>\n"
 
             html += "<tbody>\n"
             for row in element.rows:
                 html += "<tr>\n"
                 for cell in row:
-                    html += f"<td>{self._escape_html(cell)}</td>\n"
+                    rendered_cell = self._render_table_cell_content(cell)
+                    html += f"<td>{rendered_cell}</td>\n"
                 html += "</tr>\n"
             html += "</tbody>\n"
 
@@ -615,7 +680,9 @@ function toggleCodeRef(id) {{
             return html
 
         # Fallback to generic table rendering
-        return f'<div class="table-container">\n<table class="table">\n{self.render_children(element)}</table>\n</div>\n'
+        return (
+            f'<div class="table-container">\n<table class="table">\n{self.render_children(element)}</table>\n</div>\n'
+        )
 
     def render_table_head(self, element: Any) -> str:
         """Render a table head element."""
@@ -641,9 +708,7 @@ function toggleCodeRef(id) {{
         """Render a code reference element."""
         # extract code from the referenced file
         syntax_type = getattr(element, "syntax_type", "old")
-        code = self.code_processor.extract_code(
-            element.file_path, element.reference, syntax_type
-        )
+        code = extract_code(element.file_path, element.reference, syntax_type, self.base_path, self.current_file_path)
 
         if not code:
             if syntax_type == "hash":

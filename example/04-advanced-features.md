@@ -84,11 +84,11 @@ You can embed custom HTML for advanced styling:
 
 Reference code with additional context:
 
-@code-ref babbl/cli.py main
+[main](../babbl/cli.py#main)
 
 The main CLI function handles command registration and execution.
 
-@code-ref babbl/renderer.py render_heading
+[render_heading](../babbl/renderer.py#render_heading)
 
 The heading renderer creates anchor links for navigation.
 
@@ -98,9 +98,9 @@ You can mix all features together:
 
 | Feature | Example | Code Reference |
 |---------|---------|----------------|
-| Tables | ✅ | @code-ref babbl/elements.py Table |
-| Code Refs | ✅ | @code-ref babbl/code_ref.py CodeReferenceProcessor |
-| Syntax Highlighting | ✅ | @code-ref babbl/renderer.py render_fenced_code |
+| Tables | ✅ | [Table](../babbl/elements.py#Table) |
+| Code Refs | ✅ | [CodeReference](../babbl/elements.py#CodeReference) |
+| Syntax Highlighting | ✅ | [render_fenced_code](../babbl/renderer.py#render_fenced_code) |
 
 ## Long Content Test
 
@@ -139,6 +139,6 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 > This is a blockquote with some important information that should be highlighted.
 
-@code-ref babbl/parser.py BabblParser
+[BabblParser](../babbl/parser.py#BabblParser)
 
 The parser class handles all the custom elements and extensions. 

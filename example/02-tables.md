@@ -33,7 +33,7 @@ Babbl supports markdown tables with proper styling and formatting.
 | Alignment | ✅ | Left, center, right alignment |
 | Nested Content | ✅ | Can contain links, **bold**, *italic* |
 | Code | ✅ | `inline code` and code blocks |
-| Images | ✅ | ![alt text](url) |
+| Images | ✅ | ![alt text](../assets/babel_img.jpg) |
 
 ## Table with Long Content
 

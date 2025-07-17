@@ -181,9 +181,7 @@ def parse_table_from_text(text: str) -> Table | None:
     if len(table_lines) < 2:
         return None
 
-    has_separator = any(
-        re.match(r"^\s*\|[\s\-:|]+\|\s*$", line) for line in table_lines
-    )
+    has_separator = any(re.match(r"^\s*\|[\s\-:|]+\|\s*$", line) for line in table_lines)
 
     if not has_separator:
         return None
@@ -215,16 +213,11 @@ class CodeReference(block.BlockElement):
     """Code reference element for referencing code from files."""
 
     priority = 7
-    # Support both old @code-ref syntax and new markdown link syntax
-    old_pattern = re.compile(r"^\s*@code-ref\s+([^\s]+)\s+(.+)$", re.MULTILINE)
-    # Pattern for [description](path#anchor) format - only match code-like anchors on their own line
-    link_pattern = re.compile(
-        r"^\s*\[([^\]]+)\]\(([^)]*#[a-zA-Z_L][^)]*)\)\s*$", re.MULTILINE
-    )
-    # Pattern for HTML file links without anchors
+    # pattern for [description](path#anchor) format - standard markdown links with anchors
+    # Updated to support line references like L1, L1-L20, L1-20, and function names
+    link_pattern = re.compile(r"^\s*\[([^\]]+)\]\(([^)]*#[a-zA-Z_L][a-zA-Z0-9_\-]*)\)\s*$", re.MULTILINE)
+    # pattern for [description](path.html) format - standard markdown links to html files
     html_pattern = re.compile(r"^\s*\[([^\]]+)\]\(([^)]*\.html)\)\s*$", re.MULTILINE)
-    # Pattern for simple #reference format on its own line
-    hash_pattern = re.compile(r"^\s*#([a-zA-Z_][a-zA-Z0-9_]*)\s*$", re.MULTILINE)
 
     def __init__(self, file_path: str, reference: str, syntax_type: str = "old"):
         self.file_path = file_path
@@ -239,12 +232,7 @@ class CodeReference(block.BlockElement):
             return False
         line = source._buffer[source.pos :].split("\n")[0].strip()
 
-        is_match = (
-            bool(cls.old_pattern.match(line))
-            or bool(cls.link_pattern.match(line))
-            or bool(cls.html_pattern.match(line))
-            or bool(cls.hash_pattern.match(line))
-        )
+        is_match = bool(cls.link_pattern.match(line)) or bool(cls.html_pattern.match(line))
 
         if is_match:
             test_line = source.next_line()
@@ -263,12 +251,6 @@ class CodeReference(block.BlockElement):
         line = line.strip()
         source.consume()
 
-        match = cls.old_pattern.match(line)
-        if match:
-            file_path = match.group(1)
-            reference = match.group(2).strip()
-            return cls(file_path, reference, "old")
-
         match = cls.link_pattern.match(line)
         if match:
             description = match.group(1)
@@ -281,11 +263,6 @@ class CodeReference(block.BlockElement):
             description = match.group(1)
             file_path = match.group(2)
             return cls(file_path, "body", "html")
-
-        match = cls.hash_pattern.match(line)
-        if match:
-            reference = match.group(1)
-            return cls("", reference, "hash")
 
         raise ValueError("Invalid code reference format")
 
@@ -329,13 +306,9 @@ class CodeReference(block.BlockElement):
                     if line_match:
                         reference = f"line {line_match.group(1)}"
                     else:
-                        range_match = re.search(
-                            r"lines\s+(\d+)[-:]\s*(\d+)", desc_lower
-                        )
+                        range_match = re.search(r"lines\s+(\d+)[-:]\s*(\d+)", desc_lower)
                         if range_match:
-                            reference = (
-                                f"lines {range_match.group(1)}-{range_match.group(2)}"
-                            )
+                            reference = f"lines {range_match.group(1)}-{range_match.group(2)}"
                         else:
                             reference = description
                 else:
