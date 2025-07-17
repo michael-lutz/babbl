@@ -2,6 +2,8 @@
 
 A modern markdown-to-HTML converter designed for research blog posts with support for tables, code references, and beautiful styling.
 
+![Babbl](./assets/babel_img.jpg)
+
 ## Features
 
 - **Clean HTML Output**: Semantic HTML with responsive CSS styling
