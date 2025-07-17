@@ -20,11 +20,23 @@ def main():
 
 @main.command()
 @click.argument("input_file", type=click.Path(exists=True, path_type=Path))
-@click.option("--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path")
+@click.option(
+    "--output", "-o", type=click.Path(path_type=Path), help="Output HTML file path"
+)
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
-@click.option("--base-path", type=click.Path(path_type=Path), help="Base path for resolving code references")
-def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: bool, base_path: Optional[Path]):
+@click.option(
+    "--base-path",
+    type=click.Path(path_type=Path),
+    help="Base path for resolving code references",
+)
+def render(
+    input_file: Path,
+    output: Optional[Path],
+    css: Optional[Path],
+    toc: bool,
+    base_path: Optional[Path],
+):
     """Render a markdown file to HTML."""
     if output is None:
         output_path = input_file.with_suffix(".html")
@@ -32,7 +44,12 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
         output_path = output
 
     parser = BabblParser()
-    renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path, current_file_path=input_file)
+    renderer = HTMLRenderer(
+        css_file_path=css,
+        show_toc=toc,
+        base_path=base_path,
+        current_file_path=input_file,
+    )
 
     try:
         contents = load_file(input_file)
@@ -48,13 +65,23 @@ def render(input_file: Path, output: Optional[Path], css: Optional[Path], toc: b
 
 
 @main.command()
-@click.argument("input_dir", type=click.Path(exists=True, file_okay=False, path_type=Path))
-@click.option("--output-dir", "-o", type=click.Path(path_type=Path), help="Output directory")
+@click.argument(
+    "input_dir", type=click.Path(exists=True, file_okay=False, path_type=Path)
+)
+@click.option(
+    "--output-dir", "-o", type=click.Path(path_type=Path), help="Output directory"
+)
 @click.option("--pattern", default="*.md", help="File pattern to match")
-@click.option("--recursive", "-r", is_flag=True, help="Process subdirectories recursively")
+@click.option(
+    "--recursive", "-r", is_flag=True, help="Process subdirectories recursively"
+)
 @click.option("--css", type=click.Path(path_type=Path), help="Path to CSS file")
 @click.option("--toc", is_flag=True, help="Generate table of contents for h1 headings")
-@click.option("--base-path", type=click.Path(path_type=Path), help="Base path for resolving code references")
+@click.option(
+    "--base-path",
+    type=click.Path(path_type=Path),
+    help="Base path for resolving code references",
+)
 def build(
     input_dir: Path,
     output_dir: Optional[Path],
@@ -85,8 +112,13 @@ def build(
     for md_file in md_files:
         try:
             # Create a renderer for each file to pass the current file path
-            renderer = HTMLRenderer(css_file_path=css, show_toc=toc, base_path=base_path, current_file_path=md_file)
-            
+            renderer = HTMLRenderer(
+                css_file_path=css,
+                show_toc=toc,
+                base_path=base_path,
+                current_file_path=md_file,
+            )
+
             rel_path = md_file.relative_to(input_dir)
             output_file = output_dir / rel_path.with_suffix(".html")
             output_file.parent.mkdir(parents=True, exist_ok=True)

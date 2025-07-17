@@ -9,7 +9,9 @@ from typing import List, Optional, Tuple
 class CodeReferenceProcessor:
     """Process code references and extract code from Python files."""
 
-    def __init__(self, base_path: Optional[Path] = None, current_file_path: Optional[Path] = None):
+    def __init__(
+        self, base_path: Optional[Path] = None, current_file_path: Optional[Path] = None
+    ):
         """
         Initialize the code reference processor.
 
@@ -19,9 +21,11 @@ class CodeReferenceProcessor:
         """
         self.base_path = base_path or Path.cwd()
         self.current_file_path = current_file_path
-        self.current_file_cache = {}  # Cache for current file analysis
+        self.current_file_cache: dict[str, str] = {}  # cache for current file analysis
 
-    def extract_code(self, file_path: str, reference: str, syntax_type: str = "link") -> Optional[str]:
+    def extract_code(
+        self, file_path: str, reference: str, syntax_type: str = "link"
+    ) -> Optional[str]:
         """
         Extract code from a file based on the reference.
 
@@ -38,18 +42,18 @@ class CodeReferenceProcessor:
             if syntax_type == "hash" and not file_path:
                 # For hash references without file path, search in common locations
                 return self._extract_hash_reference(reference)
-            
+
             full_path = self._resolve_path(file_path)
             if not full_path.exists():
                 return None
 
             with open(full_path, "r", encoding="utf-8") as f:
                 content = f.read()
-                
+
             # Handle HTML files differently
-            if file_path.lower().endswith('.html'):
+            if file_path.lower().endswith(".html"):
                 return self._extract_html_content(content, reference)
-                
+
             lines = content.split("\n")
 
             # try different reference types
@@ -75,27 +79,35 @@ class CodeReferenceProcessor:
         path = Path(file_path)
         if path.is_absolute():
             return path
-        
+
         # If we have a current file path, resolve relative to its directory
         if self.current_file_path:
             relative_path = self.current_file_path.parent / path
             if relative_path.exists():
                 return relative_path
-        
+
         # Fallback to base path
         return self.base_path / path
 
-    def _extract_by_function_class(self, lines: List[str], reference: str) -> Optional[str]:
+    def _extract_by_function_class(
+        self, lines: List[str], reference: str
+    ) -> Optional[str]:
         """Extract code by function or class name using AST."""
         try:
             content = "\n".join(lines)
             tree = ast.parse(content)
 
             for node in ast.walk(tree):
-                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                if isinstance(
+                    node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
+                ):
                     if node.name == reference:
                         start_line = node.lineno - 1  # ast uses 1-based indexing
-                        end_line = node.end_lineno if hasattr(node, "end_lineno") else start_line + 1
+                        end_line = (
+                            node.end_lineno
+                            if hasattr(node, "end_lineno")
+                            else start_line + 1
+                        )
 
                         # find the actual end of the function/class
                         end_line = self._find_block_end(lines, start_line, node)
@@ -106,7 +118,9 @@ class CodeReferenceProcessor:
         except Exception:
             return None
 
-    def _extract_by_line_numbers(self, lines: List[str], reference: str) -> Optional[str]:
+    def _extract_by_line_numbers(
+        self, lines: List[str], reference: str
+    ) -> Optional[str]:
         """Extract code by specific line numbers."""
         # pattern: line 5, line 10, etc.
         line_match = re.match(r"line\s+(\d+)", reference, re.IGNORECASE)
@@ -133,14 +147,12 @@ class CodeReferenceProcessor:
         if start_line >= len(lines):
             return start_line + 1
 
-        # get the indentation of the first line
         first_line = lines[start_line]
         base_indent = len(first_line) - len(first_line.lstrip())
 
-        # find the next line with same or less indentation
         for i in range(start_line + 1, len(lines)):
             line = lines[i]
-            if not line.strip():  # skip empty lines
+            if not line.strip():
                 continue
 
             current_indent = len(line) - len(line.lstrip())
@@ -152,10 +164,10 @@ class CodeReferenceProcessor:
     def _extract_hash_reference(self, reference: str) -> Optional[str]:
         """
         Extract code for a hash reference by searching in common locations.
-        
+
         Args:
             reference: The reference name (function, class, etc.)
-            
+
         Returns:
             Extracted code string or None if not found
         """
@@ -163,87 +175,70 @@ class CodeReferenceProcessor:
         search_paths = [
             self.base_path / "**/*.py",
         ]
-        
+
         import glob
-        
+
         for pattern in search_paths:
             for file_path in glob.glob(str(pattern), recursive=True):
                 try:
                     with open(file_path, "r", encoding="utf-8") as f:
                         content = f.read()
                         lines = content.split("\n")
-                    
+
                     # Try to find the reference in this file
                     code = self._extract_by_function_class(lines, reference)
                     if code:
                         return code
-                        
+
                 except Exception:
                     continue
-                    
+
         return None
 
     def _extract_html_content(self, content: str, reference: str) -> Optional[str]:
-        """
-        Extract HTML content based on the reference.
-        
-        Args:
-            content: The HTML file content
-            reference: Reference string (e.g., "body", "content", or element ID)
-            
-        Returns:
-            Extracted HTML content or None if not found
-        """
+        """Extract HTML content based on the reference."""
         if not content:
             return None
-            
+
         content = content.strip()
         if not content:
             return None
-        
-        # If reference is "body", extract body content
+
         if reference.lower() == "body":
-            # Find body tag and extract its content
-            body_start = content.lower().find('<body')
+            body_start = content.lower().find("<body")
             if body_start != -1:
-                # Find end of opening body tag
-                body_tag_end = content.find('>', body_start)
+                body_tag_end = content.find(">", body_start)
                 if body_tag_end != -1:
-                    # Find closing body tag
-                    body_end = content.lower().rfind('</body>')
+                    body_end = content.lower().rfind("</body>")
                     if body_end != -1:
-                        extracted = content[body_tag_end + 1:body_end].strip()
+                        extracted = content[body_tag_end + 1 : body_end].strip()
                         return extracted if extracted else content
-            
-            # If no body tag found, return entire content
             return content
-            
-        # If reference is "content" or similar, return entire content
+
         if reference.lower() in ["content", "all", "full"]:
             return content
-            
-        # Try to find element by ID
-        if reference.startswith('#'):
+
+        if reference.startswith("#"):
             element_id = reference[1:]
-            # Look for element with this ID
             import re
+
             pattern = rf'<[^>]+id\s*=\s*["\']?{re.escape(element_id)}["\']?[^>]*>'
             match = re.search(pattern, content, re.IGNORECASE)
             if match:
-                # Find the matching closing tag (simplified approach)
                 start_pos = match.start()
-                tag_name_match = re.match(r'<(\w+)', match.group())
+                tag_name_match = re.match(r"<(\w+)", match.group())
                 if tag_name_match:
                     tag_name = tag_name_match.group(1)
-                    
-                    # Find the closing tag
-                    end_pattern = rf'</{tag_name}>'
-                    end_match = re.search(end_pattern, content[start_pos:], re.IGNORECASE)
+                    end_pattern = rf"</{tag_name}>"
+                    end_match = re.search(
+                        end_pattern, content[start_pos:], re.IGNORECASE
+                    )
                     if end_match:
-                        extracted = content[start_pos:start_pos + end_match.end()].strip()
+                        extracted = content[
+                            start_pos : start_pos + end_match.end()
+                        ].strip()
                         return extracted if extracted else content
-                    
-        # Default: return entire content
+
         return content
 
     def get_file_info(self, file_path: str) -> Optional[dict]:
@@ -276,7 +271,11 @@ class CodeReferenceProcessor:
                         {
                             "name": node.name,
                             "line": node.lineno,
-                            "type": "async function" if isinstance(node, ast.AsyncFunctionDef) else "function",
+                            "type": (
+                                "async function"
+                                if isinstance(node, ast.AsyncFunctionDef)
+                                else "function"
+                            ),
                         }
                     )
                 elif isinstance(node, ast.ClassDef):

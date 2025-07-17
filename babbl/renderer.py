@@ -17,6 +17,7 @@ from babbl.load import load_file
 
 try:
     from latex2mathml.converter import convert as latex_to_mathml
+
     LATEX_AVAILABLE = True
 except ImportError:
     LATEX_AVAILABLE = False
@@ -225,52 +226,48 @@ class HTMLRenderer(BaseRenderer):
                 self.highlight_syntax = False
 
     @staticmethod
-    def escape_html(raw: str) -> str:
+    def _escape_html(raw: str) -> str:
         """Replaces unsafe HTML characters with their escaped equivalents."""
         return html.escape(html.unescape(raw)).replace("&#x27;", "'")
 
     @staticmethod
-    def escape_html_preserve_mathml(raw: str) -> str:
+    def _escape_html_preserve_mathml(raw: str) -> str:
         """Escape HTML but preserve MathML tags."""
-        # Extract MathML tags and replace with placeholders
         mathml_tags = []
         placeholder_pattern = "###MATHML_PLACEHOLDER_{}_###"
-        
+
         def replace_mathml(match):
             mathml_tags.append(match.group(0))
             return placeholder_pattern.format(len(mathml_tags) - 1)
-        
-        # Replace MathML tags with placeholders
-        text = re.sub(r'<math[^>]*>.*?</math>', replace_mathml, raw)
-        
-        # Escape the rest of the HTML
+
+        text = re.sub(r"<math[^>]*>.*?</math>", replace_mathml, raw)
         text = html.escape(html.unescape(text)).replace("&#x27;", "'")
-        
-        # Restore MathML tags
+
         for i, mathml_tag in enumerate(mathml_tags):
             text = text.replace(placeholder_pattern.format(i), mathml_tag)
-        
+
         return text
 
     @staticmethod
-    def escape_url(raw: str) -> str:
-        """Escape urls to prevent code injection craziness."""
+    def _escape_url(raw: str) -> str:
+        """Escape urls to prevent code injection."""
         return html.escape(quote(html.unescape(raw), safe="/#:()*?=%@+,&"))
 
     def html(self, element: element.Element, metadata: dict[str, str] | None) -> str:
         """Converts the base element to HTML with full document structure."""
-        # reset h1 headings for new document
         self.toc_headings = []
 
         content = super().render(element)
         meta_str = (
-            "\n".join(f"<meta name={key} content={value}>" for key, value in metadata.items()) if metadata else ""
+            "\n".join(
+                f"<meta name={key} content={value}>" for key, value in metadata.items()
+            )
+            if metadata
+            else ""
         )
 
-        # create toc if enabled
         toc_html = self.generate_toc() if self.show_toc else ""
 
-        # create complete HTML document
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -326,52 +323,56 @@ function toggleCodeRef(id) {{
         meta = metadata.copy()
         res = "<header>\n"
         if "title" in meta:
-            title_value = self.process_math_in_metadata(meta["title"])
+            title_value = self._process_math_in_metadata(meta["title"])
             res += f'<h1 class="title">{title_value}</h1>\n'
             meta.pop("title")
         res += "<div class='metadata'>\n"
         if "author" in meta:
-            author_value = self.process_math_in_metadata(meta["author"])
+            author_value = self._process_math_in_metadata(meta["author"])
             res += f'<div class="meta-field">Author: {author_value}</div>\n'
             meta.pop("author")
         if "date" in meta:
-            date_value = self.process_math_in_metadata(meta["date"])
+            date_value = self._process_math_in_metadata(meta["date"])
             res += f'<div class="meta-field">Date: {date_value}</div>\n'
             meta.pop("date")
         if "summary" in meta:
-            summary_value = self.process_math_in_metadata(meta["summary"])
+            summary_value = self._process_math_in_metadata(meta["summary"])
             res += f'<div class="meta-field">Summary: {summary_value}</div>\n'
             meta.pop("summary")
         if "description" in meta:
-            description_value = self.process_math_in_metadata(meta["description"])
+            description_value = self._process_math_in_metadata(meta["description"])
             res += f'<div class="meta-field">Description: {description_value}</div>\n'
             meta.pop("description")
         if "tags" in meta:
             if isinstance(meta["tags"], list):
-                processed_tags = [self.process_math_in_metadata(str(tag)) for tag in meta["tags"]]
-                res += f'<div class="meta-field">Tags: {", ".join(processed_tags)}</div>\n'
+                processed_tags = [
+                    self._process_math_in_metadata(str(tag)) for tag in meta["tags"]
+                ]
+                res += (
+                    f'<div class="meta-field">Tags: {", ".join(processed_tags)}</div>\n'
+                )
             else:
-                tags_value = self.process_math_in_metadata(str(meta["tags"]))
+                tags_value = self._process_math_in_metadata(str(meta["tags"]))
                 res += f'<div class="meta-field">Tags: {tags_value}</div>\n'
             meta.pop("tags")
         if "categories" in meta:
-            categories_value = self.process_math_in_metadata(meta["categories"])
+            categories_value = self._process_math_in_metadata(meta["categories"])
             res += f'<div class="meta-field">Categories: {categories_value}</div>\n'
             meta.pop("categories")
         if "slug" in meta:
-            slug_value = self.process_math_in_metadata(meta["slug"])
+            slug_value = self._process_math_in_metadata(meta["slug"])
             res += f'<div class="meta-field">Slug: {slug_value}</div>\n'
             meta.pop("slug")
         if "layout" in meta:
-            layout_value = self.process_math_in_metadata(meta["layout"])
+            layout_value = self._process_math_in_metadata(meta["layout"])
             res += f'<div class="meta-field">Layout: {layout_value}</div>\n'
             meta.pop("layout")
         if "draft" in meta:
-            draft_value = self.process_math_in_metadata(meta["draft"])
+            draft_value = self._process_math_in_metadata(meta["draft"])
             res += f'<div class="meta-field">Draft: {draft_value}</div>\n'
             meta.pop("draft")
         for key, value in meta.items():
-            processed_value = self.process_math_in_metadata(str(value))
+            processed_value = self._process_math_in_metadata(str(value))
             res += f'<div class="meta-field">{key}: {processed_value}</div>\n'
         res += "</div>\n"
         res += "<hr />\n"
@@ -385,7 +386,9 @@ function toggleCodeRef(id) {{
 
         toc_items = []
         for i, (title, anchor_id) in enumerate(self.toc_headings):
-            toc_items.append(f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>')
+            toc_items.append(
+                f'<li><a href="#{anchor_id}" class="toc-link">{title}</a></li>'
+            )
 
         return f"""<aside class="toc">
 <nav class="toc-nav">
@@ -432,17 +435,23 @@ function toggleCodeRef(id) {{
                 highlighted_code = self.highlight(code_content, lexer, self.pygments_formatter)  # type: ignore
                 # ensure proper class structure
                 highlighted_code = highlighted_code.replace(
-                    '<div class="highlight"><pre>', '<div class="highlight"><pre class="code-block">'
+                    '<div class="highlight"><pre>',
+                    '<div class="highlight"><pre class="code-block">',
                 )
                 return highlighted_code + "\n"
             except:
                 # fallback to plain code block
                 pass
 
-        # plain code block
-        lang_class = f' class="language-{self.escape_html(element.lang)}"' if element.lang else ""
+        lang_class = (
+            f' class="language-{self._escape_html(element.lang)}"'
+            if element.lang
+            else ""
+        )
         escaped_code = html.escape(code_content)
-        return f'<pre class="code-block"{lang_class}><code>{escaped_code}</code></pre>\n'
+        return (
+            f'<pre class="code-block"{lang_class}><code>{escaped_code}</code></pre>\n'
+        )
 
     def render_code_block(self, element: block.CodeBlock) -> str:
         return self.render_fenced_code(cast("block.FencedCode", element))
@@ -457,9 +466,8 @@ function toggleCodeRef(id) {{
         css_class = f"heading-{element.level}"
         heading_text = self.render_children(element)
 
-        # create anchor id from heading text (remove MathML for clean anchor)
-        clean_heading_text = re.sub(r'<math[^>]*>.*?</math>', '', heading_text)
-        anchor_id = self.create_anchor_id(clean_heading_text)
+        clean_heading_text = re.sub(r"<math[^>]*>.*?</math>", "", heading_text)
+        anchor_id = self._create_anchor_id(clean_heading_text)
 
         # track h1 headings for toc
         if (element.level == 1 or element.level == 2) and self.show_toc:
@@ -467,18 +475,15 @@ function toggleCodeRef(id) {{
 
         return f'<h{element.level} id="{anchor_id}" class="{css_class}">{heading_text}</h{element.level}>\n'
 
-    def create_anchor_id(self, text: str) -> str:
+    def _create_anchor_id(self, text: str) -> str:
         """Create a URL-friendly anchor ID from heading text."""
-        # remove html tags and decode entities
         clean_text = re.sub(r"<[^>]+>", "", text)
         clean_text = html.unescape(clean_text)
 
-        # convert to lowercase and replace spaces/special chars with hyphens
         anchor_id = re.sub(r"[^\w\s-]", "", clean_text.lower())
         anchor_id = re.sub(r"[-\s]+", "-", anchor_id)
         anchor_id = anchor_id.strip("-")
 
-        # ensure uniqueness
         base_id = anchor_id
         counter = 1
         while any(existing_id == anchor_id for _, existing_id in self.toc_headings):
@@ -487,49 +492,39 @@ function toggleCodeRef(id) {{
 
         return anchor_id
 
-    def process_latex_math_text(self, text: str) -> str:
+    def _process_latex_math_text(self, text: str) -> str:
         """Process LaTeX math expressions in raw text before HTML escaping."""
         if not LATEX_AVAILABLE:
             return text
-        
+
         def replace_inline_math(match):
             latex_code = match.group(1)
             try:
-                # Convert LaTeX to MathML
                 mathml = latex_to_mathml(latex_code)
                 return mathml
             except Exception:
-                # Fallback to original text if conversion fails
                 return match.group(0)
-        
+
         def replace_display_math(match):
             latex_code = match.group(1)
             try:
-                # Convert LaTeX to MathML
                 mathml = latex_to_mathml(latex_code)
                 return f'<div class="math-display">{mathml}</div>'
             except Exception:
-                # Fallback to original text if conversion fails
                 return match.group(0)
-        
-        # Process inline math $...$
-        text = re.sub(r'\$([^$]+)\$', replace_inline_math, text)
-        
-        # Process display math $$...$$
-        text = re.sub(r'\$\$([^$]+)\$\$', replace_display_math, text)
-        
+
+        text = re.sub(r"\$([^$]+)\$", replace_inline_math, text)
+        text = re.sub(r"\$\$([^$]+)\$\$", replace_display_math, text)
+
         return text
 
-    def process_math_in_metadata(self, text: str) -> str:
+    def _process_math_in_metadata(self, text: str) -> str:
         """Process LaTeX math expressions in metadata values and escape HTML."""
         if not LATEX_AVAILABLE:
-            return self.escape_html(text)
-        
-        # Process LaTeX math expressions
-        processed_text = self.process_latex_math_text(text)
-        
-        # Escape HTML but preserve MathML tags
-        return self.escape_html_preserve_mathml(processed_text)
+            return self._escape_html(text)
+
+        processed_text = self._process_latex_math_text(text)
+        return self._escape_html_preserve_mathml(processed_text)
 
     def render_setext_heading(self, element: block.SetextHeading) -> str:
         return self.render_heading(cast("block.Heading", element))
@@ -551,19 +546,17 @@ function toggleCodeRef(id) {{
 
     def render_plain_text(self, element: Any) -> str:
         if isinstance(element.children, str):
-            # Process LaTeX math before HTML escaping
             text = element.children
             if LATEX_AVAILABLE:
-                text = self.process_latex_math_text(text)
-                # Don't escape MathML tags, but escape the rest
-                return self.escape_html_preserve_mathml(text)
-            return self.escape_html(text)
+                text = self._process_latex_math_text(text)
+                return self._escape_html_preserve_mathml(text)
+            return self._escape_html(text)
         return self.render_children(element)
 
     def render_link(self, element: inline.Link) -> str:
         template = '<a href="{}" class="link"{}>{}</a>'
-        title = f' title="{self.escape_html(element.title)}"' if element.title else ""
-        url = self.escape_url(element.dest)
+        title = f' title="{self._escape_html(element.title)}"' if element.title else ""
+        url = self._escape_url(element.dest)
         body = self.render_children(element)
         return template.format(url, title, body)
 
@@ -572,8 +565,8 @@ function toggleCodeRef(id) {{
 
     def render_image(self, element: inline.Image) -> str:
         template = '<img src="{}" alt="{}" class="image"{} />'
-        title = f' title="{self.escape_html(element.title)}"' if element.title else ""
-        url = self.escape_url(element.dest)
+        title = f' title="{self._escape_html(element.title)}"' if element.title else ""
+        url = self._escape_url(element.dest)
         render_func = self.render
         self.render = self.render_plain_text  # type: ignore
         body = self.render_children(element)
@@ -584,13 +577,11 @@ function toggleCodeRef(id) {{
         return self.render_raw_text(cast("inline.RawText", element))
 
     def render_raw_text(self, element: inline.RawText) -> str:
-        # Process LaTeX math before HTML escaping
         text = element.children
         if LATEX_AVAILABLE:
-            text = self.process_latex_math_text(text)
-            # Don't escape MathML tags, but escape the rest
-            return self.escape_html_preserve_mathml(text)
-        return self.escape_html(text)
+            text = self._process_latex_math_text(text)
+            return self._escape_html_preserve_mathml(text)
+        return self._escape_html(text)
 
     def render_line_break(self, element: inline.LineBreak) -> str:
         if element.soft:
@@ -607,18 +598,16 @@ function toggleCodeRef(id) {{
         if hasattr(element, "headers") and hasattr(element, "rows"):
             html = '<div class="table-container">\n<table class="table">\n'
 
-            # Render header
             html += "<thead>\n<tr>\n"
             for header in element.headers:
-                html += f"<th>{self.escape_html(header)}</th>\n"
+                html += f"<th>{self._escape_html(header)}</th>\n"
             html += "</tr>\n</thead>\n"
 
-            # Render body
             html += "<tbody>\n"
             for row in element.rows:
                 html += "<tr>\n"
                 for cell in row:
-                    html += f"<td>{self.escape_html(cell)}</td>\n"
+                    html += f"<td>{self._escape_html(cell)}</td>\n"
                 html += "</tr>\n"
             html += "</tbody>\n"
 
@@ -626,9 +615,7 @@ function toggleCodeRef(id) {{
             return html
 
         # Fallback to generic table rendering
-        return (
-            f'<div class="table-container">\n<table class="table">\n{self.render_children(element)}</table>\n</div>\n'
-        )
+        return f'<div class="table-container">\n<table class="table">\n{self.render_children(element)}</table>\n</div>\n'
 
     def render_table_head(self, element: Any) -> str:
         """Render a table head element."""
@@ -653,18 +640,20 @@ function toggleCodeRef(id) {{
     def render_code_reference(self, element: Any) -> str:
         """Render a code reference element."""
         # extract code from the referenced file
-        syntax_type = getattr(element, 'syntax_type', 'old')
-        code = self.code_processor.extract_code(element.file_path, element.reference, syntax_type)
+        syntax_type = getattr(element, "syntax_type", "old")
+        code = self.code_processor.extract_code(
+            element.file_path, element.reference, syntax_type
+        )
 
         if not code:
             if syntax_type == "hash":
-                error_msg = f'Code reference not found: #{element.reference}'
+                error_msg = f"Code reference not found: #{element.reference}"
             else:
-                error_msg = f'Code reference not found: {element.file_path} - {element.reference}'
+                error_msg = f"Code reference not found: {element.file_path} - {element.reference}"
             return f'<div class="code-ref-error">{error_msg}</div>\n'
 
         # Check if this is an HTML file - if so, render as HTML directly
-        if element.file_path and element.file_path.lower().endswith('.html'):
+        if element.file_path and element.file_path.lower().endswith(".html"):
             return f'<div class="html-inclusion">\n{code}\n</div>\n'
 
         # create a unique id for the dropdown
@@ -680,7 +669,7 @@ function toggleCodeRef(id) {{
             file_ext = Path(element.file_path).suffix.lower()
         else:
             file_ext = ".py"  # default for hash references
-            
+
         lang_map = {
             ".py": "python",
             ".js": "javascript",
@@ -727,7 +716,8 @@ function toggleCodeRef(id) {{
                 highlighted_code = self.highlight(code, lexer, self.pygments_formatter)
                 # ensure proper class structure
                 highlighted_code = highlighted_code.replace(
-                    '<div class="highlight"><pre>', '<div class="highlight"><pre class="code-block">'
+                    '<div class="highlight"><pre>',
+                    '<div class="highlight"><pre class="code-block">',
                 )
                 code_html = highlighted_code
             except:

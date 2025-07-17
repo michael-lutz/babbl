@@ -181,7 +181,6 @@ def parse_table_from_text(text: str) -> Table | None:
     if len(table_lines) < 2:
         return None
 
-    # check for header separator
     has_separator = any(
         re.match(r"^\s*\|[\s\-:|]+\|\s*$", line) for line in table_lines
     )
@@ -190,27 +189,22 @@ def parse_table_from_text(text: str) -> Table | None:
         return None
 
     try:
-        # parse headers and separator
         header_line = table_lines[0]
         separator_line = table_lines[1]
         data_lines = table_lines[2:]
 
-        # parse headers
         headers = Table._parse_row(header_line)
 
-        # validate separator
         if not Table._is_valid_separator(separator_line, len(headers)):
             return None
 
-        # parse data rows
         rows = []
         for line in data_lines:
             if line.strip() and "|" in line:
                 row = Table._parse_row(line)
-                # pad row if necessary
                 while len(row) < len(headers):
                     row.append("")
-                rows.append(row[: len(headers)])  # truncate if too long
+                rows.append(row[: len(headers)])
 
         return Table(headers, rows)
     except Exception:
@@ -245,7 +239,6 @@ class CodeReference(block.BlockElement):
             return False
         line = source._buffer[source.pos :].split("\n")[0].strip()
 
-        # Check if this is a code reference pattern
         is_match = (
             bool(cls.old_pattern.match(line))
             or bool(cls.link_pattern.match(line))
@@ -253,21 +246,16 @@ class CodeReference(block.BlockElement):
             or bool(cls.hash_pattern.match(line))
         )
 
-        # Additional check: make sure next_line() will work in parse()
         if is_match:
-            # Test if next_line() would return None
             test_line = source.next_line()
             if test_line is None:
-                # If next_line() returns None, don't match to avoid the error
                 return False
-            # We don't consume here, just test
 
         return is_match
 
     @classmethod
     def parse(cls, source: "Source") -> "CodeReference":
         """Parse a code reference from the source."""
-        # Get the line using next_line()
         line = source.next_line()
         if line is None:
             raise ValueError("Expected code reference line but reached end of source")
@@ -275,37 +263,28 @@ class CodeReference(block.BlockElement):
         line = line.strip()
         source.consume()
 
-        # Try old @code-ref syntax first
         match = cls.old_pattern.match(line)
         if match:
             file_path = match.group(1)
             reference = match.group(2).strip()
             return cls(file_path, reference, "old")
 
-        # Try markdown link syntax
         match = cls.link_pattern.match(line)
         if match:
             description = match.group(1)
             url = match.group(2)
-
-            # Parse the URL to extract file path and reference
             file_path, reference = cls._parse_link_url(url, description)
             return cls(file_path, reference, "link")
 
-        # Try HTML file link syntax
         match = cls.html_pattern.match(line)
         if match:
             description = match.group(1)
             file_path = match.group(2)
-            # For HTML files, use "body" as the default reference
             return cls(file_path, "body", "html")
 
-        # Try simple hash reference
         match = cls.hash_pattern.match(line)
         if match:
             reference = match.group(1)
-            # For hash references, we'll need to determine the file path from context
-            # For now, use empty string - this will be handled by the processor
             return cls("", reference, "hash")
 
         raise ValueError("Invalid code reference format")
@@ -313,26 +292,20 @@ class CodeReference(block.BlockElement):
     @classmethod
     def _parse_link_url(cls, url: str, description: str) -> tuple[str, str]:
         """Parse a link URL to extract file path and reference."""
-        # Handle anchor-style references like ../path/file.py#L10
         if "#" in url:
             file_path, anchor = url.split("#", 1)
 
-            # Convert GitHub-style line anchors to our format
             if anchor.startswith("L"):
                 try:
-                    # Check for range format L1-L20
                     if "-L" in anchor:
-                        # Format: L1-L20
                         parts = anchor.split("-L")
-                        start_line = parts[0][1:]  # Remove 'L' from start
+                        start_line = parts[0][1:]
                         end_line = parts[1]
                         reference = f"lines {start_line}-{end_line}"
-                    # Also check for old format L1-20 (without second L)
                     elif "-" in anchor and anchor.count("-") == 1:
-                        # Format: L1-20
                         parts = anchor.split("-")
                         if parts[0].startswith("L") and parts[1].isdigit():
-                            start_line = parts[0][1:]  # Remove 'L' from start
+                            start_line = parts[0][1:]
                             end_line = parts[1]
                             reference = f"lines {start_line}-{end_line}"
                         else:
@@ -347,20 +320,15 @@ class CodeReference(block.BlockElement):
                 reference = anchor
         else:
             file_path = url
-            # For HTML files, default to extracting body content
             if file_path.lower().endswith(".html"):
                 reference = "body"
             else:
-                # Try to extract reference from description
-                # Look for patterns like "line 1", "lines 1-5", function names, etc.
                 desc_lower = description.lower()
                 if "line " in desc_lower:
-                    # Extract line reference from description
                     line_match = re.search(r"line\s+(\d+)", desc_lower)
                     if line_match:
                         reference = f"line {line_match.group(1)}"
                     else:
-                        # Try range
                         range_match = re.search(
                             r"lines\s+(\d+)[-:]\s*(\d+)", desc_lower
                         )
@@ -371,7 +339,6 @@ class CodeReference(block.BlockElement):
                         else:
                             reference = description
                 else:
-                    # Assume description is the reference (function/class name)
                     reference = description.split()[-1] if description else "content"
 
         return file_path, reference

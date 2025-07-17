@@ -1,18 +1,16 @@
-# The Library of Babbl
+# Babbl
 
-Turn markdown into beautiful research blog posts.
-
-![Babbl](assets/babel_img.jpg)
+A modern markdown-to-HTML converter designed for research blog posts with support for tables, code references, and beautiful styling.
 
 ## Features
 
-- **Custom Markdown Renderer**: Built with Marko for extensible HTML formatting
-- **Frontmatter Support**: YAML frontmatter in markdown files
-- **Table Support**: Full markdown table rendering with custom styling
-- **Beautiful Templates**: Clean, responsive HTML output with modern styling
-- **Fully Customizable CSS**: Complete control over styling through CSS files
-- **CLI Interface**: Easy-to-use command-line tools
-- **Syntax Highlighting**: Code blocks with Pygments integration
+- **Clean HTML Output**: Semantic HTML with responsive CSS styling
+- **Table Support**: Full markdown table rendering with clean styling
+- **Code References**: Include code snippets from files using simple syntax
+- **Syntax Highlighting**: Pygments integration for code blocks
+- **Table of Contents**: Auto-generated TOC for document navigation
+- **Frontmatter Support**: YAML metadata in markdown files
+- **Extensible**: Built with Marko parser for easy customization
 
 ## Installation
 
@@ -22,22 +20,19 @@ pip install babbl
 
 ## Quick Start
 
-### Render a single markdown file:
-
+### Render a single file
 ```bash
-babbl render example.md
+babbl render document.md
 ```
 
-### Build multiple files in a directory:
-
+### Build multiple files
 ```bash
 babbl build ./docs --output-dir ./public
 ```
 
-### Render with custom CSS file:
-
+### With custom styling
 ```bash
-babbl render example.md --css my-styles.css
+babbl render document.md --css custom.css --toc
 ```
 
 ## Usage
@@ -45,151 +40,75 @@ babbl render example.md --css my-styles.css
 ### Python API
 
 ```python
-from babbl import HTMLRenderer, BabblParser
-from pathlib import Path
+from babbl import BabblParser, HTMLRenderer
 
-# Initialize parser and renderer
 parser = BabblParser()
 renderer = HTMLRenderer()
 
-# Render a markdown file
-with open("example.md", "r") as f:
+with open("document.md", "r") as f:
     content = f.read()
-document = parser.parse(content)
-html = renderer.html(document, metadata={})
-print(f"Generated HTML: {html}")
-```
-
-### Frontmatter Support
-
-Babbl supports YAML frontmatter in markdown files:
-
-```markdown
----
-title: "My Research Paper"
-author: "Dr. Jane Smith"
-date: "2024-01-15"
-description: "A groundbreaking study"
----
-
-# Content here...
-```
-
-### Table Support
-
-Babbl includes full support for markdown tables:
-
-```markdown
-| Component | Memory (MB) | Percentage |
-|-----------|-------------|------------|
-| Renderer Core | 2.1 | 50% |
-| Frontmatter Processor | 0.9 | 22% |
-| HTML Formatter | 1.2 | 28% |
-```
-
-Tables are automatically styled with clean, responsive CSS and support proper header formatting.
-
-### CSS Customization
-
-Babbl provides complete control over styling through CSS files:
-
-**Customize your styles:**
-```css
-/* my-styles.css */
-body {
-    font-family: "Georgia", serif;
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-.heading-1 {
-    color: #2c3e50;
-    font-size: 2.5rem;
-    border-bottom: 2px solid #3498db;
-}
-
-.code-block {
-    background: #2c3e50;
-    color: #ecf0f1;
-    border-radius: 8px;
-}
-```
-
-**Use your custom styles:**
-```bash
-babbl render example.md --css my-styles.css
-```
-
-The CSS system supports all standard CSS properties for:
-- Body and section styling
-- All heading levels (h1-h6)
-- Paragraphs and text
-- Code blocks and inline code
-- Links and images
-- Lists and blockquotes
-- Emphasis (bold/italic)
-- Responsive design
-- Syntax highlighting
-
-### Table of Contents
-
-Babbl can automatically generate a table of contents for documents with h1 headings:
-
-```bash
-# Generate HTML with table of contents
-babbl render example.md --toc
-```
-
-The table of contents:
-- Appears as a sidebar on the left side of the content
-- Lists all h1 headings with clickable links
-- Is responsive and collapses on mobile devices
-- Uses clean, modern styling that matches the document theme
-- Provides smooth scrolling to section anchors
-
-**Python API usage:**
-```python
-from babbl import HTMLRenderer, BabblParser
-
-parser = BabblParser()
-renderer = HTMLRenderer(show_toc=True)  # Enable table of contents
 
 document = parser.parse(content)
 html = renderer.html(document, metadata={})
+```
+
+### Code References
+
+Reference code from files using simple syntax:
+
+```markdown
+#function_name
+[Description](path/to/file.py#function_name)
+[Line 15](path/to/file.py#L15)
+[Lines 10-20](path/to/file.py#L10-L20)
+```
+
+### Tables
+
+Standard markdown table syntax:
+
+```markdown
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+```
+
+### Frontmatter
+
+YAML metadata at the beginning of files:
+
+```markdown
+---
+title: "My Document"
+author: "Author Name"
+date: "2024-01-01"
+---
+
+# Content starts here
 ```
 
 ## CLI Commands
 
-### `babbl render <file>`
+### `babbl render`
 Render a single markdown file to HTML.
 
-Options:
-- `--output, -o`: Specify output file path
-- `--css`: Path to CSS file
-- `--toc`: Generate table of contents for h1 headings
+**Options:**
+- `--output, -o`: Output file path
+- `--css`: Custom CSS file
+- `--toc`: Generate table of contents
+- `--base-path`: Base path for code references
 
-### `babbl build <directory>`
+### `babbl build`
 Build multiple markdown files in a directory.
 
-Options:
+**Options:**
 - `--output-dir, -o`: Output directory
-- `--pattern`: File pattern to match (default: `*.md`)
+- `--pattern`: File pattern (default: `*.md`)
 - `--recursive, -r`: Process subdirectories
-- `--css`: Path to CSS file
-- `--toc`: Generate table of contents for h1 headings
-
-## Supported Markdown Features
-
-- **Headings**: `# ## ###` etc.
-- **Code blocks**: ```python with syntax highlighting
-- **Inline code**: `code`
-- **Links**: `[text](url)`
-- **Images**: `![alt](src)`
-- **Lists**: Ordered and unordered
-- **Blockquotes**: `> quote`
-- **Emphasis**: **bold** and *italic*
-- **Tables**: Full markdown table support
-- **Paragraphs**: Automatic wrapping
+- `--css`: Custom CSS file
+- `--toc`: Generate table of contents
+- `--base-path`: Base path for code references
 
 ## License
 
