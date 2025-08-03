@@ -333,13 +333,10 @@ math {
     font-family: 'Times New Roman', Times, serif;
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
+/* Responsive design - hide TOC when it can't be fully displayed */
+@media (max-width: 1250px) {
     .toc {
-        position: static;
-        width: auto;
-        max-height: none;
-        margin-bottom: 1rem;
+        display: none;
     }
     
     body {

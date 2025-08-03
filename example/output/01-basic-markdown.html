@@ -342,13 +342,10 @@ math {
     font-family: 'Times New Roman', Times, serif;
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
+/* Responsive design - hide TOC when it can't be fully displayed */
+@media (max-width: 1250px) {
     .toc {
-        position: static;
-        width: auto;
-        max-height: none;
-        margin-bottom: 1rem;
+        display: none;
     }
     
     body {
@@ -435,7 +432,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#basic-markdown-features" class="toc-link">Basic Markdown Features</a></li>
+<li><a href="#headings" class="toc-link">Headings</a></li>
+<li><a href="#text-formatting" class="toc-link">Text Formatting</a></li>
+<li><a href="#links-and-images" class="toc-link">Links and Images</a></li>
+<li><a href="#lists" class="toc-link">Lists</a></li>
+<li><a href="#blockquotes" class="toc-link">Blockquotes</a></li>
+<li><a href="#code-blocks" class="toc-link">Code Blocks</a></li>
+<li><a href="#horizontal-rules" class="toc-link">Horizontal Rules</a></li>
+<li><a href="#html-support" class="toc-link">HTML Support</a></li>
+</ul>
+</nav>
+</aside>
 <main class="content">
 <section>
 <header>

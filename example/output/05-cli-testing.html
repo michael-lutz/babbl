@@ -342,13 +342,10 @@ math {
     font-family: 'Times New Roman', Times, serif;
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
+/* Responsive design - hide TOC when it can't be fully displayed */
+@media (max-width: 1250px) {
     .toc {
-        position: static;
-        width: auto;
-        max-height: none;
-        margin-bottom: 1rem;
+        display: none;
     }
     
     body {
@@ -435,7 +432,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="container">
-
+<aside class="toc">
+<nav class="toc-nav">
+<ul class="toc-list">
+<li><a href="#cli-testing" class="toc-link">CLI Testing</a></li>
+<li><a href="#basic-rendering" class="toc-link">Basic Rendering</a></li>
+<li><a href="#file-paths" class="toc-link">File Paths</a></li>
+<li><a href="#css-customization" class="toc-link">CSS Customization</a></li>
+<li><a href="#table-of-contents" class="toc-link">Table of Contents</a></li>
+<li><a href="#code-reference-base-path" class="toc-link">Code Reference Base Path</a></li>
+<li><a href="#batch-processing" class="toc-link">Batch Processing</a></li>
+<li><a href="#recursive-processing" class="toc-link">Recursive Processing</a></li>
+<li><a href="#error-handling" class="toc-link">Error Handling</a></li>
+<li><a href="#edge-cases" class="toc-link">Edge Cases</a></li>
+<li><a href="#performance-testing" class="toc-link">Performance Testing</a></li>
+<li><a href="#code-references-in-lists" class="toc-link">Code References in Lists</a></li>
+<li><a href="#tables-with-code-references" class="toc-link">Tables with Code References</a></li>
+</ul>
+</nav>
+</aside>
 <main class="content">
 <section>
 <header>
@@ -550,11 +565,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>Parser</td>
 <td>babbl/parser.py</td>
 <td><div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-368d6dec')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-517dad78')">
 <span class="code-ref-title">../babbl/parser.py - BabblParser</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-368d6dec">
+<div class="code-ref-content" id="code-ref-517dad78">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BabblParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom parser that includes table and code reference support.&quot;&quot;&quot;</span>
 
@@ -577,11 +592,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>Renderer</td>
 <td>babbl/renderer.py</td>
 <td><div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-18244ec2')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-ae1e5cde')">
 <span class="code-ref-title">../babbl/renderer.py - HTMLRenderer</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-18244ec2">
+<div class="code-ref-content" id="code-ref-ae1e5cde">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HTMLRenderer</span><span class="p">(</span><span class="n">BaseRenderer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Beautiful HTML renderer with clean styling and semantic classes.&quot;&quot;&quot;</span>
 
@@ -721,11 +736,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>CLI</td>
 <td>babbl/cli.py</td>
 <td><div class="code-reference">
-<div class="code-ref-header" onclick="toggleCodeRef('code-ref-187a5feb')">
+<div class="code-ref-header" onclick="toggleCodeRef('code-ref-e33414f1')">
 <span class="code-ref-title">../babbl/cli.py - main</span>
 <span class="code-ref-toggle">▼</span>
 </div>
-<div class="code-ref-content" id="code-ref-187a5feb">
+<div class="code-ref-content" id="code-ref-e33414f1">
 <div class="highlight"><pre class="code-block"><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Babbl: Turn markdown into beautiful research blog posts.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
